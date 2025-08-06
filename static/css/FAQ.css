@@ -1,0 +1,9 @@
+.accordion-button {
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #111;
+    color: white;
+}

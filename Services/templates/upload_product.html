@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Product</title>
+</head>
+<body>
+    <h2>Upload New Product</h2>
+
+    {% if error %}
+      <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label>Name:</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>Description:</label><br>
+        <textarea name="description" rows="4" required></textarea><br><br>
+
+        <label>Category:</label><br>
+        <select name="category" required>
+            <option value="">-- Select Category --</option>
+            <option value="Tshirt">T-shirt</option>
+            <option value="Shirt">Shirt</option>
+            <option value="Jeans">Jeans</option>
+            <option value="Hoodie">Hoodie</option>
+            <option value="Dress">Dress</option>
+            <option value="Skirt">Skirt</option>
+        </select><br><br>
+
+        <label>Price (₹):</label><br>
+        <input type="number" step="0.01" name="price" required><br><br>
+
+        <label>Available Sizes:</label><br>
+        <input type="checkbox" name="available_sizes" value="XS"> Extra Small (XS)<br>
+        <input type="checkbox" name="available_sizes" value="S"> Small (S)<br>
+        <input type="checkbox" name="available_sizes" value="M"> Medium (M)<br>
+        <input type="checkbox" name="available_sizes" value="L"> Large (L)<br>
+        <input type="checkbox" name="available_sizes" value="XL"> Extra Large (XL)<br>
+        <input type="checkbox" name="available_sizes" value="XXL"> Extra Extra Large (XXL)<br>
+        <input type="checkbox" name="available_sizes" value="XXXL"> Extra Extra Extra Large (XXXL)<br><br>
+
+        <label>Color:</label><br>
+        <input type="text" name="color" required><br><br>
+
+        <label>Stock:</label><br>
+        <input type="number" name="stock" required><br><br>
+
+        <label>Product Image:</label><br>
+        <input type="file" name="image" accept="image/*" required><br><br>
+
+        <button type="submit">Upload Product</button>
+    </form>
+
+    <br><a href="{% url 'product_list' %}">View All Products</a>
+</body>
+</html>

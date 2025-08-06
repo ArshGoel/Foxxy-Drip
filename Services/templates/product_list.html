@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product List</title>
+    <style>
+        .product {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .product img {
+            width: 120px;
+            height: auto;
+            border-radius: 6px;
+        }
+        .details {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <h2>All Products</h2>
+
+    {% for product in products %}
+        <div class="product">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <div class="details">
+                <h3>{{ product.name }} ({{ product.product_id }})</h3>
+                <p><strong>Price:</strong> ₹{{ product.price }}</p>
+                <p><strong>Color:</strong> {{ product.color }}</p>
+                <p><strong>Category:</strong> {{ product.get_category_display }}</p>
+                <p><strong>Stock:</strong> {{ product.stock }}</p>
+                <p><strong>Sizes:</strong> {{ product.size_list|join:", " }}</p>
+                <p><em>Uploaded on {{ product.date_added|date:"Y-m-d H:i" }}</em></p>
+                <a href="{% url 'edit_product' product.product_id %}">Edit</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>No products found.</p>
+    {% endfor %}
+
+    <a href="{% url 'upload_product' %}">Upload Another Product</a>
+</body>
+</html>
