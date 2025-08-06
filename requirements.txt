@@ -9,7 +9,5 @@ pyjwt>=2.10.1
 django-allauth>=65.3.0
 psycopg2-binary==2.9.10
 requests>=2.32.3
-cryptography>=43.0.3
-Djongo==1.3.6
-
+cryptography>=43.0.3 
 
