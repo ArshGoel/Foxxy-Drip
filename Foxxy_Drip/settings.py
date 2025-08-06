@@ -66,7 +66,8 @@ DATABASES = {
         'HOST': 'url-shortner-arshgoel16-ba75.e.aivencloud.com',        # Replace with your Aiven database hostname
         'PORT': '12743',        # Replace with your Aiven database port
         'OPTIONS': {
-            'sslmode': 'require',         # Enforce SSL for Aiven connections
+            'sslmode': 'require',   
+            'options': '-c timezone=UTC'            # Enforce SSL for Aiven connections
         },
     }
 }
