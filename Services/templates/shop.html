@@ -146,50 +146,27 @@
   <div class="products-grid">
     {% for product in products %}
       <div class="product-card">
-        <div class="product-image-wrapper">
-          <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image" />
-        </div>
         <div class="product-info">
           <div class="product-name">{{ product.name }}</div>
-          <div class="product-category">{{ product.get_category_display }}</div>
           <div class="product-price">₹{{ product.price }}</div>
-          <div class="product-sizes">
-            Sizes: {{ product.size_list|join:", " }}
-          </div>
-          <div class="product-footer">
-        {% with cart_items|get_item:product.product_id as quantity %}
-            {% if quantity %}
-                <form method="post" action="{% url 'update_cart' product.product_id %}" class="d-flex align-items-center">
-                {% csrf_token %}
-                <button type="submit" name="action" value="decrease" class="btn btn-sm btn-outline-secondary px-2">−</button>
-                <span class="mx-2">{{ quantity }}</span>
-                <button type="submit" name="action" value="increase" class="btn btn-sm btn-outline-secondary px-2">+</button>
-                </form>
-            {% else %}
-                <form method="post" action="{% url 'add_to_cart' product.product_id %}">
-                {% csrf_token %}
-                <button type="submit" class="view-button">Add to Cart</button>
-                </form>
-            {% endif %}
-            {% endwith %}
+
+          {% if cart_items.product_id|stringformat:"s" in cart_items %}
             <form method="post" action="{% url 'update_cart' product.product_id %}" class="d-flex align-items-center">
-            {% csrf_token %}
-            <button type="submit" name="action" value="decrease" class="btn btn-sm btn-outline-secondary px-2">−</button>
-            <span class="mx-2">{{ cart_items[product.product_id] }}</span>
-            <button type="submit" name="action" value="increase" class="btn btn-sm btn-outline-secondary px-2">+</button>
+              {% csrf_token %}
+              <button type="submit" name="action" value="decrease" class="btn btn-sm btn-outline-secondary">−</button>
+              <span class="mx-2">{{ cart_items.product_id }}</span>
+              <button type="submit" name="action" value="increase" class="btn btn-sm btn-outline-secondary">+</button>
             </form>
-        {% else %}
+          {% else %}
             <form method="post" action="{% url 'add_to_cart' product.product_id %}">
-            {% csrf_token %}
-            <button type="submit" class="view-button">Add to Cart</button>
+              {% csrf_token %}
+              <button type="submit" class="view-button">Add to Cart</button>
             </form>
-        {% endif %}
-        <div class="product-id">ID: {{ product.product_id }}</div>
+          {% endif %}
         </div>
       </div>
-    {% empty %}
-      <p>No products found.</p>
     {% endfor %}
+
   </div>
 </div>
 {% endblock body %}

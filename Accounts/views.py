@@ -35,22 +35,18 @@ def shop(request):
     if request.user.is_authenticated:
         cart_count = CartItem.objects.filter(user=request.user).count()
     products = Product.objects.all()
-
-    cart_product_ids = set()
-    cart_quantities = {}
+    cart_items = {}
 
     if request.user.is_authenticated:
-        cart_items = CartItem.objects.filter(user=request.user)
-        for item in cart_items:
-            cart_product_ids.add(item.product.product_id)
-            cart_quantities[item.product.product_id] = item.quantity
+        cart = CartItem.objects.filter(user=request.user)
+        for item in cart:
+            cart_items[str(item.product.product_id)] = item.quantity  # use str key for safer template usage
 
-    context = {
+    return render(request, 'shop.html', {
         'products': products,
-        'cart_product_ids': cart_product_ids,
-        'cart_quantities': cart_quantities
-    }
-    return render(request, 'shop.html', context)
+        'cart_items': cart_items,
+        'cart_count': cart_count,
+    })
 
 @login_required
 def update_cart(request, product_id):
