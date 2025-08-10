@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>Edit Address</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label>Receiver Name</label>
+            <input type="text" name="receiver_name" class="form-control" value="{{ address.receiver_name }}" required>
+        </div>
+        <div class="mb-3">
+            <label>Phone</label>
+            <input type="text" name="phone" class="form-control" value="{{ address.phone }}" required>
+        </div>
+        <div class="mb-3">
+            <label>Address Line 1</label>
+            <input type="text" name="address_line1" class="form-control" value="{{ address.address_line1 }}" required>
+        </div>
+        <div class="mb-3">
+            <label>Address Line 2</label>
+            <input type="text" name="address_line2" class="form-control" value="{{ address.address_line2 }}">
+        </div>
+        <div class="mb-3">
+            <label>City</label>
+            <input type="text" name="city" class="form-control" value="{{ address.city }}" required>
+        </div>
+        <div class="mb-3">
+            <label>State</label>
+            <input type="text" name="state" class="form-control" value="{{ address.state }}" required>
+        </div>
+        <div class="mb-3">
+            <label>Postal Code</label>
+            <input type="text" name="postal_code" class="form-control" value="{{ address.postal_code }}" required>
+        </div>
+        <div class="mb-3">
+            <label>Country</label>
+            <input type="text" name="country" class="form-control" value="{{ address.country }}" required>
+        </div>
+        <div class="form-check mb-3">
+            <input type="checkbox" name="is_default" class="form-check-input" id="isDefault" {% if address.is_default %}checked{% endif %}>
+            <label class="form-check-label" for="isDefault">Set as Default</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Address</button>
+        <a href="{% url 'manage_address' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock body %}

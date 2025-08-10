@@ -176,7 +176,7 @@ form .btn .btn-layer {
     width: 300%;
     position: absolute;
     left: -100%;
-    background: -webkit-linear-gradient(right, #a445b2, #fa4299, #a445b2, #fa4299);
+    background: -webkit-linear-gradient(right, #000000, #000000, #000000, #000000);
     border-radius: 5px;
     transition: all 0.4s ease;
     ;

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Manage Addresses | FOXXY DRIP{% endblock title %}
+{% block body %}
+<div class="container mt-4">
+    <h2>Manage Addresses</h2>
+
+    <!-- Existing Addresses -->
+    {% if addresses %}
+        <div class="list-group mb-4">
+            {% for address in addresses %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ address.receiver_name }}</strong>  
+                        ({{ address.phone }})<br>
+                        {{ address.address_line1 }}{% if address.address_line2 %}, {{ address.address_line2 }}{% endif %},  
+                        {{ address.city }}, {{ address.state }} - {{ address.postal_code }}, {{ address.country }}
+                        {% if address.is_default %}
+                            <span class="badge bg-success ms-2">Default</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        {% if not address.is_default %}
+                            <a href="{% url 'make_default_address' address.id %}" class="btn btn-sm btn-warning"
+                            onclick="return confirm('Make this the default address?')">Make Default</a>
+                        {% endif %}
+                        <a href="{% url 'edit_address' address.id %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'delete_address' address.id %}" class="btn btn-sm btn-danger"
+                        onclick="return confirm('Delete this address?')">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No addresses found.</p>
+    {% endif %}
+
+    <!-- Add New Address -->
+    <h4>Add New Address</h4>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label>Receiver Name</label>
+            <input type="text" name="receiver_name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Phone</label>
+            <input type="text" name="phone" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Address Line 1</label>
+            <input type="text" name="address_line1" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Address Line 2</label>
+            <input type="text" name="address_line2" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label>City</label>
+            <input type="text" name="city" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>State</label>
+            <input type="text" name="state" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Postal Code</label>
+            <input type="text" name="postal_code" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Country</label>
+            <input type="text" name="country" class="form-control" value="India" required>
+        </div>
+        <div class="form-check mb-3">
+            <input type="checkbox" name="is_default" class="form-check-input" id="isDefault">
+            <label class="form-check-label" for="isDefault">Set as Default</label>
+        </div>
+        <button type="submit" class="btn btn-success">Save Address</button>
+    </form>
+</div>
+{% endblock body %}
