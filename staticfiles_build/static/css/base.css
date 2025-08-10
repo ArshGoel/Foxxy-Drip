@@ -7,6 +7,7 @@
     min-height: 90px; /* Keeps desktop height but allows expansion */
 }
 
+
 /* Mobile adjustments */
 @media (max-width: 991.98px) {
     .navbar {

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{Type}}Verification{% endblock title %}
+
+{% block body %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/verify.css' %}">
+<style>
+    .bg-image{
+        filter: blur(8px);
+    -webkit-filter: blur(8px);
+    }
+</style>
+{% endblock extracss %}
+
+
+<div style="display: flex; justify-content: center; align-items: center; height: 85vh;">
+    <div class="wrapper">
+        <div class="title-text">
+            <div class="title login">
+                {{Type}} Verification
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-inner">
+                <form method="POST" >
+                    {% csrf_token %}
+                    <div class="field">
+                        <input type="text" name="email" value="{{ email }}" readonly style="background-color: #e9ecef; color: #6c757d; cursor: not-allowed;">
+                    </div>
+                    <div class="field">
+                        <input type="otp" name="otp" placeholder="Enter OTP" required>
+                    </div>
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="Verify OTP">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{%static 'js/Accounts.js'%}"></script>
+
+{%endblock body%}

@@ -3,51 +3,41 @@ from django.contrib.auth.models import User
 from Services.models import Product
 from django.utils import timezone
 
-class UserProfile(models.Model):
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
         ('O', 'Other'),
     ]
+    profile_picture = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    # Personal Info
-    mobile_number = models.CharField(max_length=15, blank=True)
-    profile_image = models.ImageField(upload_to='profiles/', blank=True, null=True)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
-    date_of_birth = models.DateField(null=True, blank=True)
-
-    # E-commerce Fields
-    wishlist = models.ManyToManyField(Product, blank=True, related_name='wishlisted_by')
-    # referral_code = models.CharField(max_length=20, blank=True, unique=False)
-    # loyalty_points = models.PositiveIntegerField(default=0)
-
-    # Preferences
-    newsletter_subscribed = models.BooleanField(default=True)
-
-    created_at = models.DateTimeField(auto_now_add=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username}'s Profile"
-    
+        return self.user.username
 
 class Address(models.Model):
-    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='addresses')
-    
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="addresses")
+    receiver_name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=15)
     address_line1 = models.CharField(max_length=255)
-    address_line2 = models.CharField(max_length=255, blank=True)
+    address_line2 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
-    pincode = models.CharField(max_length=10)
-    country = models.CharField(max_length=100, default='India')
-    
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=50, default="India")
     is_default = models.BooleanField(default=False)
 
-    created_at = models.DateTimeField(auto_now_add=True)
-
     def __str__(self):
-        return f"{self.address_line1}, {self.city}"
+        return f"{self.receiver_name} - {self.city}"
+
+    class Meta:
+        verbose_name_plural = "Addresses"
 
 class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_items")
