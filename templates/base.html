@@ -25,60 +25,61 @@
 
     {% comment %} Navabar {% endcomment %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <!-- Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="{% static 'images/logo-main.ico' %}" width="50" height="50" alt="Beast Logo" class="me-2">
-            <span class="brand-text">FOXXY DRIP</span>
-        </a>
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{% static 'images/logo-main.ico' %}" width="50" height="50" alt="Beast Logo" class="me-2">
+                <span class="brand-text">FOXXY DRIP</span>
+            </a>
 
-        <!-- Mobile toggle button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <!-- Mobile toggle button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <!-- Navbar content -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Center Nav Links -->
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
-                <li class="nav-item">
-                    <a class="nav-link {% block homeactive %}{% endblock homeactive %}" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% block shopactive %}{% endblock shopactive %}" href="/shop">Shop</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% block contactusactive %}{% endblock contactusactive %}" href="/contactus">Contact us</a>
-                </li>
-                {% if request.user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link {% block customizationactive %}{% endblock customizationactive %}" href="/customize">Customize</a>
-                </li>
-                {% endif %}
-            </ul>
+            <!-- Navbar content -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Center Nav Links -->
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
+                    <li class="nav-item">
+                        <a class="nav-link {% block homeactive %}{% endblock homeactive %}" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block shopactive %}{% endblock shopactive %}" href="/shop">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block contactusactive %}{% endblock contactusactive %}" href="/contactus">Contact us</a>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link {% block customizationactive %}{% endblock customizationactive %}" href="/customize">Customize</a>
+                    </li>
+                    {% endif %}
+                </ul>
 
-            <!-- Right Buttons -->
-            <div class="d-flex flex-column flex-lg-row align-items-center gap-3 mt-3 mt-lg-0">
-                {% if request.user.is_authenticated %}
-                    <a href="/dash/wishlist" class="text-white fs-5 fav-hover">
-                        <i class="bi bi-heart"></i>
-                    </a>
-                    <a href="/view_cart" class="position-relative text-white fs-5">
-                        <i class="bi bi-cart3"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            {{ request.user.cart_items.count }}
-                        </span>
-                    </a>
-                {% else %}
-                    <a class="btn btn-sm btn-outline-light btn-login">Login/Register</a>
-                {% endif %}
+                <!-- Right Buttons -->
+                <div class="d-flex flex-column flex-lg-row align-items-center gap-3 mt-3 mt-lg-0">
+                    {% if request.user.is_authenticated %}
+                        <a href="/dash/wishlist" class="text-white fs-5 fav-hover">
+                            <i class="bi bi-heart"></i>
+                        </a>
+                        <a href="/view_cart" class="position-relative text-white fs-5">
+                            <i class="bi bi-cart3"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{ request.user.cart_items.count }}
+                            </span>
+                        </a>
+                    {% else %}
+                        <a class="btn btn-sm btn-outline-light btn-login">Login/Register</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
-</nav>
-        <!-- Auth Modal -->
-        <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true" style="overflow: visible;">
+    </nav>
+
+    <!-- Auth Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true" style="overflow: visible;">
         <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 800px; overflow: visible;">
             <div class="modal-content p-0 d-flex flex-lg-row flex-column"
         style="font-family: 'Poppins', sans-serif; height: 550px; max-height: 90vh; border-radius: 0; overflow: hidden;">
@@ -158,10 +159,9 @@
                 <button type="submit" class="btn btn-dark w-100 fw-semibold">Sign Up</button>
                 </form>
             </div>
-            </div>
         </div>
-        </div>
-    
+    </div>
+
     {% comment %} Navbar {% endcomment %}
         
     
