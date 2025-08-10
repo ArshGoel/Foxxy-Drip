@@ -1,16 +1,30 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #f4f2ed;
-}
-
 .navbar {
-    height: 90px;
     background-color: #000;
     padding-left: 190px;
     padding-right: 190px;
     padding-top: 20px;
     padding-bottom: 20px;
+    min-height: 90px; /* Keeps desktop height but allows expansion */
+}
+
+/* Mobile adjustments */
+@media (max-width: 991.98px) {
+    .navbar {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .navbar-collapse {
+        position: static; /* Allows menu to push down content */
+        background-color: #000; /* So dropdown is visible on mobile */
+        padding-bottom: 10px;
+    }
+}
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f2ed;
 }
 
 .navbar-nav {
