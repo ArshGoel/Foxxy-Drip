@@ -14,6 +14,29 @@
         filter: blur(8px);
     -webkit-filter: blur(8px);
     }
+    .separator {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 20px 0;
+    }
+    .separator::before,
+    .separator::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #ccc;
+    }
+    .separator:not(:empty)::before {
+        margin-right: 0.75em;
+    }
+    .separator:not(:empty)::after {
+        margin-left: 0.75em;
+    }
+    .separator span {
+        font-size: 14px;
+        color: #666;
+        font-weight: 500;
+    }
 </style>
 {% endblock extracss %}
 
@@ -52,6 +75,19 @@
                         <div class="btn-layer"></div>
                         <input type="submit" value="Login">
                     </div>
+                    <!-- Separator -->
+                    <div class="separator">
+                        <span>or</span>
+                    </div>
+                    {% load socialaccount %}
+
+                    <div class="google-login">
+                        <a href="{% provider_login_url 'google' %}?next=/" class="google-btn">
+                            <i class="fab fa-google"></i> Login with Google
+                        </a>
+                    </div>
+                    {% providers_media_js %}
+
                     <div class="signup-link">Not a member? <a href="#">Signup now</a></div>
                 </form>
                 <form action="" method="POST" class="signup">
@@ -73,6 +109,19 @@
                         <div class="btn-layer"></div>
                         <input type="submit" value="Signup">
                     </div>
+                    <!-- Separator -->
+                    <div class="separator">
+                        <span>or</span>
+                    </div>
+                    {% load socialaccount %}
+                    <div class="google-login">
+                        <a href="{% provider_login_url 'google' %}?next=/" class="google-btn">
+                            <i class="fab fa-google"></i> Login with Google
+                        </a>
+                    </div>
+                </div>
+                {% providers_media_js %}
+
                 </form>
             </div>
         </div>

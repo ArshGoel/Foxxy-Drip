@@ -23,7 +23,6 @@ INSTALLED_APPS = [
     'Services',
 
     'whitenoise.runserver_nostatic',
-    'django.contrib.sites',
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
