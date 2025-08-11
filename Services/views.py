@@ -111,7 +111,11 @@ def dashboard(request):
 
 @login_required
 def manage_address(request):
-    profile = get_object_or_404(Profile, user=request.user)
+    # Check if profile exists for the logged-in user
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        return redirect("complete_profile")  # redirect if profile not found
 
     # Handle POST (Add New Address)
     if request.method == "POST":
@@ -125,9 +129,11 @@ def manage_address(request):
         country = request.POST.get("country", "India")
         is_default = bool(request.POST.get("is_default"))
 
+        # Ensure only one default address
         if is_default:
             Address.objects.filter(profile=profile, is_default=True).update(is_default=False)
 
+        # Create new address
         Address.objects.create(
             profile=profile,
             receiver_name=receiver_name,
@@ -145,9 +151,8 @@ def manage_address(request):
         return redirect("manage_address")
 
     # GET - Show existing addresses
-    addresses = profile.addresses.all() # type: ignore
+    addresses = profile.addresses.all()  # type: ignore
     return render(request, "manage_address.html", {"addresses": addresses})
-
 
 @login_required
 def delete_address(request, address_id):

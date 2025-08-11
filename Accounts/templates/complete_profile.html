@@ -1,1 +1,46 @@
 {% extends "base.html" %}
+
+
+
+{% block body %}
+<div class="container mt-5 mb-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="mb-4">Complete Your Profile</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+            <!-- Profile Picture -->
+            <div class="mb-3">
+                <label class="form-label">Profile Picture</label>
+                <input type="file" name="profile_picture" class="form-control">
+            </div>
+
+            <!-- Gender -->
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select name="gender" class="form-select" required>
+                    <option value="">Select</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                </select>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="mb-3">
+                <label class="form-label">Date of Birth</label>
+                <input type="date" name="date_of_birth" class="form-control">
+            </div>
+
+            <!-- Phone Number -->
+            <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input type="text" name="phone_number" class="form-control" maxlength="15" placeholder="Enter phone number" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Profile</button>
+        </form>
+    </div>
+</div>
+{% endblock body %}

@@ -16,5 +16,5 @@ urlpatterns = [
     path('forgetpass', views.forgetpass, name='forgetpass'),
     path('verify/<str:username>/', views.verify, name='verify'),
     path('validate', views.validate, name='validate'),
-
+    path('complete_profile', views.complete_profile, name='complete_profile'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

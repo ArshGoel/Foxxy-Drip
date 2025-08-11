@@ -1,16 +1,15 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.contrib import messages
 from django.core.mail import send_mail
-from django.conf import settings
 from Services.models import Product
-import json
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
-from Services.models import Product
 from .models import CartItem
-
+from django.contrib import auth,messages
+from django.contrib.auth import authenticate, login as auth_login
+from random import randint
+from django.conf import settings
+from .models import Profile
 
 def home(request):
     cart_count = 0
@@ -95,22 +94,6 @@ def contactus(request):
     return render(request, 'contactus.html', {'cart_count': cart_count})
 
 
-
-
-
-
-from django.contrib import auth,messages
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth.models import User
-from random import randint
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib.auth.hashers import make_password
-
-
-
-# Create your views here.
 def login(request):
     if request.method == "POST":
         form_type = request.POST.get("form_type")  # Check which form was submitted
@@ -319,3 +302,29 @@ def forgetpass(request):
         stage = "enter_otp"
 
     return render(request, "forgetpass.html", {"stage": stage, "email_masked": email_masked})
+
+@login_required
+def complete_profile(request):
+    # If profile already exists → redirect to manage_address
+    if Profile.objects.filter(user=request.user).exists():
+        return redirect("manage_address")
+
+    if request.method == "POST":
+        profile_picture = request.FILES.get("profile_picture")
+        gender = request.POST.get("gender")
+        date_of_birth = request.POST.get("date_of_birth")
+        phone_number = request.POST.get("phone_number")
+
+        # Create new profile
+        Profile.objects.create(
+            user=request.user,
+            profile_picture=profile_picture,
+            gender=gender,
+            date_of_birth=date_of_birth if date_of_birth else None,
+            phone_number=phone_number
+        )
+
+        messages.success(request, "Profile completed successfully!")
+        return redirect("manage_address")
+
+    return render(request, "complete_profile.html")

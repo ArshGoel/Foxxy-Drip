@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Student Login | Signup{% endblock title %}
+{% block title %}User Login | Signup{% endblock title %}
 {% block login_registeractive %}active{% endblock login_registeractive %}
 
 
@@ -41,7 +41,7 @@
 {% endblock extracss %}
 
 
-<div style="display: flex; justify-content: center; align-items: center; height: 85vh;">
+<div style="display: flex; justify-content: center; align-items: center; height: 85vh; " class="mt-5 mb-5">
     <div class="wrapper">
         <div class="title-text">
             <div class="title login">
@@ -87,8 +87,6 @@
                         </a>
                     </div>
                     {% providers_media_js %}
-
-                    <div class="signup-link">Not a member? <a href="#">Signup now</a></div>
                 </form>
                 <form action="" method="POST" class="signup">
                     {% csrf_token %}
