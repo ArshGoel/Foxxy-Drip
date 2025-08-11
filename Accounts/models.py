@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from Services.models import Product
 from django.utils import timezone
 
+from django.db import models
+from django.contrib.auth.models import User
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -49,3 +51,50 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name} x {self.quantity}"
+  
+
+# ----------------- WISHLIST -----------------
+class Wishlist(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="wishlist_items")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('profile', 'product')
+
+    def __str__(self):
+        return f"{self.profile.user.username} - {self.product.name}"
+
+
+# ----------------- ORDER -----------------
+class Order(models.Model):
+    ORDER_STATUS = [
+        ('P', 'Pending'),
+        ('PR', 'Processing'),
+        ('S', 'Shipped'),
+        ('D', 'Delivered'),
+        ('C', 'Cancelled'),
+    ]
+
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="orders")
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
+    status = models.CharField(max_length=2, choices=ORDER_STATUS, default='P')
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Order #{self.id} - {self.profile.user.username}" # type: ignore
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # Price at purchase time
+
+    def __str__(self):
+        return f"{self.product.name} x {self.quantity}" # type: ignore
+
+    @property
+    def total_price(self):
+        return self.price * self.quantity
