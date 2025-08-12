@@ -109,7 +109,7 @@ def login(request):
                     else:
                         auth_login(request, user)
                         messages.success(request, "Login successful")
-                        return redirect('dashboard')
+                        return redirect('/')
                 else:
                     messages.error(request, "User Doesn't Exist")
                     
@@ -217,7 +217,7 @@ def validate(request):
                 request.session.pop("temp_user", None)
 
                 messages.success(request, "Login successful!")
-                return redirect("dashboard")  
+                return redirect("/")
 
             except User.DoesNotExist:
                 messages.error(request, "User not found.")

@@ -140,33 +140,31 @@
 </style>
 {% endblock extracss %}
 
-<div class="shop-wrapper">
-  <h1 class="shop-heading">Foxxy Drip Collection</h1>
-
-  <div class="products-grid">
-    {% for product in products %}
-      <div class="product-card">
-        <div class="product-info">
-          <div class="product-name">{{ product.name }}</div>
-          <div class="product-price">₹{{ product.price }}</div>
-
-          {% if cart_items.product_id|stringformat:"s" in cart_items %}
-            <form method="post" action="{% url 'update_cart' product.product_id %}" class="d-flex align-items-center">
-              {% csrf_token %}
-              <button type="submit" name="action" value="decrease" class="btn btn-sm btn-outline-secondary">−</button>
-              <span class="mx-2">{{ cart_items.product_id }}</span>
-              <button type="submit" name="action" value="increase" class="btn btn-sm btn-outline-secondary">+</button>
-            </form>
-          {% else %}
-            <form method="post" action="{% url 'add_to_cart' product.product_id %}">
-              {% csrf_token %}
-              <button type="submit" class="view-button">Add to Cart</button>
-            </form>
-          {% endif %}
+<div class="container mt-4">
+    <h2 class="mb-4">All Products</h2>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="text-muted">{{ product.category }}</p>
+                    <p class="fw-bold">₹{{ product.price }}</p>
+                    <p>Available Sizes: 
+                        {% for size_obj in product.productsize_set.all %}
+                            {{ size_obj.size }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            <span class="text-muted">No sizes available</span>
+                        {% endfor %}
+                    </p>
+                    <a href="{% url 'view_product' product.product_id %}" class="btn btn-primary btn-sm">View Details</a>
+                </div>
+            </div>
         </div>
-      </div>
-    {% endfor %}
-
-  </div>
+        {% empty %}
+        <p>No products available.</p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock body %}
