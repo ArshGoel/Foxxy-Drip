@@ -181,3 +181,14 @@ LOGIN_URL = "login"
 LOGOUT_URL = "logout"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "login"
+
+
+INSTALLED_APPS += ['cloudinary', 'cloudinary_storage']
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'root',
+    'API_KEY': '786426337696753',
+    'API_SECRET': 'DW-Tdy7B33BO1s13v3QsI04-GYY'
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

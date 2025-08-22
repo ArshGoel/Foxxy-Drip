@@ -310,9 +310,9 @@ def complete_profile(request):
         return redirect("manage_address")
 
     if request.method == "POST":
-        profile_picture = request.FILES.get("profile_picture")
+        profile_picture = request.FILES.get("profile_picture")  # will upload to Cloudinary automatically
         gender = request.POST.get("gender")
-        date_of_birth = request.POST.get("date_of_birth")
+        date_of_birth = request.POST.get("date_of_birth") or None
         phone_number = request.POST.get("phone_number")
 
         # Create new profile
@@ -320,7 +320,7 @@ def complete_profile(request):
             user=request.user,
             profile_picture=profile_picture,
             gender=gender,
-            date_of_birth=date_of_birth if date_of_birth else None,
+            date_of_birth=date_of_birth,
             phone_number=phone_number
         )
 
