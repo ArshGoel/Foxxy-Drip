@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Edit Address - FOXXY DRIP{% endblock title %}
+{% block title %}All Products - FOXXY DRIP{% endblock title %}
 
 {% block body %}
 {% block extracss %}
@@ -23,6 +23,23 @@
     .details {
         flex: 1;
     }
+    .sizes {
+        margin-top: 5px;
+    }
+    .sizes span {
+        display: inline-block;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 3px 8px;
+        margin: 2px;
+        font-size: 14px;
+    }
+    .sizes .out {
+        background: #f9f9f9;
+        color: #aaa;
+        text-decoration: line-through;
+    }
 </style>
 {% endblock extracss %}
 
@@ -36,8 +53,19 @@
             <p><strong>Price:</strong> ₹{{ product.price }}</p>
             <p><strong>Color:</strong> {{ product.color }}</p>
             <p><strong>Category:</strong> {{ product.get_category_display }}</p>
-            <p><strong>Stock:</strong> {{ product.stock }}</p>
-            <p><strong>Sizes:</strong> {{ product.size_list|join:", " }}</p>
+
+            <!-- Sizes with stock -->
+            <div class="sizes">
+                <strong>Sizes:</strong>
+                {% for size, qty in product.size_stock.items %}
+                    {% if qty > 0 %}
+                        <span>{{ size }} ({{ qty }})</span>
+                    {% else %}
+                        <span class="out">{{ size }}</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
             <p><em>Uploaded on {{ product.date_added|date:"Y-m-d H:i" }}</em></p>
             <a href="{% url 'edit_product' product.product_id %}">Edit</a>
         </div>

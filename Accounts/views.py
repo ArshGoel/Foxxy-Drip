@@ -195,6 +195,7 @@ def login(request):
     return render(request, 'login_register.html')
 
 
+
 def logout(request):
     auth.logout(request)
     messages.success(request, "Logout successful")

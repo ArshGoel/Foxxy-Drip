@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Shop - FOXXY DRIP{% endblock title %}
+{% block title %}Upload Product - FOXXY DRIP{% endblock title %}
 
 {% block body %}
 <h2>Upload New Product</h2>
@@ -12,39 +12,44 @@
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
+    <!-- Name -->
     <label>Name:</label><br>
     <input type="text" name="name" required><br><br>
 
+    <!-- Description -->
     <label>Description:</label><br>
     <textarea name="description" rows="4" required></textarea><br><br>
 
+    <!-- Category -->
     <label>Category:</label><br>
     <select name="category" required>
         <option value="">-- Select Category --</option>
-        <option value="Tshirt">T-shirt</option>
-        <option value="Shirt">Shirt</option>
-        <option value="Jeans">Jeans</option>
-        <option value="Hoodie">Hoodie</option>
-        <option value="Dress">Dress</option>
-        <option value="Skirt">Skirt</option>
+        {% for key, label in Product.CATEGORY_CHOICES %}
+            <option value="{{ key }}">{{ label }}</option>
+        {% endfor %}
     </select><br><br>
 
+
+    <!-- Price -->
     <label>Price (₹):</label><br>
     <input type="number" step="0.01" name="price" required><br><br>
 
-    <label>Available Sizes:</label><br>
-    <input type="checkbox" name="available_sizes" value="S"> Small (S)<br>
-    <input type="checkbox" name="available_sizes" value="M"> Medium (M)<br>
-    <input type="checkbox" name="available_sizes" value="L"> Large (L)<br>
-    <input type="checkbox" name="available_sizes" value="XL"> Extra Large (XL)<br>
-    <input type="checkbox" name="available_sizes" value="XXL"> Extra Extra Large (XXL)<br>
-
+    <!-- Color -->
     <label>Color:</label><br>
     <input type="text" name="color" required><br><br>
 
-    <label>Stock:</label><br>
-    <input type="number" name="stock" required><br><br>
+    <!-- Stock per size -->
+    <h4>Stock by Size</h4>
+    <label>XXS:</label> <input type="number" name="qty_xxs" value="0" min="0"><br><br>
+    <label>XS:</label> <input type="number" name="qty_xs" value="0" min="0"><br><br>
+    <label>S:</label> <input type="number" name="qty_s" value="0" min="0"><br><br>
+    <label>M:</label> <input type="number" name="qty_m" value="0" min="0"><br><br>
+    <label>L:</label> <input type="number" name="qty_l" value="0" min="0"><br><br>
+    <label>XL:</label> <input type="number" name="qty_xl" value="0" min="0"><br><br>
+    <label>XXL:</label> <input type="number" name="qty_xxl" value="0" min="0"><br><br>
+    <label>XXXL:</label> <input type="number" name="qty_xxxl" value="0" min="0"><br><br>
 
+    <!-- Product Image -->
     <label>Product Image:</label><br>
     <input type="file" name="image" accept="image/*" required><br><br>
 

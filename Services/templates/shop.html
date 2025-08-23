@@ -1,38 +1,166 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block title %}Shop - FOXXY DRIP{% endblock title %}
 {% block shopactive %}active{% endblock shopactive %}
 
 {% block body %}
 {% block extracss %}
-<link rel="stylesheet" href="{% static "css/shop.css" %}" />
+<link rel="stylesheet" href="{% static 'css/shop.css' %}" />
 {% endblock extracss %}
 
 <div class="container mt-4">
-    <h2 class="mb-4">All Products</h2>
-    <div class="row">
-        {% for product in products %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="text-muted">{{ product.category }}</p>
-                    <p class="fw-bold">₹{{ product.price }}</p>
-                    <p>Available Sizes: 
-                        {% for size_obj in product.productsize_set.all %}
-                            {{ size_obj.size }}{% if not forloop.last %}, {% endif %}
-                        {% empty %}
-                            <span class="text-muted">No sizes available</span>
-                        {% endfor %}
-                    </p>
-                    <a href="{% url 'view_product' product.product_id %}" class="btn btn-primary btn-sm">View Details</a>
-                </div>
-            </div>
+  <h2 class="mb-4 fw-bold">🛍️ Our Collection</h2>
+  <div class="row">
+    {% for product in products %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm border-0 rounded-3 product-card">
+        
+        <!-- Product Image -->
+        <img src="{{ product.image.url|default:'https://via.placeholder.com/400x400?text=No+Image' }}" 
+             class="card-img-top rounded-top" alt="{{ product.name }}">
+        
+        <!-- Product Info -->
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title fw-bold">{{ product.name }}</h5>
+          <p class="text-muted mb-1">{{ product.get_category_display }}</p>
+          <p class="mb-1"><strong>Color:</strong> {{ product.color }}</p>
+          <p class="fw-bold fs-5 mb-2">₹{{ product.price }}</p>
+
+          <!-- Sizes -->
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            {% for size, qty in product.size_stock.items %}
+              {% if qty > 0 %}
+                <label class="size-box" data-qty="{{ qty }} left">
+                  <input type="radio" name="size" value="{{ size }}">
+                  <span>{{ size }}</span>
+                </label>
+              {% else %}
+                <label class="size-box disabled" data-qty="Out of stock">
+                  <span>{{ size }}</span>
+                  <span class="strike"></span>  <!-- 👈 extra span for diagonal -->
+                </label>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+
+          <!-- Buttons -->
+          <div class="mt-auto d-flex justify-content-between">
+            <a href="{% url 'view_product' product.product_id %}" 
+               class="btn btn-dark btn-sm flex-grow-1 me-2">View</a>
+            <a href="#" class="btn btn-outline-dark btn-sm">❤</a>
+          </div>
         </div>
-        {% empty %}
-        <p>No products available.</p>
-        {% endfor %}
+      </div>
     </div>
+    {% empty %}
+    <p>No products available.</p>
+    {% endfor %}
+  </div>
 </div>
+
+<!-- Custom CSS -->
+ <style>
+.size-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  background: #fff;
+  transition: 0.2s;
+}
+
+.size-box input {
+  display: none;
+}
+
+.size-box span {
+  font-size: 14px;
+}
+
+.size-box:hover {
+  border-color: #000;
+}
+
+/* Checked size */
+.size-box input:checked + span {
+  background: #000;
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Disabled */
+.size-box.disabled {
+  color: #aaa;
+  border-color: #ddd;
+  cursor: not-allowed;
+  background: #f9f9f9;
+  position: relative;
+}
+
+/* ✅ Diagonal strike (separate child element) */
+.size-box .strike {
+  position: absolute;
+  width: 120%;
+  height: 2px;
+  background: #ddd;
+  transform: rotate(-45deg);
+  top: 50%;
+  left: -10%;
+}
+
+/* Tooltip */
+.size-box::before {
+  content: attr(data-qty);
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+.size-box:hover::before {
+  opacity: 1;
+}
+
+.size-box::after {
+  /* tooltip arrow */
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #000 transparent;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+.size-box:hover::after {
+  opacity: 1;
+}
+</style>
 {% endblock body %}

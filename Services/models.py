@@ -30,15 +30,33 @@ class Product(models.Model):
     image = models.ImageField(upload_to=ProductImagePath())
     date_added = models.DateTimeField(auto_now_add=True)
 
+    # 🔹 Quantity for each size
+    qty_xxs = models.PositiveIntegerField(default=0)
+    qty_xs = models.PositiveIntegerField(default=0)
+    qty_s = models.PositiveIntegerField(default=0)
+    qty_m = models.PositiveIntegerField(default=0)
+    qty_l = models.PositiveIntegerField(default=0)
+    qty_xl = models.PositiveIntegerField(default=0)
+    qty_xxl = models.PositiveIntegerField(default=0)
+    qty_xxxl = models.PositiveIntegerField(default=0)
+
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
         if not self.product_id:
-            last = Product.objects.order_by('-product_id').first()
+            existing_ids = Product.objects.values_list('product_id', flat=True)
+            existing_nums = sorted(
+                [int(pid[1:]) for pid in existing_ids if pid[1:].isdigit()]
+            )
+            
             next_id = 1
-            if last and last.product_id[1:].isdigit():
-                next_id = int(last.product_id[1:]) + 1
+            for num in existing_nums:
+                if num == next_id:
+                    next_id += 1
+                else:
+                    break
+            
             self.product_id = f"P{next_id:03}"
 
         # delete old image if replacing or clearing
@@ -51,24 +69,18 @@ class Product(models.Model):
 
         super().save(*args, **kwargs)
 
-
-class ProductSize(models.Model):
-    SIZE_CHOICES = [
-        ('S', 'Small'),
-        ('M', 'Medium'),
-        ('L', 'Large'),
-        ('XL', 'Extra Large'),
-        ('XXL', 'Extra Extra Large'),
-    ]
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="sizes")
-    size = models.CharField(max_length=5, choices=SIZE_CHOICES)
-    quantity = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        unique_together = ('product', 'size')
-
-    def __str__(self):
-        return f"{self.product.name} - {self.size} ({self.quantity})"
+    # 🔹 Utility: return stock dict for looping in template
+    def size_stock(self):
+        return {
+            "XXS": self.qty_xxs,
+            "XS": self.qty_xs,
+            "S": self.qty_s,
+            "M": self.qty_m,
+            "L": self.qty_l,
+            "XL": self.qty_xl,
+            "XXL": self.qty_xxl,
+            "XXXL": self.qty_xxxl,
+        }
 
 
 @receiver(post_delete, sender=Product)

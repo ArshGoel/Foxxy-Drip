@@ -104,45 +104,37 @@ def edit_address(request, address_id):
 def wishlist(request):
     return render(request, 'wishlist.html') 
 
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+
+from .models import Product
+
 @login_required
 def upload_product(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        category = request.POST.get('category')
-        price = request.POST.get('price')
-        color = request.POST.get('color')
-        image = request.FILES.get('image')
-
         product = Product.objects.create(
-            name=name,
-            description=description,
-            category=category,
-            price=price,
-            color=color,
-            image=image
+            name=request.POST['name'],
+            description=request.POST['description'],
+            category=request.POST['category'],
+            price=request.POST['price'],
+            color=request.POST['color'],
+            image=request.FILES['image'],
+            qty_xxs=request.POST.get('qty_xxs', 0),
+            qty_xs=request.POST.get('qty_xs', 0),
+            qty_s=request.POST.get('qty_s', 0),
+            qty_m=request.POST.get('qty_m', 0),
+            qty_l=request.POST.get('qty_l', 0),
+            qty_xl=request.POST.get('qty_xl', 0),
+            qty_xxl=request.POST.get('qty_xxl', 0),
+            qty_xxxl=request.POST.get('qty_xxxl', 0),
         )
-
-        # Save sizes with quantity
-        sizes = request.POST.getlist('sizes[]')
-        quantities = request.POST.getlist('quantities[]')
-        for size, qty in zip(sizes, quantities):
-            if size and qty.isdigit():
-                ProductSize.objects.create(product=product, size=size, quantity=int(qty))
-
         messages.success(request, "Product uploaded successfully!")
         return redirect('view_products')
 
-    return render(request, 'upload_product.html')
+    return render(request, 'upload_product.html', {"Product": Product})
 
 
-# ---------- Product List ----------
-def product_list(request):
-    products = Product.objects.all().order_by('-date_added')
-    return render(request, 'product_list.html', {"products": products})
-
-
-# ---------- Edit Product ----------
 @login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
@@ -157,27 +149,42 @@ def edit_product(request, product_id):
         if request.FILES.get('image'):
             product.image = request.FILES['image']
 
+        # Update quantities
+        product.qty_xxs = int(request.POST.get('qty_xxs', 0))
+        product.qty_xs = int(request.POST.get('qty_xs', 0))
+        product.qty_s = int(request.POST.get('qty_s', 0))
+        product.qty_m = int(request.POST.get('qty_m', 0))
+        product.qty_l = int(request.POST.get('qty_l', 0))
+        product.qty_xl = int(request.POST.get('qty_xl', 0))
+        product.qty_xxl = int(request.POST.get('qty_xxl', 0))
+        product.qty_xxxl = int(request.POST.get('qty_xxxl', 0))
+
         product.save()
 
-        # Update sizes
-        product.sizes.all().delete()
-        sizes = request.POST.getlist('sizes[]')
-        quantities = request.POST.getlist('quantities[]')
-        for size, qty in zip(sizes, quantities):
-            if size and qty.isdigit():
-                ProductSize.objects.create(product=product, size=size, quantity=int(qty))
+        messages.success(request, "✅ Product updated successfully!")
+        return redirect('product_list')
 
-        messages.success(request, "Product updated successfully!")
-        return redirect('view_products')
+    return render(request, 'edit_product.html', {"product": product})
 
-    return render(request, 'edit_product.html', {"product": product, "sizes": product.sizes.all()})
 
+# ---------- Product List ----------
+def product_list(request):
+    products = Product.objects.all().order_by('-date_added')
+    return render(request, 'product_list.html', {"products": products})
 
 # ---------- View Single Product ----------
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Product
+
 def view_product(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
-    sizes = product.sizes.all()  # Related ProductSize
-    return render(request, 'view_product.html', {"product": product, "sizes": sizes})
+
+    # pass size stock dictionary to template
+    context = {
+        "product": product,
+        "sizes": product.size_stock().items()
+    }
+    return render(request, "view_product.html", context)
 
 def view_cart(request):
     cart_items = request.session.get("cart_items", [])
