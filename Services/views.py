@@ -179,8 +179,6 @@ def view_product(request, product_id):
     sizes = product.sizes.all()  # Related ProductSize
     return render(request, 'view_product.html', {"product": product, "sizes": sizes})
 
-
-
 def view_cart(request):
     cart_items = request.session.get("cart_items", [])
     return render(request, "view_cart.html", {"cart_items": cart_items})
