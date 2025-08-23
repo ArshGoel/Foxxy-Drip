@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from email.mime import message
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from Services.models import Product
@@ -10,6 +10,54 @@ from django.contrib.auth import authenticate, login as auth_login
 from random import randint
 from django.conf import settings
 from .models import Profile
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+
+# ------------------------ Clean Email ------------------------ #
+def send_contact_email(name, email, message):
+    subject = f"Foxxy Drip | New Contact Message from {name}"
+    
+    # Render HTML template
+    html_content = render_to_string("emails/contact_email.html", {
+        "name": name,
+        "email": email,
+        "message": message,
+    })
+    text_content = strip_tags(html_content)  # fallback plain text
+    
+    msg = EmailMultiAlternatives(
+        subject,
+        text_content,  # plain text
+        email,  # from
+        [settings.EMAIL_HOST_USER],  # to
+    )
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+def send_otp_email(name, email, otp):
+    subject = f"Foxxy Drip | One-Time Password (OTP) Verification"
+    
+    # Render HTML template
+    html_content = render_to_string("emails/otp_email.html", {
+        "name": name,
+        "email": email,
+        "otp": otp,
+    })
+    text_content = strip_tags(html_content)  # fallback plain text
+
+    msg = EmailMultiAlternatives(
+        subject,
+        text_content,  # plain text
+        email,  # from
+        [settings.EMAIL_HOST_USER],  # to
+    )
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+# ------------------------ Clean Email ------------------------ #
+
 
 def home(request):
     cart_count = 0
@@ -78,14 +126,8 @@ def contactus(request):
         message = request.POST.get('message', '').strip()
 
         if name and email and message:
-            send_mail(
-                subject=f"Contact Us:- New Message from {name}",
-                message=message,
-                from_email=email,
-                recipient_list=['foxxydrip.contact@gmail.com'], 
-                fail_silently=False,
-            )
-
+            send_contact_email(name, email, message)
+            
             messages.success(request, "Your message has been sent successfully!")
             return redirect('contactus')  # Make sure this matches your URL name
         else:
@@ -172,13 +214,7 @@ def verify(request,username):
             return render(request, "login_register.html", {"username": username})
 
         # Send the OTP to user's email
-        send_mail(
-            subject="Your OTP for FOXXY DRIP Login",
-            message=f"Hi {user.username},\n\nYour OTP for login is: {otp}",
-            from_email=settings.EMAIL_HOST_USER,  # Must match your settings.EMAIL_HOST_USER
-            recipient_list=[email],
-            fail_silently=False,
-        )
+        send_otp_email(user.username, email, otp)
 
         request.session['otp'] = otp
         request.session['temp_user'] = username  

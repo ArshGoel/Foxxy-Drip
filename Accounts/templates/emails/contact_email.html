@@ -1,0 +1,16 @@
+{% extends "emails/base_email.html" %}
+{% load static %}
+
+{% block body %}
+<div class="content">
+  <h2>📩 New Contact Message</h2>
+  <p><strong>Name:</strong> {{ name }}</p>
+  <p><strong>Email:</strong> {{ email }}</p>
+  
+  <div class="message-box">
+    {{ message }}
+  </div>
+
+  <a href="mailto:{{ email }}" class="button">Reply to {{ name }}</a>
+</div>
+{% endblock body %}
