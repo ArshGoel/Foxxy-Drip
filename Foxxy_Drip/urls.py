@@ -11,5 +11,6 @@ urlpatterns = [
     path('',TemplateView.as_view(template_name = "home.html"), name='home'),
     path("accounts/",include("allauth.urls")),
     path('aboutus',views.aboutus,name='aboutus'),
+    path('shop',views.shop,name='shop'),
     path('contactus',views.contactus,name='contactus')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

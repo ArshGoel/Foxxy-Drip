@@ -6,41 +6,9 @@
 
 
 {% block body %}
-
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/login_register.css' %}">
-<style>
-    .bg-image{
-        filter: blur(8px);
-    -webkit-filter: blur(8px);
-    }
-    .separator {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        margin: 20px 0;
-    }
-    .separator::before,
-    .separator::after {
-        content: '';
-        flex: 1;
-        border-bottom: 1px solid #ccc;
-    }
-    .separator:not(:empty)::before {
-        margin-right: 0.75em;
-    }
-    .separator:not(:empty)::after {
-        margin-left: 0.75em;
-    }
-    .separator span {
-        font-size: 14px;
-        color: #666;
-        font-weight: 500;
-    }
-</style>
 {% endblock extracss %}
-
-
 <div style="display: flex; justify-content: center; align-items: center; height: 85vh; " class="mt-5 mb-5">
     <div class="wrapper">
         <div class="title-text">
@@ -126,5 +94,4 @@
     </div>
 </div>
 <script src="{%static 'javascript/student.js'%}"></script>
-
 {%endblock body%}

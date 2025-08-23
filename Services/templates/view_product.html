@@ -5,167 +5,40 @@
 
 {% block body %}
 {% block extracss %}
-<style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f7f7f7;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 50px auto;
-      display: flex;
-      gap: 40px;
-      background: #fff;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    }
-
-    .product-image {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fafafa;
-      border-radius: 12px;
-      padding: 20px;
-    }
-
-    .product-image img {
-      max-width: 100%;
-      max-height: 500px;
-      object-fit: contain;
-      border-radius: 12px;
-    }
-
-    .product-details {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .product-name {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .product-category {
-      font-size: 16px;
-      color: #777;
-      margin-bottom: 20px;
-    }
-
-    .product-price {
-      font-size: 28px;
-      font-weight: bold;
-      color: #d63384;
-      margin-bottom: 20px;
-    }
-
-    .product-description {
-      font-size: 15px;
-      color: #444;
-      margin-bottom: 30px;
-    }
-
-    .size-label {
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .size-options {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-
-    .size-button {
-      border: 1px solid #ccc;
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      background: #fff;
-    }
-
-    .size-button:hover {
-      background-color: #d63384;
-      color: white;
-      border-color: #d63384;
-    }
-
-    .actions {
-      display: flex;
-      gap: 20px;
-    }
-
-    .btn {
-      padding: 12px 24px;
-      font-size: 15px;
-      font-weight: 600;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .btn.cart {
-      background-color: #d63384;
-      color: white;
-    }
-
-    .btn.cart:hover {
-      background-color: #b92b6c;
-    }
-
-    .btn.buy {
-      background-color: #222;
-      color: white;
-    }
-
-    .btn.buy:hover {
-      background-color: #000;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/view_product.css' %}">
 {% endblock extracss %}
 <div class="container mt-4">
-    <div class="row">
-        <div class="col-md-6">
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded shadow-sm">
-        </div>
-        <div class="col-md-6">
-            <h2>{{ product.name }}</h2>
-            <p class="text-muted">{{ product.category }}</p>
-            <p>{{ product.description }}</p>
-            <p class="fw-bold fs-4">₹{{ product.price }}</p>
+  <div class="row">
+      <div class="col-md-6">
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded shadow-sm">
+      </div>
+      <div class="col-md-6">
+          <h2>{{ product.name }}</h2>
+          <p class="text-muted">{{ product.category }}</p>
+          <p>{{ product.description }}</p>
+          <p class="fw-bold fs-4">₹{{ product.price }}</p>
 
-            <form action="{% url 'add_to_cart' product.product_id %}" method="POST">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="size" class="form-label">Select Size</label>
-                    <select name="size" id="size" class="form-select" required>
-                        {% for size_obj in product.productsize_set.all %}
-                            {% if size_obj.quantity > 0 %}
-                                <option value="{{ size_obj.size }}">{{ size_obj.size }} ({{ size_obj.quantity }} in stock)</option>
-                            {% else %}
-                                <option value="{{ size_obj.size }}" disabled>{{ size_obj.size }} - Out of Stock</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">Quantity</label>
-                    <input type="number" name="quantity" id="quantity" min="1" value="1" class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-success">Add to Cart</button>
-            </form>
-        </div>
-    </div>
+          <form action="{% url 'add_to_cart' product.product_id %}" method="POST">
+              {% csrf_token %}
+              <div class="mb-3">
+                  <label for="size" class="form-label">Select Size</label>
+                  <select name="size" id="size" class="form-select" required>
+                      {% for size_obj in product.productsize_set.all %}
+                          {% if size_obj.quantity > 0 %}
+                              <option value="{{ size_obj.size }}">{{ size_obj.size }} ({{ size_obj.quantity }} in stock)</option>
+                          {% else %}
+                              <option value="{{ size_obj.size }}" disabled>{{ size_obj.size }} - Out of Stock</option>
+                          {% endif %}
+                      {% endfor %}
+                  </select>
+              </div>
+              <div class="mb-3">
+                  <label for="quantity" class="form-label">Quantity</label>
+                  <input type="number" name="quantity" id="quantity" min="1" value="1" class="form-control" required>
+              </div>
+              <button type="submit" class="btn btn-success">Add to Cart</button>
+          </form>
+      </div>
+  </div>
 </div>
 {% endblock body %}

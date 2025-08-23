@@ -1,40 +1,41 @@
-<!DOCTYPE html>
-<html>
-<head><title>Edit Product</title></head>
-<body>
-    <h2>Edit Product - {{ product.product_id }}</h2>
+{% extends "base.html" %}
+{% load static %}
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+{% block title %}Edit Address - FOXXY DRIP{% endblock title %}
 
-        <input type="text" name="name" value="{{ product.name }}" required><br><br>
-        <textarea name="description" required>{{ product.description }}</textarea><br><br>
+{% block body %}
+<h2>Edit Product - {{ product.product_id }}</h2>
 
-        <select name="category" required>
-            {% for key, label in product.CATEGORY_CHOICES %}
-                <option value="{{ key }}" {% if key == product.category %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-        </select><br><br>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
 
-        <input type="number" step="0.01" name="price" value="{{ product.price }}" required><br><br>
+    <input type="text" name="name" value="{{ product.name }}" required><br><br>
+    <textarea name="description" required>{{ product.description }}</textarea><br><br>
 
-        <label>Sizes:</label><br>
-        {% for code, label in product.SIZE_CHOICES %}
-            <input type="checkbox" name="available_sizes" value="{{ code }}"
-                   {% if code in size_list %}checked{% endif %}> {{ label }}<br>
+    <select name="category" required>
+        {% for key, label in product.CATEGORY_CHOICES %}
+            <option value="{{ key }}" {% if key == product.category %}selected{% endif %}>{{ label }}</option>
         {% endfor %}
-        <br>
+    </select><br><br>
 
-        <input type="text" name="color" value="{{ product.color }}" required><br><br>
-        <input type="number" name="stock" value="{{ product.stock }}" required><br><br>
+    <input type="number" step="0.01" name="price" value="{{ product.price }}" required><br><br>
 
-        <label>Change Image:</label><br>
-        <input type="file" name="image" accept="image/*"><br><br>
-        <img src="{{ product.image.url }}" width="100"><br><br>
+    <label>Sizes:</label><br>
+    {% for code, label in product.SIZE_CHOICES %}
+        <input type="checkbox" name="available_sizes" value="{{ code }}"
+                {% if code in size_list %}checked{% endif %}> {{ label }}<br>
+    {% endfor %}
+    <br>
 
-        <button type="submit">Update</button>
-    </form>
+    <input type="text" name="color" value="{{ product.color }}" required><br><br>
+    <input type="number" name="stock" value="{{ product.stock }}" required><br><br>
 
-    <a href="{% url 'product_list' %}">Back to Products</a>
-</body>
-</html>
+    <label>Change Image:</label><br>
+    <input type="file" name="image" accept="image/*"><br><br>
+    <img src="{{ product.image.url }}" width="100"><br><br>
+
+    <button type="submit">Update</button>
+</form>
+
+<a href="{% url 'product_list' %}">Back to Products</a>
+{% endblock body %}
