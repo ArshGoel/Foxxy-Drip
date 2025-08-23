@@ -12,7 +12,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://foxxy-drip.onrender.com",
 ]
 
-
 SITE_ID = 1
 
 INSTALLED_APPS = [
@@ -164,8 +163,6 @@ MEDIAFILES_DIRS = [
     os.path.join(BASE_DIR,"media")
 ] 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
- 
 
 #EMAIL CONFIGURATION
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
