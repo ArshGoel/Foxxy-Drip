@@ -7,53 +7,66 @@
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/forgetpass.css' %}">
 {% endblock extracss %}
+
 <div style="display: flex; justify-content: center; align-items: center; height: 85vh;">
     <div class="wrapper">
         <div class="title-text">
             <h2>Forgot Password</h2>
-        </div>
-        {% if messages %}
-        {% for message in messages %}
-            <p style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};">{{ message }}</p>
-        {% endfor %}
-        {% endif %}
+        </div>    
 
         {% if stage == 'request_otp' %}
         <div class="form-container">
             <div class="form-inner">
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="send_otp">
 
-            <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="send_otp">
-            <div class="field">
-                <input type="text" name="identifier" value="" placeholder="Username" required="">
+                    <div class="field">
+                        <input type="text" name="identifier" placeholder="Username or Email" required>
+                    </div>
+                    
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="Send OTP">
+                    </div>
+                </form>
             </div>
-            
-            <div class="field btn">
-                <div class="btn-layer"></div>
-                <input type="submit" value="Login">
+        </div>
+
+        {% elif stage == 'enter_otp' %}
+        <div class="form-container">
+            <div class="form-inner">
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="reset_password">
+
+                    <p>OTP has been sent to: <strong>{{ email_masked }}</strong></p>
+
+                    <div class="field">
+                        <label>Enter OTP</label>
+                        <input type="text" name="otp" required>
+                    </div>
+
+                    <div class="field">
+                        <label>New Password</label>
+                        <input type="password" name="new_password" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Confirm Password</label>
+                        <input type="password" name="confirm_password" required>
+                    </div>
+
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="Reset Password">
+                    </div>
+                </form>
             </div>
-            </form>
-
-            {% elif stage == 'enter_otp' %}
-            <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="reset_password">
-            <p>OTP has been sent to: <strong>{{ email_masked }}</strong></p>
-
-            <label>Enter OTP:</label><br>
-            <input type="text" name="otp" required><br><br>
-
-            <label>New Password:</label><br>
-            <input type="password" name="new_password" required><br><br>
-
-            <label>Confirm Password:</label><br>
-            <input type="password" name="confirm_password" required><br><br>
-
-            <button type="submit">Reset Password</button>
-            </form>
-            {% endif %}
+        </div>
+        {% endif %}
     </div>
 </div>
-<script src="{%static 'javascript/student.js'%}"></script>
-{%endblock body%}
+
+<script src="{% static 'javascript/student.js' %}"></script>
+{% endblock body %}

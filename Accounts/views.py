@@ -36,6 +36,26 @@ def send_contact_email(name, email, message):
     msg.attach_alternative(html_content, "text/html")
     msg.send()
 
+def send_forgot_password_email(name, email, otp):
+    subject = f"Foxxy Drip | Forgot Password"
+    
+    # Render HTML template
+    html_content = render_to_string("emails/forget_email.html", {
+        "name": name,
+        "email": email,
+        "otp": otp,
+    })
+    text_content = strip_tags(html_content)  # fallback plain text
+
+    msg = EmailMultiAlternatives(
+        subject,
+        text_content,  # plain text
+        settings.EMAIL_HOST_USER,  # from
+        [email],  # to
+    )
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
 def send_otp_email(name, email, otp):
     subject = f"Foxxy Drip | One-Time Password (OTP) Verification"
     
@@ -290,13 +310,7 @@ def forgetpass(request):
                 request.session['reset_user'] = user.username
                 request.session['email_user'] = user.email
 
-                send_mail(
-                    subject="Password Reset OTP",
-                    message=f"Hi {user.username},\n\nYour OTP for password reset is: {otp}",
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[user.email],
-                    fail_silently=False,
-                )
+                send_forgot_password_email(user.username, user.email, otp)
 
                 stage = "enter_otp"
                 email_masked = mask_email(user.email)
