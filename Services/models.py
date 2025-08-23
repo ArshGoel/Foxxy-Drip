@@ -1,14 +1,16 @@
+import os
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
-import os
+from django.utils.timezone import now
 from django.utils.deconstruct import deconstructible
 
 @deconstructible
 class ProductImagePath:
     def __call__(self, instance, filename):
         ext = filename.split('.')[-1]
-        filename = f"{instance.product_id}.{ext}"
+        # Add timestamp to avoid overwrite & browser cache issues
+        filename = f"{instance.product_id}_{int(now().timestamp())}.{ext}"
         return os.path.join('products', filename)
 
 
@@ -39,10 +41,10 @@ class Product(models.Model):
                 next_id = int(last.product_id[1:]) + 1
             self.product_id = f"P{next_id:03}"
 
-        # delete old image if replacing
+        # delete old image if replacing or clearing
         try:
             this = Product.objects.get(product_id=self.product_id)
-            if this.image != self.image:
+            if this.image and (not self.image or this.image != self.image):
                 this.image.delete(save=False)
         except Product.DoesNotExist:
             pass
@@ -71,5 +73,5 @@ class ProductSize(models.Model):
 
 @receiver(post_delete, sender=Product)
 def delete_product_image(sender, instance, **kwargs):
-    if instance.image and os.path.isfile(instance.image.path):
-        os.remove(instance.image.path)
+    if instance.image:
+        instance.image.delete(save=False)

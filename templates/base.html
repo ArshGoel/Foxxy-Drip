@@ -62,9 +62,15 @@
                         <a class="nav-link {% block contactusactive %}{% endblock contactusactive %}" href="{% url "contactus" %}">Contact us</a>
                     </li>
                     {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://wa.me/919121759882">Customize</a>
-                    </li>
+                        {% if request.user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'upload_product' %}">Upload Product</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://wa.me/919121759882">Customize</a>
+                        </li>
+                        {% endif %}
                     {% endif %}
                 </ul>
 
@@ -83,17 +89,23 @@
                         
                         <!-- Wrap dropdown here -->
                         <div class="dropdown">
-                            <a class="nav-link {{ block.profileactive_class }} dropdown-toggle text-light" href="#"
-                            id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{ request.user.profile.profile_picture.url }}" alt="" class="rounded-circle" width="35" height="35">
+                            <button class="btn dropdown-toggle text-light d-flex align-items-center border-0 bg-transparent" 
+                                    id="userDropdown" 
+                                    data-bs-toggle="dropdown" 
+                                    aria-expanded="false">
+                                <img src="{{ request.user.profile.profile_picture.url }}" 
+                                    alt="Profile" 
+                                    class="rounded-circle me-2" 
+                                    width="35" 
+                                    height="35">
                                 {{ request.user.username }}
-                            </a>
+                            </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'manage_address' %}">Manage Addresses</a></li>
                                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                             </ul>
-                        </div>
+                            </div>
                     {% else %}
                         <a class="nav-link btn btn-sm btn-login {% block login_registeractive %}{% endblock login_registeractive %}" href="{% url "login" %}">Login/Register</a>
                     {% endif %}

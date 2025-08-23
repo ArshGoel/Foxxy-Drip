@@ -50,7 +50,7 @@ def manage_address(request):
 
     # GET - Show existing addresses
     addresses = profile.addresses.all()  # type: ignore
-    return render(request, "manage_address.html", {"addresses": addresses})
+    return render(request, "address/manage_address.html", {"addresses": addresses})
 
 @login_required
 def delete_address(request, address_id):
@@ -99,7 +99,7 @@ def edit_address(request, address_id):
         messages.success(request, "Address updated successfully!")
         return redirect("manage_address")
 
-    return render(request, "edit_address.html", {"address": address})
+    return render(request, "address/edit_address.html", {"address": address})
 
 def wishlist(request):
     return render(request, 'wishlist.html') 
