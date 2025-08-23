@@ -13,7 +13,7 @@ from .models import Profile
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
+from allauth.socialaccount.models import SocialAccount
 
 # ------------------------ Clean Email ------------------------ #
 def send_contact_email(name, email, message):
@@ -182,7 +182,7 @@ def login(request):
             password = request.POST.get("password")
             email = request.POST.get("email")
             try:
-                user = User.objects.create_user(username = username , password = password)
+                user = User.objects.create_user(username = username , password = password,email=email)
                 user.save()
                 auth.login(request ,user)
 
@@ -194,25 +194,6 @@ def login(request):
         
     return render(request, 'login_register.html')
 
-def register(request):
-    if request.method == "POST":
-
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        email = request.POST.get("email")
-        try:
-            user = User.objects.create_user(username = username , password = password)
-            user.save()
-            messages.success(request,"Registration Successful")
-            return redirect('login')
-
-
-        except:
-            messages.error(request,"Username Already exists")
-            return render(request,"login.html",{"username":username,"email":email}) 
-            
-    messages.success(request,"Success")
-    return render(request, 'register.html')
 
 def logout(request):
     auth.logout(request)
@@ -220,7 +201,28 @@ def logout(request):
     return redirect("login")
 
 def profile(request):
-    return render(request, 'profile.html')
+    try:
+        profile = request.user.profile
+    except:
+        return redirect("complete_profile")
+    addresses = profile.addresses.all()
+    wishlist_items = profile.wishlist_items.all()
+    cart_items = request.user.cart_items.all()
+    orders = profile.orders.all()
+
+    # Check if user has a social account
+    social_account = SocialAccount.objects.filter(user=request.user).first()
+    login_method = social_account.provider if social_account else "username_password"
+
+    return render(request, "profile.html", {
+        "profile": profile,
+        "addresses": addresses,
+        "wishlist_items": wishlist_items,
+        "cart_items": cart_items,
+        "orders": orders,
+        "login_method": login_method,
+        "social_account": social_account,
+    })
 
 def verify(request,username):
     user = User.objects.get(username=username)
@@ -364,6 +366,13 @@ def complete_profile(request):
         gender = request.POST.get("gender")
         date_of_birth = request.POST.get("date_of_birth") or None
         phone_number = request.POST.get("phone_number")
+        firstname = request.POST.get("first_name")
+        lastname = request.POST.get("last_name")
+        user = request.user
+        if firstname and lastname:
+            user.first_name = firstname
+            user.last_name = lastname
+            user.save()
 
         # Create new profile
         Profile.objects.create(
