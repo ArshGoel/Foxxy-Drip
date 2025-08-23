@@ -14,7 +14,7 @@ def profile_picture_upload_path(instance, filename):
     ext = filename.split('.')[-1]
     
     # Ensure uniqueness: username + timestamp
-    filename = f"{instance.user.username}-{now().strftime('%d_%m_%Y')}.{ext}"
+    filename = f"{instance.user.username}-{now().strftime('%d_%m_%Y_%H%M%S')}.{ext}"
     
     # Save inside "profile_images/"
     return os.path.join('profile_images', filename)
@@ -50,7 +50,7 @@ def auto_delete_old_profile_picture_on_change(sender, instance, **kwargs):
     except Profile.DoesNotExist:
         return
     new_pic = instance.profile_picture
-    if old_pic and old_pic != new_pic:
+    if old_pic and (not new_pic or old_pic != new_pic):
         old_pic.delete(save=False)
 
 
