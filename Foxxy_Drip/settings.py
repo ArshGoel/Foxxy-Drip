@@ -9,7 +9,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://foxxy-drip.onrender.com",
+    "https://foxxydrip.com",
 ]
 
 SITE_ID = 1
