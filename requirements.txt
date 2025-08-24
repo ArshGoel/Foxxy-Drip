@@ -13,3 +13,4 @@ cryptography>=43.0.3
 Pillow>=9.5.0
 cloudinary>=1.44.1
 django-cloudinary-storage>=0.3.0
+gunicorn>=21.0

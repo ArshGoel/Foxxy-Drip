@@ -1,40 +1,38 @@
-# Use a minimal Python 3.10 image
+# Slim Python base image
 FROM python:3.10
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Install system dependencies
+# System deps (only what you need)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
     libjpeg-dev \
-    libpng-dev \
-    libffi-dev \
-    libssl-dev \
-    libxml2-dev \
-    libxslt1-dev \
     zlib1g-dev \
     curl \
-    git \
-    gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Set work directory
+# Improve Python behavior in containers
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+# Workdir
 WORKDIR /app
 
-# Copy project files first (so manage.py is available)
+# Install deps first (better layer caching)
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+
+# Copy project files
 COPY . /app/
 
-# Install Python dependencies
-COPY requirements.txt /app/
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+# Add entrypoint
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
-# # Collect static files (AFTER copying the project)
-# RUN python manage.py collectstatic --noinput
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Optional: healthcheck if you add /healthz
+# HEALTHCHECK --interval=30s --timeout=5s --retries=5 CMD curl -fsS http://localhost:${PORT:-8000}/healthz || exit 1
 
-# Start the Django application using Gunicorn
-CMD ["gunicorn", "Foxxy_Drip.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Expose for local runs (PaaS may ignore)
+EXPOSE 8000
+
+# Start
+CMD ["/app/entrypoint.sh"]
