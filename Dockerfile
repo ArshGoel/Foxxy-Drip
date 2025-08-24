@@ -34,7 +34,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # # Collect static files (AFTER copying the project)
 # RUN python manage.py collectstatic --noinput
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 # Start the Django application using Gunicorn
-# CMD ["gunicorn", "News_Aggregator_Django.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "Foxxy_Drip.wsgi:application", "--bind", "0.0.0.0:8000"]
