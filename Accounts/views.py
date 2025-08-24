@@ -70,8 +70,8 @@ def send_otp_email(name, email, otp):
     msg = EmailMultiAlternatives(
         subject,
         text_content,  # plain text
-        email,  # from
-        [settings.EMAIL_HOST_USER],  # to
+        settings.EMAIL_HOST_USER,  # from
+        [email],  # to
     )
     msg.attach_alternative(html_content, "text/html")
     msg.send()
