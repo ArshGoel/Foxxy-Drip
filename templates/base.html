@@ -109,11 +109,11 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                                 {% if request.user.is_superuser %}
+                                <li><a class="dropdown-item" href="{% url 'admin_orders_list' %}">All Orders</a></li>
                                 {% else %}
                                 <li><a class="dropdown-item" href="{% url 'manage_address' %}">Manage Addresses</a></li>
                                 <li><a class="dropdown-item" href="{% url 'orders' %}">Orders</a></li>
                                 {% endif %}
-                                <li><a class="dropdown-item" href="{% url 'admin_orders_list' %}">All Orders</a></li>
                                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                             </ul>
                             </div>

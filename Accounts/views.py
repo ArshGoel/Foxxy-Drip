@@ -76,6 +76,7 @@ def send_otp_email(name, email, otp):
     msg.attach_alternative(html_content, "text/html")
     msg.send()
 
+
 # ------------------------ Clean Email ------------------------ #
 
 

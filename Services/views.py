@@ -14,6 +14,77 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.urls import reverse
+
+def send_order_emails(order, request=None):
+    """
+    Sends:
+      1) Order confirmation to the customer
+      2) New order notification to the admin(s)
+    """
+    # Useful URLs (optional)
+    order_detail_url = None
+    admin_order_url = None
+
+    if request:
+        try:
+            order_detail_url = request.build_absolute_uri(
+                reverse("order_detail", kwargs={"order_id": order.id})
+            )
+        except Exception:
+            pass
+        try:
+            admin_order_url = request.build_absolute_uri(
+                reverse("admin_order_detail", kwargs={"order_id": order.id})
+            )
+        except Exception:
+            pass
+
+    # ---------- Customer email ----------
+    user_email = order.profile.user.email
+    if user_email:
+        ctx_user = {
+            "order": order,
+            "order_detail_url": order_detail_url,
+        }
+        subject_user = f"Foxxy Drip — Order Confirmation #{order.id}"
+        html_body_user = render_to_string("emails/order_confirmation_user.html", ctx_user)
+        text_body_user = f"Your order #{order.id} has been received. Total: ₹{order.total_price}."
+
+        msg_user = EmailMultiAlternatives(
+            subject_user,
+            text_body_user,
+            settings.EMAIL_HOST_USER,
+            [user_email],
+        )
+        msg_user.attach_alternative(html_body_user, "text/html")
+        msg_user.send(fail_silently=False)
+
+    # ---------- Admin email ----------
+    admin_recipients = getattr(settings, "ORDER_ADMIN_EMAILS", []) or [settings.EMAIL_HOST_USER]
+    if admin_recipients:
+        ctx_admin = {
+            "order": order,
+            "admin_order_url": admin_order_url,
+        }
+        subject_admin = f"New Order Received — #{order.id}"
+        html_body_admin = render_to_string("emails/order_notification_admin.html", ctx_admin)
+        text_body_admin = f"New order #{order.id} placed by {order.profile.user.username}. Total: ₹{order.total_price}"
+
+        msg_admin = EmailMultiAlternatives(
+            subject_admin,
+            text_body_admin,
+            settings.EMAIL_HOST_USER,
+            ["foxxydrip13@gmail.com"],
+        )
+        msg_admin.attach_alternative(html_body_admin, "text/html")
+        msg_admin.send(fail_silently=False)
+
+
 @login_required
 def manage_address(request):
     # Check if profile exists for the logged-in user
@@ -303,6 +374,8 @@ def checkout(request):
             )
 
         cart_items.delete()
+        
+        send_order_emails(order, request=request)
         messages.success(request, f"Order #{order.id} placed successfully!") # type:ignore
         return redirect("order_detail", order_id=order.id) # type:ignore
 

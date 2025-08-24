@@ -1,0 +1,88 @@
+{% extends "emails/base_email.html" %}
+{% load static %}
+
+{% block body %}
+<div class="content" style="padding:25px; color:#333; font-family:Arial, sans-serif;">
+
+  <h2 style="margin:0 0 20px; font-size:20px; color:#232f3e; text-align:center; font-weight:600;">
+    🧾 New Order Received — #{{ order.id }}
+  </h2>
+
+  <p style="font-size:15px; line-height:1.6; margin-bottom:15px;">
+    A new order has been placed on <strong>Foxxy Drip</strong>.
+  </p>
+
+  <div style="border:1px solid #e5e7eb; border-radius:8px; padding:16px; margin-bottom:20px;">
+    <p style="margin:0; font-size:14px;">
+      <strong>Order ID:</strong> #{{ order.id }}<br>
+      <strong>Date:</strong> {{ order.created_at|date:"d M Y, H:i" }}<br>
+      <strong>User:</strong> {{ order.profile.user.username }} ({{ order.profile.user.email }})<br>
+      <strong>Status:</strong> {{ order.get_status_display }}<br>
+      <strong>Total:</strong> ₹{{ order.total_price }}
+    </p>
+  </div>
+
+  <h3 style="font-size:16px; margin:18px 0 8px; color:#232f3e;">Shipping Address</h3>
+  <p style="font-size:14px; line-height:1.6; margin:0 0 14px;">
+    {{ order.address.receiver_name }} — {{ order.address.phone }}<br>
+    {{ order.address.address_line1 }}{% if order.address.address_line2 %}, {{ order.address.address_line2 }}{% endif %}<br>
+    {{ order.address.city }}, {{ order.address.state }} — {{ order.address.postal_code }}<br>
+    {{ order.address.country }}
+  </p>
+
+  <h3 style="font-size:16px; margin:18px 0 8px; color:#232f3e;">Items</h3>
+  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+    <thead>
+      <tr>
+        <th align="left" style="font-size:13px; padding:8px; border-bottom:1px solid #eee;">Product</th>
+        <th align="center" style="font-size:13px; padding:8px; border-bottom:1px solid #eee;">Size</th>
+        <th align="center" style="font-size:13px; padding:8px; border-bottom:1px solid #eee;">Qty</th>
+        <th align="right" style="font-size:13px; padding:8px; border-bottom:1px solid #eee;">Price</th>
+        <th align="right" style="font-size:13px; padding:8px; border-bottom:1px solid #eee;">Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for it in order.items.all %}
+      <tr>
+        <td style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
+          {{ it.product.name }}
+        </td>
+        <td align="center" style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
+          {{ it.size|default:"—" }}
+        </td>
+        <td align="center" style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
+          {{ it.quantity }}
+        </td>
+        <td align="right" style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
+          ₹{{ it.price }}
+        </td>
+        <td align="right" style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
+          ₹{{ it.total_price }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4" align="right" style="padding:10px; font-size:14px;"><strong>Total</strong></td>
+        <td align="right" style="padding:10px; font-size:14px;"><strong>₹{{ order.total_price }}</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  {% if admin_order_url %}
+  <div style="text-align:center; margin-top:24px;">
+    <a href="{{ admin_order_url }}"
+       style="display:inline-block; background:#232f3e; color:#fff; text-decoration:none;
+              padding:10px 18px; border-radius:6px; font-size:14px;">
+      Open in Admin
+    </a>
+  </div>
+  {% endif %}
+
+  <p style="font-size:12px; color:#666; margin-top:22px;">
+    This is an automated notification for administrators.
+  </p>
+
+</div>
+{% endblock body %}
