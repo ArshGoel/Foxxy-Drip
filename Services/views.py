@@ -5,7 +5,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from Accounts.models import Profile,Address
+from Accounts.models import Profile,Address,CartItem, Order, OrderItem
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .models import Product
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 @login_required
 def manage_address(request):
@@ -176,19 +183,64 @@ def product_list(request):
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product
 
-def view_product(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
+@login_required
+def view_product(request, pk):
+    product = get_object_or_404(Product, product_id=pk)
 
-    # pass size stock dictionary to template
-    context = {
-        "product": product,
-        "sizes": product.size_stock().items()
-    }
-    return render(request, "view_product.html", context)
+    if request.method == "POST":
+        size = request.POST.get("size")
+        qty = int(request.POST.get("quantity", 1))
 
+        if not size:
+            messages.error(request, "Please select a size before adding to cart.")
+        else:
+            # Check if same product + same size already in cart
+            cart_item, created = CartItem.objects.get_or_create(
+                user=request.user,
+                product=product,
+                size=size,   # ✅ include size
+                defaults={"quantity": qty}
+            )
+            if not created:
+                cart_item.quantity += qty
+                cart_item.save()
+
+            messages.success(request, f"{product.name} (Size {size}) x{qty} added to your cart!")
+            return redirect("view_cart")
+
+    return render(request, "view_product.html", {"product": product})
+
+@login_required
 def view_cart(request):
-    cart_items = request.session.get("cart_items", [])
-    return render(request, "view_cart.html", {"cart_items": cart_items})
+    cart_items = CartItem.objects.filter(user=request.user)
+    total = sum(item.subtotal() for item in cart_items)
+    return render(request, "view_cart.html", {"cart_items": cart_items, "total": total})
+
+
+@login_required 
+def update_cart_quantity(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id, user=request.user)
+    if request.method == "POST":
+        try:
+            qty = int(request.POST.get("quantity", 1))
+            if qty > 0:
+                cart_item.quantity = qty
+                cart_item.save()
+                messages.success(request, "Cart updated successfully.")
+            else:
+                cart_item.delete()
+                messages.info(request, "Item removed from cart (quantity set to 0).")
+        except ValueError:
+            messages.error(request, "Invalid quantity.")
+    return redirect("view_cart")
+
+
+@login_required
+def remove_cart_item(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id, user=request.user)
+    cart_item.delete()
+    messages.success(request, "Item removed from cart.")
+    return redirect("view_cart")
 
 def view_products(request):
     products = Product.objects.all()
@@ -200,3 +252,75 @@ def add_to_cart(request, product_id):
     request.session["cart_items"] = cart_items
     messages.success(request, "Product added to cart!")
     return redirect("view_cart")
+
+@login_required
+def checkout(request):
+    profile = get_object_or_404(Profile, user=request.user)
+    cart_items = CartItem.objects.filter(user=request.user)
+    total = sum(item.subtotal() for item in cart_items)
+
+    if not cart_items:
+        messages.warning(request, "Your cart is empty. Add some products before checkout.")
+        return redirect("view_cart")
+
+    addresses = profile.addresses.all() # type:ignore
+
+    if request.method == "POST":
+        address_id = request.POST.get("address")
+
+        # Check if user has addresses
+        if not addresses.exists():
+            messages.error(request, "You need to add an address before placing an order.")
+            return redirect("checkout")
+
+        # Check if user selected one
+        if not address_id:
+            messages.error(request, "Please select a delivery address.")
+            return redirect("checkout")
+
+        # Safe lookup
+        address = Address.objects.filter(id=address_id, profile=profile).first()
+        if not address:
+            messages.error(request, "Invalid address selected.")
+            return redirect("checkout")
+
+        # ✅ Create Order
+        order = Order.objects.create(
+            profile=profile,
+            address=address,
+            total_price=total,
+            status="P"
+        )
+
+        # Create OrderItems
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                size=item.size,              
+                quantity=item.quantity,
+                price=item.product.price
+            )
+
+        cart_items.delete()
+        messages.success(request, f"Order #{order.id} placed successfully!") # type:ignore
+        return redirect("order_detail", order_id=order.id) # type:ignore
+
+    return render(request, "checkout.html", {
+        "cart_items": cart_items,
+        "total": total,
+        "addresses": addresses
+    })
+
+
+@login_required
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id, profile__user=request.user)
+    return render(request, "order_detail.html", {"order": order})
+
+
+@login_required
+def orders(request):
+    profile = Profile.objects.get(user=request.user)
+    orders = Order.objects.filter(profile=profile).order_by("-created_at")
+    return render(request, "orders.html", {"orders": orders})

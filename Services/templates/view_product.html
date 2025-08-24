@@ -2,7 +2,73 @@
 {% load static %}
 
 {% block title %}{{ product.name }} - FOXXY DRIP{% endblock title %}
+
+
 {% block body %}
+{% block extracss %}
+<style>
+/* Size buttons */
+.size-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  background: #fff;
+  user-select: none;
+  margin: 4px;
+}
+
+.size-btn input[type="radio"] {
+  display: none;
+}
+
+.size-btn:hover {
+  border-color: #d63384;
+  color: #d63384;
+}
+
+/* Disabled / sold-out sizes with X */
+.size-btn.disabled {
+  color: #aaa;
+  border-color: #ddd;
+  cursor: not-allowed;
+  background: #f6f6f6;
+}
+
+.size-btn.disabled::after,
+.size-btn.disabled::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  height: 2px;
+  background-color: #aaa;
+  transform-origin: center;
+}
+
+.size-btn.disabled::after {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.size-btn.disabled::before {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Selected size */
+.size-btn input[type="radio"]:checked + span {
+  border-color: #d63384;
+  color: #d63384;
+}
+</style>
+{% endblock extracss %}
 <div class="container mt-5">
   <div class="row">
     <!-- Product Image -->
@@ -25,18 +91,16 @@
         <a href="#" class="ms-2 text-decoration-underline">Size Chart</a>
       </p>
 
-      <div class="d-flex flex-wrap gap-2">
-        {% for size, qty in sizes %}
+      {% for size, qty in product.size_stock.items %}
+        <label class="size-btn {% if qty == 0 %}disabled{% endif %}">
           {% if qty > 0 %}
-            <label class="size-btn">
-              <input type="radio" name="size" value="{{ size }}"> {{ size }}
-              <small class="text-muted">({{ qty }} left)</small>
-            </label>
+            <input type="radio" name="size" value="{{ size }}">
+            <span>{{ size }}</span>
           {% else %}
-            <label class="size-btn disabled">{{ size }}</label>
+            <span>{{ size }}</span>
           {% endif %}
-        {% endfor %}
-      </div>
+        </label>
+      {% endfor %}
 
       <hr>
 
@@ -67,39 +131,6 @@
     </div>
   </div>
 </div>
-
-<!-- CSS -->
-<style>
-.size-btn {
-  display: inline-block;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  padding: 8px 14px;
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
-  transition: 0.2s;
-  background: #fff;
-}
-.size-btn input[type="radio"] {
-  display: none;
-}
-.size-btn:hover {
-  border-color: #000;
-}
-.size-btn.disabled {
-  color: #aaa;
-  border-color: #ddd;
-  text-decoration: line-through;
-  cursor: not-allowed;
-  background: #f9f9f9;
-}
-.size-btn small {
-  display: block;
-  font-size: 12px;
-  margin-top: 2px;
-}
-</style>
 
 <!-- JS -->
 <script>
