@@ -52,6 +52,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Center Nav Links -->
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
+                    {% if request.user.is_superuser %}
+                    {% else %}
                     <li class="nav-item">
                         <a class="nav-link {% block homeactive %}{% endblock homeactive %}" href="/">Home</a>
                     </li>
@@ -61,10 +63,11 @@
                     <li class="nav-item">
                         <a class="nav-link {% block contactusactive %}{% endblock contactusactive %}" href="{% url "contactus" %}">Contact us</a>
                     </li>
+                    {% endif %}
                     {% if request.user.is_authenticated %}
                         {% if request.user.is_superuser %}
                         <li class="nav-item">
-                            <a class="nav-link {% block uploadproductactive %}{% endblock uploadproductactive %}" href="{% url 'upload_product' %}">Upload Product</a>
+                            <a class="nav-link {% block uploadproductactive %}{% endblock uploadproductactive %}" href="{% url 'upload_product' %}">Manage Product</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
@@ -77,6 +80,8 @@
                 <!-- Right Buttons -->
                 <div class="d-flex flex-column flex-lg-row align-items-center gap-3 mt-3 mt-lg-0">
                     {% if request.user.is_authenticated %}
+                        {% if request.user.is_superuser %}
+                        {% else %}
                         <a href="/dash/wishlist" class="text-white fs-5 fav-hover">
                             <i class="bi bi-heart"></i>
                         </a>
@@ -86,6 +91,7 @@
                                 {{ request.user.cart_items.count }}
                             </span>
                         </a>
+                        {% endif %}
                         
                         <!-- Wrap dropdown here -->
                         <div class="dropdown">
@@ -102,8 +108,12 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                                {% if request.user.is_superuser %}
+                                {% else %}
                                 <li><a class="dropdown-item" href="{% url 'manage_address' %}">Manage Addresses</a></li>
                                 <li><a class="dropdown-item" href="{% url 'orders' %}">Orders</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{% url 'admin_orders_list' %}">All Orders</a></li>
                                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                             </ul>
                             </div>

@@ -324,3 +324,33 @@ def orders(request):
     profile = Profile.objects.get(user=request.user)
     orders = Order.objects.filter(profile=profile).order_by("-created_at")
     return render(request, "orders.html", {"orders": orders})
+
+from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+
+# List all orders
+@staff_member_required   # ✅ restrict to staff/admin
+def admin_orders_list(request):
+    orders = Order.objects.all().order_by("-created_at")
+    return render(request, "admin_orders_list.html", {"orders": orders})
+
+# View single order
+@staff_member_required
+def admin_order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, "admin_order_detail.html", {"order": order})
+
+# Update order status
+@staff_member_required
+def admin_update_order_status(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    if request.method == "POST":
+        new_status = request.POST.get("status")
+        if new_status in dict(Order.ORDER_STATUS).keys():
+            order.status = new_status
+            order.save()
+            messages.success(request, f"Order #{order.id} status updated to {order.get_status_display()}.") # type:ignore
+        else:
+            messages.error(request, "Invalid status.")
+        return redirect("admin_order_detail", order_id=order.id) # type:ignore 

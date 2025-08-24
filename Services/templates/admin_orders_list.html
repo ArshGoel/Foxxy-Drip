@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}All Orders - Admin{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>All Orders</h2>
+
+    {% if orders %}
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.profile.user.username }}</td>
+                <td>₹{{ order.total_price }}</td>
+                <td><span class="badge bg-info">{{ order.get_status_display }}</span></td>
+                <td>{{ order.created_at|date:"d M Y H:i" }}</td>
+                <td>
+                    <a href="{% url 'admin_order_detail' order.id %}" class="btn btn-sm btn-primary">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No orders yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
