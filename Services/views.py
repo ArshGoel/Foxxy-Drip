@@ -475,6 +475,13 @@ from django.conf import settings
 from datetime import datetime
 from django.contrib.admin.views.decorators import staff_member_required
 
+import os, zipfile, tempfile, csv
+from django.http import FileResponse
+from django.apps import apps
+from django.conf import settings
+from datetime import datetime
+from django.contrib.admin.views.decorators import staff_member_required
+
 @staff_member_required
 def download_backup(request):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -482,15 +489,24 @@ def download_backup(request):
     zip_filename = tmp.name
 
     with zipfile.ZipFile(zip_filename, 'w') as zipf:
-        # Dump DB
-        dump_file = os.path.join(settings.BASE_DIR, f"db_dump_{timestamp}.json")
-        with open(dump_file, "w", encoding="utf-8") as f:
-            management.call_command("dumpdata", "--natural-primary", "--natural-foreign", indent=2, stdout=f)
+        # ✅ Dump each model into CSV
+        for model in apps.get_models():
+            model_name = model.__name__.lower()
+            csv_file = os.path.join(settings.BASE_DIR, f"{model_name}_{timestamp}.csv")
 
-        zipf.write(dump_file, f"db_dump_{timestamp}.json")
-        os.remove(dump_file)
+            with open(csv_file, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                fields = [field.name for field in model._meta.fields]
+                writer.writerow(fields)  # header row
+                for obj in model.objects.all():
+                    row = [getattr(obj, field) for field in fields]
+                    writer.writerow(row)
 
-        # Add media
+            # Add to zip
+            zipf.write(csv_file, f"db/{model_name}.csv")
+            os.remove(csv_file)
+
+        # ✅ Add media folder
         if os.path.exists(settings.MEDIA_ROOT):
             for root, dirs, files in os.walk(settings.MEDIA_ROOT):
                 for file in files:

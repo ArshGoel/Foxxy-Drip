@@ -25,6 +25,6 @@ urlpatterns = [
     path("admin/orders/", views.admin_orders_list, name="admin_orders_list"), 
     path("admin/orders/<int:order_id>/", views.admin_order_detail, name="admin_order_detail"),
     path("admin/orders/<int:order_id>/update/", views.admin_update_order_status, name="admin_update_order_status"), #type:ignore
-    path("admin/backup/", views.download_backup, name="download_backup"),
+    path("download_backup/", views.download_backup, name="download_backup"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
   
