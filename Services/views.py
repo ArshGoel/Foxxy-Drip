@@ -324,6 +324,9 @@ def add_to_cart(request, product_id):
     messages.success(request, "Product added to cart!")
     return redirect("view_cart")
 
+
+from django.db import transaction
+
 @login_required
 def checkout(request):
     profile = get_object_or_404(Profile, user=request.user)
@@ -334,50 +337,86 @@ def checkout(request):
         messages.warning(request, "Your cart is empty. Add some products before checkout.")
         return redirect("view_cart")
 
-    addresses = profile.addresses.all() # type:ignore
+    addresses = profile.addresses.all() #type:ignore
 
     if request.method == "POST":
         address_id = request.POST.get("address")
 
-        # Check if user has addresses
         if not addresses.exists():
             messages.error(request, "You need to add an address before placing an order.")
             return redirect("checkout")
 
-        # Check if user selected one
         if not address_id:
             messages.error(request, "Please select a delivery address.")
             return redirect("checkout")
 
-        # Safe lookup
         address = Address.objects.filter(id=address_id, profile=profile).first()
         if not address:
             messages.error(request, "Invalid address selected.")
             return redirect("checkout")
 
-        # ✅ Create Order
-        order = Order.objects.create(
-            profile=profile,
-            address=address,
-            total_price=total,
-            status="P"
-        )
+        try:
+            with transaction.atomic():
+                # ✅ Create Order
+                order = Order.objects.create(
+                    profile=profile,
+                    address=address,
+                    total_price=total,
+                    status="P"
+                )
 
-        # Create OrderItems
-        for item in cart_items:
-            OrderItem.objects.create(
-                order=order,
-                product=item.product,
-                size=item.size,              
-                quantity=item.quantity,
-                price=item.product.price
-            )
+                # Create OrderItems & decrease stock per size
+                for item in cart_items:
+                    product = item.product
+                    size = item.size
+                    qty_needed = item.quantity
 
-        cart_items.delete()
-        
+                    # ✅ Map size → field name
+                    size_field_map = {
+                        "XXS": "qty_xxs",
+                        "XS": "qty_xs",
+                        "S": "qty_s",
+                        "M": "qty_m",
+                        "L": "qty_l",
+                        "XL": "qty_xl",
+                        "XXL": "qty_xxl",
+                        "XXXL": "qty_xxxl",
+                    }
+
+                    if size not in size_field_map:
+                        messages.error(request, f"Invalid size {size} for {product.name}")
+                        raise transaction.TransactionManagementError("Invalid size")
+
+                    stock_field = size_field_map[size]
+                    current_stock = getattr(product, stock_field)
+
+                    # ✅ Check stock availability
+                    if current_stock < qty_needed:
+                        messages.error(request, f"Not enough stock for {product.name} ({size}). Available: {current_stock}")
+                        raise transaction.TransactionManagementError("Insufficient stock")
+
+                    # ✅ Deduct stock
+                    setattr(product, stock_field, current_stock - qty_needed)
+                    product.save()
+
+                    # Create OrderItem
+                    OrderItem.objects.create(
+                        order=order,
+                        product=product,
+                        size=size,
+                        quantity=qty_needed,
+                        price=product.price
+                    )
+
+                # Clear cart after success
+                cart_items.delete()
+
+        except transaction.TransactionManagementError:
+            return redirect("view_cart")
+
         send_order_emails(order, request=request)
-        messages.success(request, f"Order #{order.id} placed successfully!") # type:ignore
-        return redirect("order_detail", order_id=order.id) # type:ignore
+        messages.success(request, f"Order #{order.id} placed successfully!")  # type:ignore
+        return redirect("order_detail", order_id=order.id)  # type:ignore
 
     return render(request, "checkout.html", {
         "cart_items": cart_items,
@@ -427,3 +466,36 @@ def admin_update_order_status(request, order_id):
         else:
             messages.error(request, "Invalid status.")
         return redirect("admin_order_detail", order_id=order.id) # type:ignore 
+
+
+import os, zipfile, tempfile
+from django.http import FileResponse
+from django.core import management
+from django.conf import settings
+from datetime import datetime
+from django.contrib.admin.views.decorators import staff_member_required
+
+@staff_member_required
+def download_backup(request):
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".zip")
+    zip_filename = tmp.name
+
+    with zipfile.ZipFile(zip_filename, 'w') as zipf:
+        # Dump DB
+        dump_file = os.path.join(settings.BASE_DIR, f"db_dump_{timestamp}.json")
+        with open(dump_file, "w", encoding="utf-8") as f:
+            management.call_command("dumpdata", "--natural-primary", "--natural-foreign", indent=2, stdout=f)
+
+        zipf.write(dump_file, f"db_dump_{timestamp}.json")
+        os.remove(dump_file)
+
+        # Add media
+        if os.path.exists(settings.MEDIA_ROOT):
+            for root, dirs, files in os.walk(settings.MEDIA_ROOT):
+                for file in files:
+                    filepath = os.path.join(root, file)
+                    arcname = os.path.relpath(filepath, settings.MEDIA_ROOT)
+                    zipf.write(filepath, os.path.join("media", arcname))
+
+    return FileResponse(open(zip_filename, "rb"), as_attachment=True, filename=f"backup_{timestamp}.zip")
