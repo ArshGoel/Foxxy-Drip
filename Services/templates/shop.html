@@ -68,8 +68,16 @@
 
         {% endfor %}
 
-        <p class="fw-bold fs-5 mb-2">₹{{ product.price }}</p>
-
+        <!-- Price Section -->
+        <p class="fw-bold fs-5 mb-2">
+          {% if product.discount_percent > 0 %}
+            <span class="text-muted text-decoration-line-through">₹{{ product.price }}</span>
+            <span class="text-danger ms-2">₹{{ product.discounted_price }}</span>
+            <span class="badge bg-danger ms-2">-{{ product.discount_percent }}%</span>
+          {% else %}
+            ₹{{ product.price }}
+          {% endif %}
+        </p>
         <div class="mt-auto d-flex justify-content-between">
           <a href="{% url 'view_product' product.product_id %}" class="btn btn-dark btn-sm flex-grow-1 me-2">View</a>
           <a href="#" class="btn btn-outline-dark btn-sm">❤</a>

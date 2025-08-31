@@ -35,34 +35,19 @@ class ProductImagePath:
 class Product(models.Model):
     product_id = models.CharField(max_length=20, unique=True, primary_key=True)
     name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)  # type:ignore
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.0) #type:ignore
+    discount_percent = models.PositiveIntegerField(default=0)  # discount in %
     date_added = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def discounted_price(self):
+        if self.discount_percent > 0:
+            return round(self.price * (100 - self.discount_percent) / 100, 2)
+        return self.price
 
     def __str__(self):
         return f"{self.name} ({self.product_id})"
 
-    def save(self, *args, **kwargs):
-        if not self.product_id:
-            existing_ids = Product.objects.values_list("product_id", flat=True)
-            existing_nums = sorted([int(pid[1:]) for pid in existing_ids if pid[1:].isdigit()])
-            next_id = 1
-            for num in existing_nums:
-                if num == next_id:
-                    next_id += 1
-                else:
-                    break
-            self.product_id = f"P{next_id:03}"
-        super().save(*args, **kwargs)
-    @property
-    def size_stock(self):
-        """
-        Returns a dictionary:
-        { 'Color Name': { 'S': qty, 'M': qty, ... }, ... }
-        """
-        data = {}
-        for color in self.colors.all(): # type: ignore
-            data[color.name] = {size_obj.size: size_obj.quantity for size_obj in color.sizes.all()}
-        return data
 
 
 # ----------------- ProductColor -----------------

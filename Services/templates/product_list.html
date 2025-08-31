@@ -65,9 +65,7 @@
         {% for color in product.colors.all %}
             {% for design in color.designs.all %}
                 {{ design.name }} 
-                {% for img in design.images.all %}
-                    <img src="{{ img.image.url }}" width="80">
-                {% endfor %}
+                
                 <br>
             {% endfor %}
         {% endfor %}

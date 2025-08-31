@@ -1,21 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product
 import json
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from Accounts.models import Profile,Address,CartItem, Order, OrderItem
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from .models import Product
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from .models import Product, ProductImage
-
-
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -378,6 +367,35 @@ def view_product(request, pk):
 
     return render(request, "view_product.html", {"product": product})
 
+@login_required #type:ignore
+def add_to_cart(request, product_id):
+    if request.method == "POST":
+        product = get_object_or_404(Product, product_id=product_id)
+        color_id = request.POST.get("color_id")
+        design_id = request.POST.get("design_id")
+        size = request.POST.get("size")
+        quantity = int(request.POST.get("quantity", 1))
+
+        if not size:
+            messages.error(request, "Please select a size before adding to cart.")
+            return redirect("view_product", product_id=product_id)
+
+        color = get_object_or_404(ProductColor, id=color_id)
+        design = ProductDesign.objects.filter(id=design_id).first() if design_id else None
+
+        # Check if item already exists in cart
+        cart_item, created = CartItem.objects.get_or_create(
+            user=request.user,
+            product=product,
+            size=size,
+            defaults={"quantity": quantity}
+        )
+        if not created:
+            cart_item.quantity += quantity
+            cart_item.save()
+
+        messages.success(request, "Product added to cart!")
+        return redirect("view_cart")
 @login_required
 def view_cart(request):
     cart_items = CartItem.objects.filter(user=request.user)
@@ -414,12 +432,12 @@ def view_products(request):
     products = Product.objects.all()
     return render(request, "product_list.html", {"products": products})
 
-def add_to_cart(request, product_id):
-    cart_items = request.session.get("cart_items", [])
-    cart_items.append(product_id)
-    request.session["cart_items"] = cart_items
-    messages.success(request, "Product added to cart!")
-    return redirect("view_cart")
+# def add_to_cart(request, product_id):
+#     cart_items = request.session.get("cart_items", [])
+#     cart_items.append(product_id)
+#     request.session["cart_items"] = cart_items
+#     messages.success(request, "Product added to cart!")
+#     return redirect("view_cart")
 
 
 from django.db import transaction

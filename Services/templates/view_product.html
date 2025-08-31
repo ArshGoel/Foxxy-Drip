@@ -3,11 +3,40 @@
 
 {% block title %}{{ product.name }} - FOXXY DRIP{% endblock title %}
 
-
 {% block body %}
 {% block extracss %}
 <style>
-/* Size buttons */
+.product-block {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 40px;
+  padding: 20px;
+}
+.product-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.main-product-image {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 15px auto;
+}
+.design-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.design-image:hover { border-color: #d63384; }
+.designs-container { display: flex; flex-wrap: wrap; }
 .size-btn {
   display: inline-flex;
   justify-content: center;
@@ -24,24 +53,9 @@
   user-select: none;
   margin: 4px;
 }
-
-.size-btn input[type="radio"] {
-  display: none;
-}
-
-.size-btn:hover {
-  border-color: #d63384;
-  color: #d63384;
-}
-
-/* Disabled / sold-out sizes with X */
-.size-btn.disabled {
-  color: #aaa;
-  border-color: #ddd;
-  cursor: not-allowed;
-  background: #f6f6f6;
-}
-
+.size-btn input[type="radio"] { display: none; }
+.size-btn:hover { border-color: #d63384; color: #d63384; }
+.size-btn.disabled { color: #aaa; border-color: #ddd; cursor: not-allowed; background: #f6f6f6; }
 .size-btn.disabled::after,
 .size-btn.disabled::before {
   content: "";
@@ -53,108 +67,180 @@
   background-color: #aaa;
   transform-origin: center;
 }
+.size-btn.disabled::after { transform: translate(-50%, -50%) rotate(45deg); }
+.size-btn.disabled::before { transform: translate(-50%, -50%) rotate(-45deg); }
+.size-btn input[type="radio"]:checked + span { border-color: #d63384; color: #d63384; }
 
-.size-btn.disabled::after {
-  transform: translate(-50%, -50%) rotate(45deg);
+.color-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  margin: 4px;
+  flex: 0 0 auto;
 }
+.color-btn.selected { border: 2px solid #d63384; }
+.color-btn-container { display: flex; overflow-x: auto; gap: 6px; padding-bottom: 4px; }
 
-.size-btn.disabled::before {
-  transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-/* Selected size */
-.size-btn input[type="radio"]:checked + span {
-  border-color: #d63384;
-  color: #d63384;
-}
+.color-design-group { display: none; }
 </style>
 {% endblock extracss %}
+
 <div class="container mt-5">
-  <div class="row">
-    <!-- Product Image -->
-    <div class="col-md-6">
-      <img src="{{ product.image.url|default:'https://via.placeholder.com/400x400?text=No+Image' }}" 
-           class="img-fluid rounded shadow-sm" alt="{{ product.name }}">
-    </div>
 
-    <!-- Product Details -->
-    <div class="col-md-6">
-      <h2>{{ product.name }}</h2>
-      <p class="text-muted">{{ product.get_category_display }}</p>
-      <h4 class="fw-bold">₹ {{ product.price }}</h4>
-      <small class="text-secondary">MRP incl. of all taxes</small>
-      
+  <!-- Main Preview Image -->
+  <img id="mainPreview" src="{% if product.images.first %}{{ product.images.first.image.url }}{% else %}https://via.placeholder.com/400x400?text=No+Image{% endif %}" class="main-product-image" alt="{{ product.name }}">
+
+  <div class="product-block">
+    <h2 class="product-title">{{ product.name }}</h2>
+
+    <!-- Price & Discount -->
+    <h4 class="fw-bold">
+      {% if product.discount_percent > 0 %}
+        <span style="text-decoration: line-through; color:#aaa;">₹{{ product.price }}</span>
+        &nbsp; ₹{{ product.discounted_price }}
+        <span class="text-danger">({{ product.discount_percent }}% OFF)</span>
+      {% else %}
+        ₹{{ product.price }}
+      {% endif %}
+    </h4>
+
+    <small class="text-secondary">MRP incl. of all taxes</small>
+    <hr>
+
+    <!-- Color Selection -->
+    {% if product.colors.all %}
+      <p class="fw-bold">Select Color</p>
+      <div class="color-btn-container">
+        {% for color in product.colors.all %}
+          <div class="color-btn" style="background-color: {{ color.name|lower }};" data-color-id="{{ color.id }}"></div>
+        {% endfor %}
+      </div>
       <hr>
+    {% endif %}
 
-      <!-- Sizes Section -->
-      <p class="fw-bold">Select Size 
-        <a href="#" class="ms-2 text-decoration-underline">Size Chart</a>
-      </p>
+    <!-- Loop over Colors & Designs -->
+    {% for color in product.colors.all %}
+      <div class="color-design-group" data-color-id="{{ color.id }}">
+        {% for design in color.designs.all %}
+          <div class="mb-3">
+            {% if design.images.first %}
+              <img src="{{ design.images.first.image.url }}" alt="{{ design.name }}" class="design-image" data-image="{{ design.images.first.image.url }}" data-design-id="{{ design.id }}">
+            {% else %}
+              <img src="https://via.placeholder.com/200x200?text=No+Image" class="design-image" data-image="" data-design-id="{{ design.id }}">
+            {% endif %}
+            <div>{{ design.name }}</div>
 
-      {% for size, qty in product.size_stock.items %}
-        <label class="size-btn {% if qty == 0 %}disabled{% endif %}">
-          {% if qty > 0 %}
-            <input type="radio" name="size" value="{{ size }}">
-            <span>{{ size }}</span>
-          {% else %}
-            <span>{{ size }}</span>
-          {% endif %}
-        </label>
-      {% endfor %}
+            <!-- Add to Cart Form -->
+            <form method="POST" action="{% url 'add_to_cart' product.product_id %}" class="cart-form">
+              {% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ product.product_id }}">
+              <input type="hidden" name="color_id" value="{{ color.id }}" class="color-input">
+              <input type="hidden" name="design_id" value="{{ design.id }}" class="design-input">
+              <input type="hidden" name="size" value="" class="size-input">
+              <input type="hidden" name="quantity" value="1" class="qty-input">
 
-      <hr>
+              <!-- Size Selection -->
+              <div class="mt-2">
+                {% for size_obj in color.sizes.all %}
+                  <label class="size-btn {% if size_obj.quantity == 0 %}disabled{% endif %}">
+                    {% if size_obj.quantity > 0 %}
+                      <input type="radio" name="size_{{ design.id }}" value="{{ size_obj.size }}">
+                      <span>{{ size_obj.size }}</span>
+                    {% else %}
+                      <span>{{ size_obj.size }}</span>
+                    {% endif %}
+                  </label>
+                {% endfor %}
+              </div>
 
-      <!-- Quantity Section -->
-      <div class="d-flex align-items-center mb-3">
-        <button type="button" class="btn btn-outline-dark btn-sm" id="decreaseQty">−</button>
-        <input type="text" id="quantity" name="quantity" value="1" 
-               class="form-control mx-2 text-center" style="width:60px;" readonly>
-        <button type="button" class="btn btn-outline-dark btn-sm" id="increaseQty">+</button>
+              <!-- Quantity -->
+              <div class="d-flex align-items-center mt-2">
+                <button type="button" class="btn btn-outline-dark btn-sm decreaseBtn">−</button>
+                <input type="text" name="quantity" value="1" class="form-control mx-2 text-center qty-input" style="width:60px;" readonly>
+                <button type="button" class="btn btn-outline-dark btn-sm increaseBtn">+</button>
+              </div>
+
+              <button type="submit" class="btn btn-dark mt-2">Add to Cart</button>
+            </form>
+            <hr>
+          </div>
+        {% empty %}
+          <div>No Designs Available</div>
+        {% endfor %}
       </div>
+    {% endfor %}
 
-      <!-- Add to Cart & Wishlist -->
-      <div class="mt-3">
-        <form method="POST" action="">
-          {% csrf_token %}
-          <input type="hidden" name="size" id="selectedSize">
-          <input type="hidden" name="quantity" id="selectedQty" value="1">
-          <button type="submit" class="btn btn-dark me-2">Add to Cart</button>
-        </form>
-        <a href="#" class="btn btn-outline-dark">Add to Wishlist</a>
-      </div>
-
-      <!-- Product Description -->
-      <div class="mt-4">
-        <h5>Description</h5>
-        <p>{{ product.description }}</p>
-      </div>
+    <!-- Description -->
+    <div class="mt-4">
+      <h5>Description</h5>
+      <p>{{ product.description }}</p>
     </div>
   </div>
 </div>
 
-<!-- JS -->
 <script>
-  // Capture selected size into hidden field before submit
-  document.querySelectorAll(".size-btn input").forEach(btn => {
-    btn.addEventListener("change", function() {
-      document.getElementById("selectedSize").value = this.value;
+  // Main preview update
+  document.querySelectorAll(".design-image").forEach(img => {
+    img.addEventListener("click", function() {
+      let main = document.getElementById("mainPreview");
+      if(this.dataset.image) main.src = this.dataset.image;
+      // Update hidden design_id
+      const form = this.closest(".cart-form");
+      if(form) form.querySelector(".design-input").value = this.dataset.designId;
     });
   });
 
-  // Quantity increment/decrement
-  const qtyInput = document.getElementById("quantity");
-  const hiddenQty = document.getElementById("selectedQty");
-  document.getElementById("increaseQty").addEventListener("click", () => {
-    let val = parseInt(qtyInput.value) || 1;
-    qtyInput.value = val + 1;
-    hiddenQty.value = qtyInput.value;
+  // Quantity buttons
+  document.querySelectorAll(".increaseBtn").forEach(btn => {
+    btn.addEventListener("click", function() {
+      let input = this.parentElement.querySelector(".qty-input");
+      input.value = parseInt(input.value) + 1;
+    });
   });
-  document.getElementById("decreaseQty").addEventListener("click", () => {
-    let val = parseInt(qtyInput.value) || 1;
-    if (val > 1) {
-      qtyInput.value = val - 1;
-      hiddenQty.value = qtyInput.value;
-    }
+  document.querySelectorAll(".decreaseBtn").forEach(btn => {
+    btn.addEventListener("click", function() {
+      let input = this.parentElement.querySelector(".qty-input");
+      let val = parseInt(input.value);
+      if(val > 1) input.value = val - 1;
+    });
   });
+
+  // Size selection
+  document.querySelectorAll(".size-btn input[type=radio]").forEach(radio => {
+    radio.addEventListener("change", function() {
+      const form = this.closest(".cart-form");
+      const hidden = form.querySelector(".size-input");
+      hidden.value = this.value;
+      form.querySelectorAll(".size-btn").forEach(label => label.classList.remove("selected"));
+      this.parentElement.classList.add("selected");
+    });
+  });
+
+  // Color selection
+  const colorBtns = document.querySelectorAll(".color-btn");
+  const colorGroups = document.querySelectorAll(".color-design-group");
+
+  colorBtns.forEach(btn => {
+    btn.addEventListener("click", function() {
+      const selectedColor = this.dataset.colorId;
+      colorBtns.forEach(c => c.classList.remove("selected"));
+      this.classList.add("selected");
+
+      colorGroups.forEach(group => {
+        if(group.dataset.colorId === selectedColor) {
+          group.style.display = "block";
+          const firstImg = group.querySelector(".design-image");
+          if(firstImg && firstImg.dataset.image) document.getElementById("mainPreview").src = firstImg.dataset.image;
+        } else {
+          group.style.display = "none";
+        }
+      });
+    });
+  });
+
+  // Initialize first color
+  if(colorBtns.length > 0) colorBtns[0].click();
 </script>
 {% endblock body %}

@@ -8,6 +8,7 @@ urlpatterns = [
     path("delete_address/<int:address_id>/",views.delete_address,name="delete_address"),
     path('addresses/make-default/<int:address_id>/', views.make_default_address, name='make_default_address'),
     path('addresses/edit/<int:address_id>/', views.edit_address, name='edit_address'),
+
     path('upload/', views.upload_product, name='upload_product'),
     path('', views.product_list, name='product_list'),
     path('edit/<str:product_id>/', views.edit_product, name='edit_product'),
@@ -18,10 +19,10 @@ urlpatterns = [
     path('view_cart', views.view_cart, name='view_cart'),
     path("cart/update/<int:item_id>/", views.update_cart_quantity, name="update_cart_quantity"),
     path("cart/remove/<int:item_id>/", views.remove_cart_item, name="remove_cart_item"),
-
     path("checkout/", views.checkout, name="checkout"), 
     path("order/<int:order_id>/", views.order_detail, name="order_detail"),
     path("orders/", views.orders, name="orders"),
+    path('add-to-cart/<str:product_id>/', views.add_to_cart, name='add_to_cart'),#type:ignore
 
     path("admin/orders/", views.admin_orders_list, name="admin_orders_list"), 
     path("admin/orders/<int:order_id>/", views.admin_order_detail, name="admin_order_detail"),
