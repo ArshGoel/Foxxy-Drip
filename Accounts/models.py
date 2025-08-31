@@ -85,10 +85,12 @@ class CartItem(models.Model):
 
     @property
     def price(self):
-        """Return discounted price if available, else original price"""
-        if hasattr(self.product, 'discounted_price') and self.product.discounted_price:
-            return self.product.discounted_price
-        return self.product.price
+        """Return price from design (discounted if available)"""
+        if self.design:  
+            if self.design.discounted_price:
+                return self.design.discounted_price
+            return self.design.price
+        return 0  # fallback if no design
 
     def subtotal(self):
         return self.price * self.quantity
@@ -104,7 +106,7 @@ class CartItem(models.Model):
         return "https://via.placeholder.com/100x100?text=No+Image"
 
     def __str__(self):
-        return f"{self.user.username} - {self.product.name} ({self.size}) x {self.quantity}"
+        return f"{self.user.username} - {self.product.name} ({self.design.name if self.design else 'No design'})"
 
 
 # ----------------- WISHLIST MODEL ----------------- #

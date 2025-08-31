@@ -37,72 +37,37 @@
 }
 .design-image:hover { border-color: #d63384; }
 .designs-container { display: flex; flex-wrap: wrap; }
-.size-btn {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 50px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  background: #fff;
-  user-select: none;
-  margin: 4px;
+.btn-view {
+  background-color: #000;
+  color: #fff;
+  border: none;
 }
-.size-btn input[type="radio"] { display: none; }
-.size-btn:hover { border-color: #d63384; color: #d63384; }
-.size-btn.disabled { color: #aaa; border-color: #ddd; cursor: not-allowed; background: #f6f6f6; }
-.size-btn.disabled::after,
-.size-btn.disabled::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 70%;
-  height: 2px;
-  background-color: #aaa;
-  transform-origin: center;
+.btn-view:hover {
+  background-color: #d63384;
+  color: #fff;
 }
-.size-btn.disabled::after { transform: translate(-50%, -50%) rotate(45deg); }
-.size-btn.disabled::before { transform: translate(-50%, -50%) rotate(-45deg); }
-.size-btn input[type="radio"]:checked + span { border-color: #d63384; color: #d63384; }
-
-.color-btn {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  margin: 4px;
-  flex: 0 0 auto;
-}
-.color-btn.selected { border: 2px solid #d63384; }
-.color-btn-container { display: flex; overflow-x: auto; gap: 6px; padding-bottom: 4px; }
-
-.color-design-group { display: none; }
 </style>
 {% endblock extracss %}
 
 <div class="container mt-5">
 
   <!-- Main Preview Image -->
-  <img id="mainPreview" src="{% if product.images.first %}{{ product.images.first.image.url }}{% else %}https://via.placeholder.com/400x400?text=No+Image{% endif %}" class="main-product-image" alt="{{ product.name }}">
+  <img id="mainPreview" 
+       src="{% if product.images.first %}{{ product.images.first.image.url }}{% else %}https://via.placeholder.com/400x400?text=No+Image{% endif %}" 
+       class="main-product-image" alt="{{ product.name }}">
 
   <div class="product-block">
+    
     <h2 class="product-title">{{ product.name }}</h2>
-
+  
     <!-- Price & Discount -->
     <h4 class="fw-bold">
-      {% if product.discount_percent > 0 %}
-        <span style="text-decoration: line-through; color:#aaa;">₹{{ product.price }}</span>
-        &nbsp; ₹{{ product.discounted_price }}
-        <span class="text-danger">({{ product.discount_percent }}% OFF)</span>
+      {% if design.type.discount_percent > 0 %}
+        <span style="text-decoration: line-through; color:#aaa;">₹{{ design.type.price }}</span>
+        &nbsp; ₹{{ design.type.discounted_price }}
+        <span class="text-danger">({{ design.type.discount_percent }}% OFF)</span>
       {% else %}
-        ₹{{ product.price }}
+        ₹{{ design.type.price }}
       {% endif %}
     </h4>
 
@@ -111,7 +76,7 @@
 
     <!-- Color Selection -->
     {% if product.colors.all %}
-      <p class="fw-bold">Select Color</p>
+      <p class="fw-bold">Available Colors</p>
       <div class="color-btn-container">
         {% for color in product.colors.all %}
           <div class="color-btn" style="background-color: {{ color.name|lower }};" data-color-id="{{ color.id }}"></div>
@@ -122,55 +87,48 @@
 
     <!-- Loop over Colors & Designs -->
     {% for color in product.colors.all %}
-      <div class="color-design-group" data-color-id="{{ color.id }}">
-        {% for design in color.designs.all %}
-          <div class="mb-3">
-            {% if design.images.first %}
-              <img src="{{ design.images.first.image.url }}" alt="{{ design.name }}" class="design-image" data-image="{{ design.images.first.image.url }}" data-design-id="{{ design.id }}">
+  <div class="color-design-group" data-color-id="{{ color.id }}">
+    {% for design in color.designs.all %}
+      <div class="mb-3">
+        {% if design.images.first %}
+          <img src="{{ design.images.first.image.url }}" 
+               alt="{{ design.name }}" 
+               class="design-image" 
+               data-image="{{ design.images.first.image.url }}" 
+               data-design-id="{{ design.id }}">
+        {% else %}
+          <img src="https://via.placeholder.com/200x200?text=No+Image" 
+               class="design-image" 
+               data-image="" 
+               data-design-id="{{ design.id }}">
+        {% endif %}
+
+        <div class="mt-2 fw-bold">{{ design.name }}</div>
+
+        <!-- ✅ Price & Discount now bound to each design -->
+        {% if design.type %}
+          <div>
+            {% if design.type.discount_percent > 0 %}
+              <span style="text-decoration: line-through; color:#aaa;">₹{{ design.type.price }}</span>
+              &nbsp; ₹{{ design.type.discounted_price }}
+              <span class="text-danger">({{ design.type.discount_percent }}% OFF)</span>
             {% else %}
-              <img src="https://via.placeholder.com/200x200?text=No+Image" class="design-image" data-image="" data-design-id="{{ design.id }}">
+              ₹{{ design.type.price }}
             {% endif %}
-            <div>{{ design.name }}</div>
-
-            <!-- Add to Cart Form -->
-            <form method="POST" action="{% url 'add_to_cart' product.product_id %}" class="cart-form">
-              {% csrf_token %}
-              <input type="hidden" name="product_id" value="{{ product.product_id }}">
-              <input type="hidden" name="color_id" value="{{ color.id }}" class="color-input">
-              <input type="hidden" name="design_id" value="{{ design.id }}" class="design-input">
-              <input type="hidden" name="size" value="" class="size-input">
-              <input type="hidden" name="quantity" value="1" class="qty-input">
-
-              <!-- Size Selection -->
-              <div class="mt-2">
-                {% for size_obj in color.sizes.all %}
-                  <label class="size-btn {% if size_obj.quantity == 0 %}disabled{% endif %}">
-                    {% if size_obj.quantity > 0 %}
-                      <input type="radio" name="size_{{ design.id }}" value="{{ size_obj.size }}">
-                      <span>{{ size_obj.size }}</span>
-                    {% else %}
-                      <span>{{ size_obj.size }}</span>
-                    {% endif %}
-                  </label>
-                {% endfor %}
-              </div>
-
-              <!-- Quantity -->
-              <div class="d-flex align-items-center mt-2">
-                <button type="button" class="btn btn-outline-dark btn-sm decreaseBtn">−</button>
-                <input type="text" name="quantity" value="1" class="form-control mx-2 text-center qty-input" style="width:60px;" readonly>
-                <button type="button" class="btn btn-outline-dark btn-sm increaseBtn">+</button>
-              </div>
-
-              <button type="submit" class="btn btn-dark mt-2">Add to Cart</button>
-            </form>
-            <hr>
           </div>
-        {% empty %}
-          <div>No Designs Available</div>
-        {% endfor %}
+        {% else %}
+          <div class="text-muted">Price not available</div>
+        {% endif %}
       </div>
+    {% empty %}
+      <div>No Designs Available</div>
     {% endfor %}
+  </div>
+{% endfor %}
+
+
+    <!-- View Button (always points to selected design) -->
+    <a id="viewBtn" href="#" class="btn btn-view mt-3 w-100">View</a>
 
     <!-- Description -->
     <div class="mt-4">
@@ -181,44 +139,26 @@
 </div>
 
 <script>
-  // Main preview update
+  const viewBtn = document.getElementById("viewBtn");
+  const mainPreview = document.getElementById("mainPreview");
+
+  // Handle design selection
   document.querySelectorAll(".design-image").forEach(img => {
     img.addEventListener("click", function() {
-      let main = document.getElementById("mainPreview");
-      if(this.dataset.image) main.src = this.dataset.image;
-      // Update hidden design_id
-      const form = this.closest(".cart-form");
-      if(form) form.querySelector(".design-input").value = this.dataset.designId;
+      // Update main preview
+      if (this.dataset.image) {
+        mainPreview.src = this.dataset.image;
+      }
+
+      // Update View button link
+      const designId = this.dataset.designId;
+      if (designId) {
+        viewBtn.href = `/design/${designId}/`;   // 🔥 adjust URL to your design detail route
+      }
     });
   });
 
-  // Quantity buttons
-  document.querySelectorAll(".increaseBtn").forEach(btn => {
-    btn.addEventListener("click", function() {
-      let input = this.parentElement.querySelector(".qty-input");
-      input.value = parseInt(input.value) + 1;
-    });
-  });
-  document.querySelectorAll(".decreaseBtn").forEach(btn => {
-    btn.addEventListener("click", function() {
-      let input = this.parentElement.querySelector(".qty-input");
-      let val = parseInt(input.value);
-      if(val > 1) input.value = val - 1;
-    });
-  });
-
-  // Size selection
-  document.querySelectorAll(".size-btn input[type=radio]").forEach(radio => {
-    radio.addEventListener("change", function() {
-      const form = this.closest(".cart-form");
-      const hidden = form.querySelector(".size-input");
-      hidden.value = this.value;
-      form.querySelectorAll(".size-btn").forEach(label => label.classList.remove("selected"));
-      this.parentElement.classList.add("selected");
-    });
-  });
-
-  // Color selection
+  // Handle color selection
   const colorBtns = document.querySelectorAll(".color-btn");
   const colorGroups = document.querySelectorAll(".color-design-group");
 
@@ -229,18 +169,24 @@
       this.classList.add("selected");
 
       colorGroups.forEach(group => {
-        if(group.dataset.colorId === selectedColor) {
-          group.style.display = "block";
+        group.style.display = group.dataset.colorId === selectedColor ? "block" : "none";
+        if (group.dataset.colorId === selectedColor) {
           const firstImg = group.querySelector(".design-image");
-          if(firstImg && firstImg.dataset.image) document.getElementById("mainPreview").src = firstImg.dataset.image;
-        } else {
-          group.style.display = "none";
+          if (firstImg) {
+            firstImg.click(); // auto-select first design in that color
+          }
         }
       });
     });
   });
 
-  // Initialize first color
-  if(colorBtns.length > 0) colorBtns[0].click();
+  // Initialize first color & design
+  if (colorBtns.length > 0) {
+    colorBtns[0].click();
+  } else {
+    // Fallback: if no colors, auto-select first design
+    const firstDesign = document.querySelector(".design-image");
+    if (firstDesign) firstDesign.click();
+  }
 </script>
 {% endblock body %}

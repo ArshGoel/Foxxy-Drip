@@ -244,7 +244,7 @@ def edit_product(request, product_id):
     if request.method == "POST":
         # Update product
         product.name = request.POST.get("name")
-        product.price = request.POST.get("price", 0.0)
+        product.price = request.POST.get("price", 0.0) # type: ignore
         product.save()
 
         # ----------------- Handle Colors -----------------
@@ -367,37 +367,36 @@ def view_product(request, pk):
 
     return render(request, "view_product.html", {"product": product})
 
-@login_required #type:ignore
-def add_to_cart(request, product_id):
-    if request.method == "POST":
-        product = get_object_or_404(Product, product_id=product_id)
-        color_id = request.POST.get("color_id")
-        design_id = request.POST.get("design_id")
-        size = request.POST.get("size")
-        quantity = int(request.POST.get("quantity", 1))
 
-        if not size:
-            messages.error(request, "Please select a size before adding to cart.")
-            return redirect("view_product", product_id=product_id)
 
-        color = get_object_or_404(ProductColor, id=color_id)
-        design = ProductDesign.objects.filter(id=design_id).first() if design_id else None
+@login_required
+def add_to_cart(request, design_id):
+    # Get the selected design
+    design = get_object_or_404(ProductDesign, id=design_id)
 
-        # Check if item already exists in cart
-        cart_item, created = CartItem.objects.get_or_create(
-            user=request.user,
-            product=product,
-            color=color,
-            design=design,
-            size=size,
-            defaults={"quantity": quantity}
-        )
-        if not created:
-            cart_item.quantity += quantity
-            cart_item.save()
+    # Design already links to product, color, and type
+    product = design.color.product
+    color = design.color
+    size = request.POST.get("size")   # must be chosen
+    quantity = int(request.POST.get("quantity", 1))
 
-        messages.success(request, "Product added to cart!")
-        return redirect("view_cart")
+    # Create / update CartItem
+    cart_item, created = CartItem.objects.get_or_create(
+        user=request.user,
+        product=product,
+        color=color,
+        design=design,
+        size=size or "",
+        defaults={"quantity": quantity}
+    )
+
+    if not created:
+        cart_item.quantity += quantity
+        cart_item.save()
+
+    return redirect("view_cart")
+
+
 @login_required
 def view_cart(request):
     cart_items = CartItem.objects.filter(user=request.user)
@@ -522,7 +521,7 @@ def checkout(request):
                         product=product,
                         size=size,
                         quantity=qty_needed,
-                        price=product.price
+                        price=product.price # type: ignore
                     )
 
                 # Clear cart after success
@@ -630,3 +629,7 @@ def download_backup(request):
                     zipf.write(filepath, os.path.join("media", arcname))
 
     return FileResponse(open(zip_filename, "rb"), as_attachment=True, filename=f"backup_{timestamp}.zip")
+
+def design_detail(request, design_id):
+    design = get_object_or_404(ProductDesign, id=design_id)
+    return render(request, "design_detail.html", {"design": design})

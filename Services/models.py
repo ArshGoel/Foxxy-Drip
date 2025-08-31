@@ -41,6 +41,8 @@ class Product(models.Model):
         return f"{self.name} ({self.product_id})"
 
 # ----------------- ProductType -----------------
+from decimal import Decimal
+
 class ProductType(models.Model):
     TYPE_CHOICES = [
         ("plain", "Plain"),
@@ -49,13 +51,15 @@ class ProductType(models.Model):
     ]
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="types")
     type_name = models.CharField(max_length=20, choices=TYPE_CHOICES)
-    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)  # type: ignore
     discount_percent = models.PositiveIntegerField(default=0)
 
     @property
     def discounted_price(self):
+        """Always return correct final price"""
         if self.discount_percent > 0:
-            return round(self.price * (100 - self.discount_percent) / 100, 2)
+            discount = (Decimal(100) - Decimal(self.discount_percent)) / Decimal(100)
+            return (self.price * discount).quantize(Decimal("0.01"))
         return self.price
 
     def __str__(self):
@@ -92,22 +96,21 @@ class ProductDesign(models.Model):
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="designs")
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    type = models.ForeignKey(
-        ProductType,
-        on_delete=models.CASCADE,
-        related_name="designs",
-    )
+    type = models.ForeignKey(ProductType, on_delete=models.SET_NULL, related_name="designs", null=True, blank=True)
 
+    @property
     def price(self):
-        return self.type.price if self.type else 0
+        return self.type.price if self.type else Decimal("0.00")
 
+    @property
     def discounted_price(self):
-        return self.type.discounted_price if self.type else 0
+        return self.type.discounted_price if self.type else Decimal("0.00")
 
     def __str__(self):
         if self.type:
             return f"{self.color.name} - {self.name} ({self.type.type_name})"
         return f"{self.color.name} - {self.name}"
+
 
 
 # ----------------- ProductImage -----------------

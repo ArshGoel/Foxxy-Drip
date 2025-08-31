@@ -22,11 +22,15 @@ urlpatterns = [
     path("checkout/", views.checkout, name="checkout"), 
     path("order/<int:order_id>/", views.order_detail, name="order_detail"),
     path("orders/", views.orders, name="orders"),
-    path('add-to-cart/<str:product_id>/', views.add_to_cart, name='add_to_cart'),#type:ignore
+    path("add-to-cart/<int:design_id>/", views.add_to_cart, name="add_to_cart"),#type:ignore
 
     path("admin/orders/", views.admin_orders_list, name="admin_orders_list"), 
     path("admin/orders/<int:order_id>/", views.admin_order_detail, name="admin_order_detail"),
     path("admin/orders/<int:order_id>/update/", views.admin_update_order_status, name="admin_update_order_status"), #type:ignore
     path("download_backup/", views.download_backup, name="download_backup"),
+
+    # path("product/<str:code>/", views.product_detail, name="product_detail"),
+    
+    path("design/<int:design_id>/", views.design_detail, name="design_detail"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
   

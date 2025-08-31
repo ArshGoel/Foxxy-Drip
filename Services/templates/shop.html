@@ -21,22 +21,14 @@
     text-decoration: line-through;
     color: #888;
 }
-.size-btn {
-    display: inline-block;
-    border: 1px solid #ccc;
-    padding: 4px 10px;
-    margin: 2px;
-    border-radius: 4px;
-    cursor: pointer;
+.btn-view {
+    background-color: #000;
+    color: #fff;
+    border: none;
 }
-.size-btn.selected {
-    border-color: #d63384;
+.btn-view:hover {
     background-color: #d63384;
     color: #fff;
-}
-.qty-input {
-    width: 60px;
-    text-align: center;
 }
 </style>
 {% endblock extracss %}
@@ -63,42 +55,24 @@
 
             <!-- Price Section -->
             <p class="price mb-2">
-              {% if item.product.discount_percent > 0 %}
-                <span class="text-strike">₹{{ item.product.price }}</span>
-                <span class="text-danger ms-2">₹{{ item.product.discounted_price }}</span>
-                <span class="badge bg-danger ms-2">-{{ item.product.discount_percent }}%</span>
+              {% if item.design and item.design.type %}
+                {% if item.design.type.discount_percent > 0 %}
+                  <span class="text-strike">₹{{ item.design.type.price }}</span>
+                  <span class="text-danger ms-2">₹{{ item.design.type.discounted_price }}</span>
+                  <span class="badge bg-danger ms-2">-{{ item.design.type.discount_percent }}%</span>
+                {% else %}
+                  ₹{{ item.design.type.price }}
+                {% endif %}
               {% else %}
                 ₹{{ item.product.price }}
               {% endif %}
             </p>
 
-            <!-- Add to Cart Form -->
-            <form method="POST" action="{% url 'add_to_cart' item.product.product_id %}" class="cart-form mt-auto">
-              {% csrf_token %}
-              <input type="hidden" name="product_id" value="{{ item.product.product_id }}">
-              <input type="hidden" name="color_id" value="{{ item.color.id }}">
-              <input type="hidden" name="design_id" value="{% if item.design %}{{ item.design.id }}{% else %}0{% endif %}">
-              <input type="hidden" name="size" value="" class="size-input">
-              <input type="hidden" name="quantity" value="1" class="qty-input-hidden">
-
-              <!-- Sizes -->
-              <div class="mb-2">
-                {% for size_obj in item.color.sizes.all %}
-                  <span class="size-btn {% if size_obj.quantity == 0 %}disabled{% endif %}" data-size="{{ size_obj.size }}">
-                    {{ size_obj.size }}
-                  </span>
-                {% endfor %}
-              </div>
-
-              <!-- Quantity Selector -->
-              <div class="d-flex align-items-center mb-2">
-                <button type="button" class="btn btn-outline-dark btn-sm decreaseBtn">−</button>
-                <input type="text" value="1" class="qty-input form-control mx-2" readonly>
-                <button type="button" class="btn btn-outline-dark btn-sm increaseBtn">+</button>
-              </div>
-
-              <button type="submit" class="btn btn-dark btn-sm w-100">Add to Cart</button>
-            </form>
+            {% if item.design %}
+              <a href="{% url 'design_detail' item.design.id %}" class="btn btn-view mt-auto w-100">View</a>
+            {% else %}
+              <a href="{% url 'view_product' item.product.product_id %}" class="btn btn-view mt-auto w-100">View</a>
+            {% endif %}
 
           </div>
         </div>
@@ -106,37 +80,4 @@
     {% endfor %}
   </div>
 </div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  // Size selection
-  document.querySelectorAll(".size-btn").forEach(btn => {
-    btn.addEventListener("click", function() {
-      if(this.classList.contains("disabled")) return;
-      let form = this.closest(".cart-form");
-      form.querySelector(".size-input").value = this.dataset.size;
-      form.querySelectorAll(".size-btn").forEach(b => b.classList.remove("selected"));
-      this.classList.add("selected");
-    });
-  });
-
-  // Quantity buttons
-  document.querySelectorAll(".increaseBtn").forEach(btn => {
-    btn.addEventListener("click", function() {
-      let input = this.parentElement.querySelector(".qty-input");
-      input.value = parseInt(input.value)+1;
-      this.closest("form").querySelector(".qty-input-hidden").value = input.value;
-    });
-  });
-  document.querySelectorAll(".decreaseBtn").forEach(btn => {
-    btn.addEventListener("click", function() {
-      let input = this.parentElement.querySelector(".qty-input");
-      let val = parseInt(input.value);
-      if(val>1) input.value = val-1;
-      this.closest("form").querySelector(".qty-input-hidden").value = input.value;
-    });
-  });
-});
-</script>
-
 {% endblock body %}

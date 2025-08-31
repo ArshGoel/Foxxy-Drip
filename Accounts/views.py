@@ -118,7 +118,7 @@ def shop(request):
     # Flatten each product per design for easier template rendering
     products_with_designs = []
     for product in products:
-        for color in product.colors.all():
+        for color in product.colors.all():#type:ignore
             # If no designs, still show product+color
             if color.designs.exists():
                 for design in color.designs.all():

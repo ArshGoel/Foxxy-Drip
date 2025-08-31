@@ -2,68 +2,78 @@ import psycopg2
 from psycopg2 import sql
 
 # ---------------- CONFIG ----------------
-DB_NAME = "FoxxyDrip"
-DB_USER = "avnadmin"
-DB_PASSWORD = "AVNS_ZBxpNZDSgH38UEicwgp"
-DB_HOST = "url-shortner-arshgoel16-ba75.e.aivencloud.com"
-DB_PORT = "12743"
-TABLE_NAME = "Services_productdesign"
-COLUMN_NAME = "type"
+SOURCE_DB = {
+    "dbname": "FoxxyDrip",
+    "user": "avnadmin",
+    "password": "AVNS_ZBxpNZDSgH38UEicwgp",
+    "host": "url-shortner-arshgoel16-ba75.e.aivencloud.com",
+    "port": "12743",
+}
+
+DEST_DB = {
+    "dbname": "FoxxyDrip1",
+    "user": "avnadmin",
+    "password": "AVNS_ZBxpNZDSgH38UEicwgp",
+    "host": "url-shortner-arshgoel16-ba75.e.aivencloud.com",
+    "port": "12743",
+}
+
+SOURCE_TABLE = "Services_productdesign"
+DEST_TABLE = "Services_productdesign"  # target table name
+
 # ---------------------------------------
 
-def remove_column():
+def copy_table():
     try:
-        # Connect to the Aiven PostgreSQL database with SSL
-        conn = psycopg2.connect(
-            dbname=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            host=DB_HOST,
-            port=DB_PORT,
-            sslmode="require"
-        )
-        conn.autocommit = True
-        cursor = conn.cursor()
-        print("Connected to database successfully!")
+        # Connect to source and destination (can be same DB)
+        src_conn = psycopg2.connect(**SOURCE_DB, sslmode="require")
+        dest_conn = psycopg2.connect(**DEST_DB, sslmode="require")
 
-        # Print all rows from the table
-        print(f"\nContents of '{TABLE_NAME}':")
-        cursor.execute(sql.SQL("SELECT * FROM {}").format(sql.Identifier(TABLE_NAME)))
-        rows = cursor.fetchall()
-        colnames = [desc[0] for desc in cursor.description]
+        src_cursor = src_conn.cursor()
+        dest_cursor = dest_conn.cursor()
 
-        # Print table header
-        print(" | ".join(colnames))
-        print("-" * (len(colnames) * 15))
+        print(f"Copying data from {SOURCE_TABLE} to {DEST_TABLE}...")
 
-        # Print each row
+        # 1️⃣ Get all rows from source
+        src_cursor.execute(sql.SQL("SELECT * FROM {}").format(sql.Identifier(SOURCE_TABLE)))
+        rows = src_cursor.fetchall()
+
+        # 2️⃣ Get column names
+        colnames = [desc[0] for desc in src_cursor.description]
+
+        # 3️⃣ Create destination table if it doesn't exist
+        src_cursor.execute(sql.SQL(
+            "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name=%s)"
+        ), [DEST_TABLE.lower()])
+        if not src_cursor.fetchone()[0]:
+            # Copy schema from source
+            src_cursor.execute(sql.SQL("CREATE TABLE {} (LIKE {} INCLUDING ALL)").format(
+                sql.Identifier(DEST_TABLE),
+                sql.Identifier(SOURCE_TABLE)
+            ))
+            print(f"Destination table '{DEST_TABLE}' created.")
+
+        # 4️⃣ Insert all rows into destination
         for row in rows:
-            print(" | ".join(str(r) for r in row))
-
-        # Check if the column exists
-        cursor.execute(
-            sql.SQL(
-                "SELECT column_name FROM information_schema.columns WHERE table_name=%s AND column_name=%s"
-            ),
-            [TABLE_NAME.lower(), COLUMN_NAME.lower()]
-        )
-        if cursor.fetchone():
-            # Drop the column safely
-            drop_query = sql.SQL(
-                "ALTER TABLE {table} DROP COLUMN {column} CASCADE"
-            ).format(
-                table=sql.Identifier(TABLE_NAME),
-                column=sql.Identifier(COLUMN_NAME)
+            insert_query = sql.SQL("INSERT INTO {} ({}) VALUES ({})").format(
+                sql.Identifier(DEST_TABLE),
+                sql.SQL(', ').join(map(sql.Identifier, colnames)),
+                sql.SQL(', ').join(sql.Placeholder() * len(colnames))
             )
-            cursor.execute(drop_query)
-            print(f"\nColumn '{COLUMN_NAME}' removed successfully from '{TABLE_NAME}'!")
-        else:
-            print(f"\nColumn '{COLUMN_NAME}' does not exist in '{TABLE_NAME}'.")
+            dest_cursor.execute(insert_query, row)
 
-        cursor.close()
-        conn.close()
+        dest_conn.commit()
+        print(f"Successfully copied {len(rows)} rows!")
+
+        # Close connections
+        src_cursor.close()
+        dest_cursor.close()
+        src_conn.close()
+        dest_conn.close()
+
     except Exception as e:
         print("Error:", e)
 
+
 if __name__ == "__main__":
-    remove_column()
+    copy_table()

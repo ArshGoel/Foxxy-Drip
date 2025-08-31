@@ -10,7 +10,9 @@
     <table class="table table-bordered mt-3">
         <thead class="table-light">
             <tr>
+                <th>Image</th>
                 <th>Product</th>
+                <th>Design</th>
                 <th>Size</th>
                 <th>Price</th>
                 <th>Quantity</th>
@@ -21,9 +23,20 @@
         <tbody>
             {% for item in cart_items %}
             <tr>
-                <td><img src="{{ item.get_image }}" alt="{{ item.product.name }}" width="80"></td>
+                <td>
+                    <img src="{{ item.get_image }}" alt="{{ item.product.name }}" width="80">
+                </td>
                 <td>{{ item.product.name }}</td>
+                <td>{{ item.design.name }}</td>
                 <td>{{ item.size }}</td>
+                <td>
+                    {% if item.design.discounted_price %}
+                        <span class="text-decoration-line-through text-muted">₹{{ item.design.price }}</span><br>
+                        <span class="fw-bold text-success">₹{{ item.design.discounted_price }}</span>
+                    {% else %}
+                        ₹{{ item.design.price }}
+                    {% endif %}
+                </td>
                 <td>
                     <form action="{% url 'update_cart_quantity' item.id %}" method="POST" class="d-inline">
                         {% csrf_token %}
