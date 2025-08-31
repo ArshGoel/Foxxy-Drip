@@ -1,27 +1,55 @@
 from django.contrib import admin
-from .models import Product
+from .models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
 
+# Inline for ProductImage
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 3  # show 3 empty forms by default
+    fields = ['image', 'color', 'design']
+
+# Inline models
+class ProductColorSizeInline(admin.TabularInline):
+    model = ProductColorSize
+    extra = 1
+
+class ProductDesignInline(admin.TabularInline):
+    model = ProductDesign
+    extra = 1
+
+class ProductColorInline(admin.TabularInline):
+    model = ProductColor
+    extra = 1
+    show_change_link = True
+
+# Main admin models
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("product_id", "name", "category", "price", "color", "date_added")
-    list_filter = ("category", "date_added")
-    search_fields = ("name", "product_id", "color")
-    ordering = ("-date_added",)
+    list_display = ("name", "product_id", "price", "date_added")
+    search_fields = ("name", "product_id")
+    inlines = [ProductColorInline, ProductImageInline]
 
-    # Group fields into sections
-    fieldsets = (
-        ("Basic Info", {
-            "fields": ("product_id", "name", "description", "category", "price", "color", "image")
-        }),
-        ("Stock by Size", {
-            "fields": (
-                "qty_xxs", "qty_xs", "qty_s", "qty_m", 
-                "qty_l", "qty_xl", "qty_xxl", "qty_xxxl"
-            ),
-        }),
-        ("Metadata", {
-            "fields": ("date_added",),
-        }),
-    )
+@admin.register(ProductColor)
+class ProductColorAdmin(admin.ModelAdmin):
+    list_display = ("name", "product")
+    search_fields = ("name", "product__name")
+    inlines = [ProductColorSizeInline, ProductDesignInline]
 
-    readonly_fields = ("date_added",)  # auto-filled
+@admin.register(ProductColorSize)
+class ProductColorSizeAdmin(admin.ModelAdmin):
+    list_display = ("color", "size", "quantity")
+    list_filter = ("size",)
+
+@admin.register(ProductDesign)
+class ProductDesignAdmin(admin.ModelAdmin):
+    list_display = ("name", "color", "get_product")
+    search_fields = ("name", "color__name", "color__product__name")
+    inlines = [ProductImageInline]
+
+    def get_product(self, obj):
+        return obj.color.product
+    get_product.short_description = "Product"
+
+@admin.register(ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    list_display = ("product", "color", "design")
+    search_fields = ("product__name", "color__name", "design__name")

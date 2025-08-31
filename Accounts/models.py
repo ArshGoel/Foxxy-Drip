@@ -82,7 +82,7 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
     def subtotal(self):
-        return self.product.price * self.quantity
+        return self.product.price * self.quantity # type: ignore
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name} ({self.size}) x {self.quantity}"

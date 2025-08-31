@@ -4,56 +4,146 @@
 
 {% block body %}
 <h2>Edit Product</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <label>Product Name:</label>
+    <input type="text" name="name" value="{{ product.name }}" required><br><br>
+    
+    <label>Price:</label>
+    <input type="number" name="price" step="0.01" value="{{ product.price }}" required><br><br>
+    
+    <h3>Colors</h3>
+    <div id="colors">
+        {% for color in colors %}
+        <div class="color-block">
+            <input type="hidden" name="color_id[]" value="{{ color.id }}">
+            <label>Color Name:</label>
+            <input type="text" name="color_name[]" value="{{ color.name }}">
+            <h4>Sizes</h4>
+{% for size, qty in color.sizes_dict.items %}
+    <label>{{ size }} Quantity:</label>
+    <input type="number" name="qty_{{ color.id }}_{{ size }}" min="0" value="{{ qty }}">
+{% endfor %}
+            <hr>
+        </div>
+        {% endfor %}
+    </div>
+    <button type="button" onclick="addColor()">Add Another Color</button>
+    <button type="button" onclick="updateDesignDropdowns()">Update Colors</button>
 
-{% if messages %}
-  {% for message in messages %}
-    <p style="color: green;">{{ message }}</p>
-  {% endfor %}
-{% endif %}
+    <h3>Designs</h3>
+    <div id="designs">
+        {% for design in designs %}
+        <div class="design-block">
+            <input type="hidden" name="design_id[]" value="{{ design.id }}">
+            <label>Design Name:</label>
+            <input type="text" name="design_name[]" value="{{ design.name }}">
+            <label>Description:</label>
+            <input type="text" name="design_desc[]" value="{{ design.description }}">
+            <label>Associated Color:</label>
+            <select name="design_color_index[]"></select>
+            
+            <label>Existing Images:</label>
+            <div class="existing-images">
+                {% for img in design.images.all %}
+                <div class="img-wrapper" style="display:inline-block; position:relative; margin:5px;">
+                    <img src="{{ img.image.url }}" width="100" style="border:1px solid #ccc; border-radius:4px;">
+                    <button type="button" onclick="removeImage({{ img.id }}, this)" style="position:absolute; top:0; right:0; background:red; color:white; border:none; border-radius:50%;">×</button>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <label>Upload New Images:</label>
+            <input type="file" name="design_images_{{ forloop.counter0 }}" multiple>
+            <hr>
+        </div>
+        {% endfor %}
+    </div>
+    <button type="button" onclick="addDesign()">Add Another Design</button>
 
-<form method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-
-  <label>Name:</label><br>
-  <input type="text" name="name" value="{{ product.name }}" required><br><br>
-
-  <label>Description:</label><br>
-  <textarea name="description" rows="4" required>{{ product.description }}</textarea><br><br>
-
-  <label>Category:</label><br>
-  <select name="category" required>
-      {% for key, value in product.CATEGORY_CHOICES %}
-        <option value="{{ key }}" {% if product.category == key %}selected{% endif %}>
-          {{ value }}
-        </option>
-      {% endfor %}
-  </select><br><br>
-
-  <label>Price (₹):</label><br>
-  <input type="number" step="0.01" name="price" value="{{ product.price }}" required><br><br>
-
-  <label>Color:</label><br>
-  <input type="text" name="color" value="{{ product.color }}" required><br><br>
-
-  <h4>Available Stock (per size):</h4>
-  <label>XXS:</label> <input type="number" name="qty_xxs" value="{{ product.qty_xxs }}"><br>
-  <label>XS:</label> <input type="number" name="qty_xs" value="{{ product.qty_xs }}"><br>
-  <label>S:</label> <input type="number" name="qty_s" value="{{ product.qty_s }}"><br>
-  <label>M:</label> <input type="number" name="qty_m" value="{{ product.qty_m }}"><br>
-  <label>L:</label> <input type="number" name="qty_l" value="{{ product.qty_l }}"><br>
-  <label>XL:</label> <input type="number" name="qty_xl" value="{{ product.qty_xl }}"><br>
-  <label>XXL:</label> <input type="number" name="qty_xxl" value="{{ product.qty_xxl }}"><br>
-  <label>XXXL:</label> <input type="number" name="qty_xxxl" value="{{ product.qty_xxxl }}"><br><br>
-
-  <label>Product Image:</label><br>
-  {% if product.image %}
-    <img src="{{ product.image.url }}" alt="Product Image" width="150"><br>
-    <small>Upload new to replace</small><br>
-  {% endif %}
-  <input type="file" name="image" accept="image/*"><br><br>
-
-  <button type="submit">Save Changes</button>
+    <br><br>
+    <button type="submit">Update Product</button>
 </form>
+
+<script>
+let colorIndex = {{ colors|length }};
+let designIndex = {{ designs|length }};
+
+function addColor() {
+    const div = document.createElement('div');
+    div.className = 'color-block';
+    div.innerHTML = `
+        <input type="hidden" name="color_id[]" value="">
+        <label>Color Name:</label>
+        <input type="text" name="color_name[]">
+        <h4>Sizes</h4>
+        {% for s in "SMLX"|make_list %}
+        <label>{{ s }} Quantity:</label>
+        <input type="number" name="qty_${colorIndex}_{{ s }}" min="0" value="0">
+        {% endfor %}
+        <hr>
+    `;
+    document.getElementById('colors').appendChild(div);
+    colorIndex++;
+    updateDesignDropdowns();
+}
+
+function addDesign() {
+    const div = document.createElement('div');
+    div.className = 'design-block';
+    div.innerHTML = `
+        <input type="hidden" name="design_id[]" value="">
+        <label>Design Name:</label>
+        <input type="text" name="design_name[]">
+        <label>Description:</label>
+        <input type="text" name="design_desc[]">
+        <label>Associated Color:</label>
+        <select name="design_color_index[]"></select>
+        <label>Upload New Images:</label>
+        <input type="file" name="design_images_${designIndex}" multiple>
+        <hr>
+    `;
+    document.getElementById('designs').appendChild(div);
+    designIndex++;
+    updateDesignDropdowns();
+}
+
+// Refresh design color dropdowns
+function updateDesignDropdowns() {
+    const colorNames = [...document.querySelectorAll('input[name="color_name[]"]')].map(i => i.value);
+    document.querySelectorAll('select[name="design_color_index[]"]').forEach(select => {
+        const currentVal = select.value;
+        select.innerHTML = '';
+        colorNames.forEach((name, idx) => {
+            if(name.trim() !== '') {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.text = name;
+                select.add(opt);
+            }
+        });
+        select.value = currentVal;
+    });
+}
+
+// Initialize dropdowns on page load
+updateDesignDropdowns();
+
+// Remove existing image via AJAX (or mark it for deletion in form)
+function removeImage(imgId, btn) {
+    if(confirm("Remove this image?")) {
+        const wrapper = btn.parentElement;
+        // You can send AJAX to delete image immediately, or add hidden input for backend deletion
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'delete_images[]';
+        hiddenInput.value = imgId;
+        wrapper.parentElement.appendChild(hiddenInput);
+        wrapper.remove();
+    }
+}
+</script>
 
 <br><a href="{% url 'product_list' %}">⬅ Back to Product List</a>
 {% endblock body %}

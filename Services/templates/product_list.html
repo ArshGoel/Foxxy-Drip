@@ -46,32 +46,38 @@
 <h2>All Products</h2>
 
 {% for product in products %}
-    <div class="product">
-        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-        <div class="details">
-            <h3>{{ product.name }} ({{ product.product_id }})</h3>
-            <p><strong>Price:</strong> ₹{{ product.price }}</p>
-            <p><strong>Color:</strong> {{ product.color }}</p>
-            <p><strong>Category:</strong> {{ product.get_category_display }}</p>
+<div class="product">
+    <h3>{{ product.name }} ({{ product.product_id }}) - ₹{{ product.price }}</h3>
+    <p>Colors & Sizes:</p>
+    <ul>
+        {% for color in product.colors.all %}
+        <li>
+            <strong>{{ color.name }}:</strong>
+            {% for size_obj in color.sizes.all %}
+                {{ size_obj.size }}({{ size_obj.quantity }}){% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </li>
+        {% endfor %}
+    </ul>
 
-            <!-- Sizes with stock -->
-            <div class="sizes">
-                <strong>Sizes:</strong>
-                {% for size, qty in product.size_stock.items %}
-                    {% if qty > 0 %}
-                        <span>{{ size }} ({{ qty }})</span>
-                    {% else %}
-                        <span class="out">{{ size }}</span>
-                    {% endif %}
+    <p>Designs:</p>
+    <ul>
+        {% for color in product.colors.all %}
+            {% for design in color.designs.all %}
+                {{ design.name }} 
+                {% for img in design.images.all %}
+                    <img src="{{ img.image.url }}" width="80">
                 {% endfor %}
-            </div>
+                <br>
+            {% endfor %}
+        {% endfor %}
+    </ul>
 
-            <p><em>Uploaded on {{ product.date_added|date:"Y-m-d H:i" }}</em></p>
-            <a href="{% url 'edit_product' product.product_id %}">Edit</a>
-        </div>
-    </div>
+    <a href="{% url 'edit_product' product.product_id %}">Edit</a>
+</div>
+<hr>
 {% empty %}
-    <p>No products found.</p>
+<p>No products found.</p>
 {% endfor %}
 
 <a href="{% url 'upload_product' %}">Upload Another Product</a>

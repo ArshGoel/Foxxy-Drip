@@ -5,56 +5,112 @@
 {% block body %}
 <h2>Upload New Product</h2>
 
-{% if error %}
-<p style="color:red;">{{ error }}</p>
-{% endif %}
-
-<form method="POST" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-
-    <!-- Name -->
-    <label>Name:</label><br>
+    
+    <label>Product Name:</label>
     <input type="text" name="name" required><br><br>
-
-    <!-- Description -->
-    <label>Description:</label><br>
-    <textarea name="description" rows="4" required></textarea><br><br>
-
-    <!-- Category -->
-    <label>Category:</label><br>
-    <select name="category" required>
-        <option value="">-- Select Category --</option>
-        {% for key, label in Product.CATEGORY_CHOICES %}
-            <option value="{{ key }}">{{ label }}</option>
-        {% endfor %}
-    </select><br><br>
-
-
-    <!-- Price -->
-    <label>Price (₹):</label><br>
-    <input type="number" step="0.01" name="price" required><br><br>
-
-    <!-- Color -->
-    <label>Color:</label><br>
-    <input type="text" name="color" required><br><br>
-
-    <!-- Stock per size -->
-    <h4>Stock by Size</h4>
-    <label>XXS:</label> <input type="number" name="qty_xxs" value="0" min="0"><br><br>
-    <label>XS:</label> <input type="number" name="qty_xs" value="0" min="0"><br><br>
-    <label>S:</label> <input type="number" name="qty_s" value="0" min="0"><br><br>
-    <label>M:</label> <input type="number" name="qty_m" value="0" min="0"><br><br>
-    <label>L:</label> <input type="number" name="qty_l" value="0" min="0"><br><br>
-    <label>XL:</label> <input type="number" name="qty_xl" value="0" min="0"><br><br>
-    <label>XXL:</label> <input type="number" name="qty_xxl" value="0" min="0"><br><br>
-    <label>XXXL:</label> <input type="number" name="qty_xxxl" value="0" min="0"><br><br>
-
-    <!-- Product Image -->
-    <label>Product Image:</label><br>
-    <input type="file" name="image" accept="image/*" required><br><br>
-
+    
+    <label>Price:</label>
+    <input type="number" name="price" step="0.01" required><br><br>
+    
+    <h3>Colors</h3>
+    <div id="colors">
+        <div class="color-block">
+            <label>Color Name:</label>
+            <input type="text" name="color_name[]">
+            <h4>Sizes</h4>
+            {% for s in "SMLX"|make_list %}
+                <label>{{ s }} Quantity:</label>
+                <input type="number" name="qty_0_{{ s }}" min="0" value="0">
+            {% endfor %}
+            <hr>
+        </div>
+    </div>
+    <button type="button" onclick="addColor()">Add Another Color</button>
+    <button type="button" onclick="updateDesignDropdowns()">Update Colors</button>
+    
+    <h3>Designs</h3>
+    <div id="designs">
+        <div class="design-block">
+            <label>Design Name:</label>
+            <input type="text" name="design_name[]">
+            <label>Description:</label>
+            <input type="text" name="design_desc[]">
+            <label>Associated Color:</label>
+            <select name="design_color_index[]"></select>
+            <label>Images:</label>
+            <input type="file" name="design_images_0" multiple>
+            <hr>
+        </div>
+    </div>
+    <button type="button" onclick="addDesign()">Add Another Design</button>
+    <br><br>
     <button type="submit">Upload Product</button>
 </form>
+
+<script>
+let colorIndex = 1;
+let designIndex = 1;
+
+// Add new color block
+function addColor() {
+    const div = document.createElement('div');
+    div.className = 'color-block';
+    div.innerHTML = `
+        <label>Color Name:</label>
+        <input type="text" name="color_name[]">
+        <h4>Sizes</h4>
+        {% for s in "SMLX"|make_list %}
+            <label>{{ s }} Quantity:</label>
+            <input type="number" name="qty_${colorIndex}_{{ s }}" min="0" value="0">
+        {% endfor %}
+        <hr>
+    `;
+    document.getElementById('colors').appendChild(div);
+    colorIndex++;
+    updateDesignDropdowns();
+}
+
+// Add new design block
+function addDesign() {
+    const div = document.createElement('div');
+    div.className = 'design-block';
+    div.innerHTML = `
+        <label>Design Name:</label>
+        <input type="text" name="design_name[]">
+        <label>Description:</label>
+        <input type="text" name="design_desc[]">
+        <label>Associated Color:</label>
+        <select name="design_color_index[]"></select>
+        <label>Images:</label>
+        <input type="file" name="design_images_${designIndex}" multiple>
+        <hr>
+    `;
+    document.getElementById('designs').appendChild(div);
+    designIndex++;
+    updateDesignDropdowns();
+}
+
+// Refresh design color selects
+function updateDesignDropdowns() {
+    const colorNames = [...document.querySelectorAll('input[name="color_name[]"]')].map(i => i.value);
+    document.querySelectorAll('select[name="design_color_index[]"]').forEach(select => {
+        const currentVal = select.value;
+        select.innerHTML = '';
+        colorNames.forEach((name, idx) => {
+            if(name.trim() !== '') {
+                const opt = document.createElement('option');
+                opt.value = idx; // index in POST
+                opt.text = name;
+                select.add(opt);
+            }
+        });
+        select.value = currentVal;
+    });
+}
+</script>
+
 
 <br><a href="{% url 'product_list' %}">View All Products</a>
 {% endblock body %}

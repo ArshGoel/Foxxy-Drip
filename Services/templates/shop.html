@@ -12,53 +12,74 @@
 <div class="container mt-4">
   <h2 class="mb-4 fw-bold">Our Collection</h2>
   <div class="row">
-    {% for product in products %}
-    <div class="col-md-4 mb-4">
-      <div class="card h-100 shadow-sm border-0 rounded-3 product-card">
-        
-        <!-- Product Image -->
-        <div class="product-img-wrapper">
-          <img src="{{ product.image.url|default:'https://via.placeholder.com/400x400?text=No+Image' }}" 
-              alt="{{ product.name }}">
-        </div>
-        
-        <!-- Product Info -->
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title fw-bold">{{ product.name }}</h5>
-          <p class="text-muted mb-1">{{ product.get_category_display }}</p>
-          <p class="mb-1"><strong>Color:</strong> {{ product.color }}</p>
-          <p class="fw-bold fs-5 mb-2">₹{{ product.price }}</p>
+{% for item in products %}
+  {% with product=item.product %}
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm border-0 rounded-3 product-card">
 
-          <!-- Sizes -->
-          <div class="d-flex flex-wrap gap-2 mb-3">
-            {% for size, qty in product.size_stock.items %}
-              {% if qty > 0 %}
-                <label class="size-box" data-qty="{{ qty }} left">
-                  <input type="radio" name="size" value="{{ size }}">
-                  <span>{{ size }}</span>
-                </label>
-              {% else %}
-                <label class="size-box disabled" data-qty="Out of stock">
-                  <span>{{ size }}</span>
-                  <span class="strike"></span>  <!-- 👈 extra span for diagonal -->
-                </label>
-              {% endif %}
-            {% endfor %}
-          </div>
+<div class="product-img-wrapper">
+  <button class="carousel-btn left">&#10094;</button>
+  
+  <div class="carousel-images">
+    {% for color in item.colors %}
+      {% for design in color.designs %}
+        {% for img in design.images %}
+          <img src="{{ img.url|default:'https://via.placeholder.com/400x400?text=No+Image' }}" 
+               alt="{{ product.name }} - {{ color.color_name }} - {{ design.name }}">
+        {% endfor %}
+      {% endfor %}
 
+      {% for img in color.images %}
+        <img src="{{ img.url|default:'https://via.placeholder.com/400x400?text=No+Image' }}" 
+             alt="{{ product.name }} - {{ color.color_name }}">
+      {% endfor %}
+    {% endfor %}
 
-          <!-- Buttons -->
-          <div class="mt-auto d-flex justify-content-between">
-            <a href="{% url 'view_product' product.product_id %}" 
-               class="btn btn-dark btn-sm flex-grow-1 me-2">View</a>
-            <a href="#" class="btn btn-outline-dark btn-sm">❤</a>
-          </div>
+    {% if not item.colors %}
+      <img src="{{ item.image.url|default:'https://via.placeholder.com/400x400?text=No+Image' }}" 
+           alt="{{ product.name }}">
+    {% endif %}
+  </div>
+
+  <div class="carousel-dots"></div>
+
+  <button class="carousel-btn right">&#10095;</button>
+</div>
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title fw-bold">{{ product.name }}</h5>
+        <p class="text-muted mb-1">{{ product.get_category_display }}</p>
+
+        {% for color in item.colors %}
+          <p class="mb-1"><strong>Color:</strong> {{ color.color_name }}</p>
+
+          <!-- Sizes per color -->
+<div class="d-flex flex-wrap gap-2 mb-2">
+  {% for size, qty in color.size_stock.items %}
+    {% if qty > 0 %}
+      <span class="size-box" data-qty="{{ qty }} left">{{ size }}</span>
+    {% else %}
+      <span class="size-box disabled" data-qty="Out of stock">
+        {{ size }}
+        <span class="strike"></span>
+      </span>
+    {% endif %}
+  {% endfor %}
+</div>
+
+        {% endfor %}
+
+        <p class="fw-bold fs-5 mb-2">₹{{ product.price }}</p>
+
+        <div class="mt-auto d-flex justify-content-between">
+          <a href="{% url 'view_product' product.product_id %}" class="btn btn-dark btn-sm flex-grow-1 me-2">View</a>
+          <a href="#" class="btn btn-outline-dark btn-sm">❤</a>
         </div>
       </div>
     </div>
-    {% empty %}
-    <p>No products available.</p>
-    {% endfor %}
+  </div>
+  {% endwith %}
+{% endfor %}
+
   </div>
 </div>
 
@@ -84,6 +105,8 @@
 }
 .size-box {
   display: inline-flex;
+  cursor: default;  /* was pointer before */
+  user-select: none;
   align-items: center;
   justify-content: center;
   width: 55px;
@@ -182,5 +205,126 @@
 .size-box:hover::after {
   opacity: 1;
 }
+.product-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #f9f9f9;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.carousel-images {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.carousel-images img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.carousel-images img.active {
+  opacity: 1;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  font-size: 26px;
+  padding: 8px 14px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+
+.carousel-btn:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+.carousel-btn.left {
+  left: 12px;
+}
+
+.carousel-btn.right {
+  right: 12px;
+}
+
+/* Dot indicators */
+.carousel-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 15;
+}
+
+.carousel-dots span {
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.carousel-dots span.active {
+  background: #fff;
+}
+
 </style>
+<script>
+document.querySelectorAll('.product-img-wrapper').forEach(wrapper => {
+  const images = wrapper.querySelectorAll('.carousel-images img');
+  const dotsContainer = wrapper.querySelector('.carousel-dots');
+  let current = 0;
+
+  // Initialize
+  images[current].classList.add('active');
+
+  // Create dots
+  images.forEach((_, i) => {
+    const dot = document.createElement('span');
+    if(i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => showImage(i));
+    dotsContainer.appendChild(dot);
+  });
+  const dots = dotsContainer.querySelectorAll('span');
+
+  function showImage(index) {
+    images[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = index;
+    if(current < 0) current = images.length - 1;
+    if(current >= images.length) current = 0;
+    images[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  wrapper.querySelector('.carousel-btn.left').addEventListener('click', () => {
+    showImage(current - 1);
+  });
+
+  wrapper.querySelector('.carousel-btn.right').addEventListener('click', () => {
+    showImage(current + 1);
+  });
+});
+</script>
 {% endblock body %}

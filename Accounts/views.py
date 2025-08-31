@@ -98,23 +98,56 @@ def aboutus(request):
         cart_count = CartItem.objects.filter(user=request.user).count()
     return render(request, 'aboutus.html', {'cart_count': cart_count})
 
+from Services.models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
+
 def shop(request):
-    cart_count = 0
-    if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
-    products = Product.objects.all()
-    cart_items = {}
+    products = Product.objects.all().prefetch_related(
+        'colors', 'colors__sizes', 'colors__designs', 'colors__images', 'colors__designs__images'
+    )
 
-    if request.user.is_authenticated:
-        cart = CartItem.objects.filter(user=request.user)
-        for item in cart:
-            cart_items[str(item.product.product_id)] = item.quantity  # use str key for safer template usage
+    products_with_data = []
 
-    return render(request, 'shop.html', {
-        'products': products,
-        'cart_items': cart_items,
-        'cart_count': cart_count,
-    })
+    for product in products:
+        colors_data = []
+
+        for color in product.colors.all(): # type: ignore
+            # Build size stock per color
+            size_stock = {size: 0 for size in ["S", "M", "L", "XL"]}
+            for size_obj in color.sizes.all():
+                size_stock[size_obj.size] = size_obj.quantity
+
+            # Images for this color (general, not design-specific)
+            color_images = [img.image for img in ProductImage.objects.filter(color=color, product=product, design__isnull=True)]
+
+            # Designs for this color
+            designs_data = []
+            for d in ProductDesign.objects.filter(color=color):
+                designs_data.append({
+                    "id": d.id, # type: ignore
+                    "name": d.name,
+                    "description": d.description,
+                    "images": [img.image for img in ProductImage.objects.filter(color=color, design=d)]
+                })
+
+            colors_data.append({
+                "color_name": color.name,
+                "size_stock": size_stock,
+                "images": color_images,
+                "designs": designs_data
+            })
+
+        # Pick first image overall for display
+        first_image = ProductImage.objects.filter(product=product, color__isnull=False).first()
+        image = first_image.image if first_image else None
+
+        products_with_data.append({
+            "product": product,
+            "colors": colors_data,
+            "image": image
+        })
+
+    return render(request, "shop.html", {"products": products_with_data})
+
 
 @login_required
 def update_cart(request, product_id):

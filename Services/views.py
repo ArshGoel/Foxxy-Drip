@@ -13,6 +13,7 @@ from .models import Product
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .models import Product, ProductImage
 
 
 from django.conf import settings
@@ -182,79 +183,175 @@ def edit_address(request, address_id):
 def wishlist(request):
     return render(request, 'wishlist.html') 
 
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
-
-from .models import Product
+from .models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
 
 @login_required
 def upload_product(request):
-    if request.method == 'POST':
+    if request.method == "POST":
+        # 1️⃣ Create product
         product = Product.objects.create(
-            name=request.POST['name'],
-            description=request.POST['description'],
-            category=request.POST['category'],
-            price=request.POST['price'],
-            color=request.POST['color'],
-            image=request.FILES['image'],
-            qty_xxs=request.POST.get('qty_xxs', 0),
-            qty_xs=request.POST.get('qty_xs', 0),
-            qty_s=request.POST.get('qty_s', 0),
-            qty_m=request.POST.get('qty_m', 0),
-            qty_l=request.POST.get('qty_l', 0),
-            qty_xl=request.POST.get('qty_xl', 0),
-            qty_xxl=request.POST.get('qty_xxl', 0),
-            qty_xxxl=request.POST.get('qty_xxxl', 0),
+            name=request.POST.get("name"),
+            price=request.POST.get("price", 0.0)
         )
-        messages.success(request, "Product uploaded successfully!")
-        return redirect('view_products')
 
-    return render(request, 'upload_product.html', {"Product": Product})
+        # 2️⃣ Create colors + sizes
+        color_names = request.POST.getlist("color_name[]")
+        color_objs = []
+        for idx, color_name in enumerate(color_names):
+            if color_name.strip():
+                color_obj = ProductColor.objects.create(product=product, name=color_name.strip())
+                color_objs.append(color_obj)
+                # Sizes
+                for size in ["S","M","L","XL"]:
+                    qty = request.POST.get(f"qty_{idx}_{size}", 0)
+                    ProductColorSize.objects.create(color=color_obj, size=size, quantity=int(qty))
+
+        # 3️⃣ Create designs and upload images
+        design_names = request.POST.getlist("design_name[]")
+        design_descs = request.POST.getlist("design_desc[]")
+        design_color_indices = request.POST.getlist("design_color_index[]")  # index of color in color_objs
+
+        for idx, name in enumerate(design_names):
+            if name.strip():
+                color_idx = int(design_color_indices[idx])
+                color_obj = color_objs[color_idx]
+                design_obj = ProductDesign.objects.create(
+                    color=color_obj,
+                    name=name.strip(),
+                    description=design_descs[idx].strip()
+                )
+                # Upload images for this design
+                images = request.FILES.getlist(f"design_images_{idx}")
+                for img in images:
+                    ProductImage.objects.create(
+                        product=product,
+                        color=color_obj,
+                        design=design_obj,
+                        image=img
+                    )
+
+        messages.success(request, "Product uploaded successfully!")
+        return redirect("view_products")
+
+    return render(request, "upload_product.html")
 
 
 @login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
+    colors = product.colors.all() # type: ignore
+    designs = ProductDesign.objects.filter(color__product=product)
 
-    if request.method == 'POST':
-        product.name = request.POST.get('name')
-        product.description = request.POST.get('description')
-        product.category = request.POST.get('category')
-        product.price = request.POST.get('price')
-        product.color = request.POST.get('color')
+    # Prepare sizes dict for each color so template always has S, M, L, XL
+    for color in colors:
+        sizes_dict = {size: 0 for size in ["S", "M", "L", "XL"]}
+        for size_obj in color.sizes.all():
+            sizes_dict[size_obj.size] = size_obj.quantity
+        color.sizes_dict = sizes_dict  # attach to color object for template
 
-        if request.FILES.get('image'):
-            product.image = request.FILES['image']
-
-        # Update quantities
-        product.qty_xxs = int(request.POST.get('qty_xxs', 0))
-        product.qty_xs = int(request.POST.get('qty_xs', 0))
-        product.qty_s = int(request.POST.get('qty_s', 0))
-        product.qty_m = int(request.POST.get('qty_m', 0))
-        product.qty_l = int(request.POST.get('qty_l', 0))
-        product.qty_xl = int(request.POST.get('qty_xl', 0))
-        product.qty_xxl = int(request.POST.get('qty_xxl', 0))
-        product.qty_xxxl = int(request.POST.get('qty_xxxl', 0))
-
+    if request.method == "POST":
+        # Update product
+        product.name = request.POST.get("name")
+        product.price = request.POST.get("price", 0.0)
         product.save()
 
-        messages.success(request, "✅ Product updated successfully!")
-        return redirect('product_list')
+        # ----------------- Handle Colors -----------------
+        color_ids = request.POST.getlist("color_id[]")
+        color_names = request.POST.getlist("color_name[]")
 
-    return render(request, 'edit_product.html', {"product": product})
+        for idx, name in enumerate(color_names):
+            c_id = color_ids[idx] if idx < len(color_ids) else ''
+            if c_id:  # existing color
+                color = ProductColor.objects.get(id=c_id)
+                color.name = name
+                color.save()
+            else:  # new color
+                color = ProductColor.objects.create(product=product, name=name)
+                if idx < len(color_ids):
+                    color_ids[idx] = str(color.id) # type: ignore
+                else:
+                    color_ids.append(str(color.id)) # type: ignore
+
+            # Update sizes
+            for size in ["S", "M", "L", "XL"]:
+                qty = request.POST.get(f"qty_{c_id or color.id}_{size}", 0) # type: ignore
+                qty = int(qty)
+                obj, _ = ProductColorSize.objects.get_or_create(color=color, size=size)
+                obj.quantity = qty
+                obj.save()
+
+        # ----------------- Handle Designs -----------------
+        design_ids = request.POST.getlist("design_id[]")
+        design_names = request.POST.getlist("design_name[]")
+        design_descs = request.POST.getlist("design_desc[]")
+        design_color_index = request.POST.getlist("design_color_index[]")
+
+        for idx, name in enumerate(design_names):
+            if idx < len(design_color_index) and design_color_index[idx].isdigit():
+                color_idx = int(design_color_index[idx])
+                if color_idx < len(color_ids):
+                    color = ProductColor.objects.get(id=color_ids[color_idx])
+                else:
+                    continue
+            else:
+                continue
+
+            d_id = design_ids[idx] if idx < len(design_ids) else ''
+            if d_id:
+                design = ProductDesign.objects.get(id=d_id)
+                design.name = name
+                design.description = design_descs[idx]
+                design.color = color
+                design.save()
+            else:
+                design = ProductDesign.objects.create(
+                    name=name,
+                    description=design_descs[idx] if idx < len(design_descs) else "",
+                    color=color
+                )
+
+            images = request.FILES.getlist(f"design_images_{d_id or 'new'+str(idx)}")
+            for img in images:
+                ProductImage.objects.create(product=product, color=color, design=design, image=img)
+
+        # ----------------- Handle deleted images -----------------
+        delete_ids = request.POST.getlist("delete_images[]")
+        for img_id in delete_ids:
+            ProductImage.objects.filter(id=img_id).delete()
+
+        messages.success(request, "Product updated successfully!")
+        return redirect("view_products")
+
+    return render(request, "edit_product.html", {
+        "product": product,
+        "colors": colors,
+        "designs": designs
+    })
 
 
 # ---------- Product List ----------
 def product_list(request):
     products = Product.objects.all().order_by('-date_added')
-    return render(request, 'product_list.html', {"products": products})
+
+    return render(request, "product_list.html", {"products": products})
+
+def product_designs_view(request, product_id):
+    product = get_object_or_404(Product, product_id=product_id)
+    designs = []
+    for color in product.colors.all(): # type: ignore
+        for design in color.designs.all():
+            images = design.images.all()
+            designs.append({"color": color.name, "design": design, "images": images})
+    return render(request, "product_designs.html", {"product": product, "designs": designs})
 
 # ---------- View Single Product ----------
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product
 
-@login_required
+# @login_required
 def view_product(request, pk):
     product = get_object_or_404(Product, product_id=pk)
 
@@ -473,14 +570,12 @@ from django.http import FileResponse
 from django.core import management
 from django.conf import settings
 from datetime import datetime
-from django.contrib.admin.views.decorators import staff_member_required
 
 import os, zipfile, tempfile, csv
 from django.http import FileResponse
 from django.apps import apps
 from django.conf import settings
 from datetime import datetime
-from django.contrib.admin.views.decorators import staff_member_required
 
 @staff_member_required
 def download_backup(request):

@@ -11,6 +11,7 @@ urlpatterns = [
     path('upload/', views.upload_product, name='upload_product'),
     path('', views.product_list, name='product_list'),
     path('edit/<str:product_id>/', views.edit_product, name='edit_product'),
+    path('dash/<str:product_id>/designs/', views.product_designs_view, name='product_designs'),
     path('product/<str:pk>/', views.view_product, name='view_product'),
     path('wishlist', views.wishlist, name='wishlist'),
     path('view_products', views.view_products, name='view_products'),
