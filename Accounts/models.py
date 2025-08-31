@@ -139,21 +139,33 @@ class Order(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"Order #{self.id} - {self.profile.user.username}" # type: ignore
+        return f"Order #{self.id} - {self.profile.user.username}" #type:ignore
 
 
 # ----------------- ORDER ITEM MODEL ----------------- #
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    size = models.CharField(max_length=5, blank=True, null=True)   # ✅ added
+    design = models.ForeignKey(ProductDesign, on_delete=models.SET_NULL, null=True, blank=True)
+    size = models.CharField(max_length=5, blank=True, null=True)
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2)  # Price at purchase time
 
     def __str__(self):
-        return f"{self.product.name} ({self.size}) x {self.quantity}"  # type: ignore
+        if self.design:
+            return f"{self.product.name} - {self.design.name} ({self.size}) x {self.quantity}" #type:ignore
+        return f"{self.product.name} ({self.size}) x {self.quantity}" #type:ignore
 
     @property
     def total_price(self):
         return self.price * self.quantity
-    
+
+    @property
+    def image_url(self):
+        """Return the design image if exists, else product image, else placeholder"""
+        if self.design and self.design.images.first(): #type:ignore
+            return self.design.images.first().image.url #type:ignore
+        elif self.product and self.product.images.first(): #type:ignore
+            return self.product.images.first().image.url #type:ignore
+        else:
+            return "https://via.placeholder.com/50"

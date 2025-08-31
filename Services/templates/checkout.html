@@ -33,6 +33,8 @@
             <thead>
                 <tr>
                     <th>Product</th>
+                    <th>Design</th>
+                    <th>Image</th>
                     <th>Size</th>
                     <th>Price</th>
                     <th>Quantity</th>
@@ -43,6 +45,22 @@
                 {% for item in cart_items %}
                 <tr>
                     <td>{{ item.product.name }}</td>
+                    <td>
+                        {% if item.design %}
+                            {{ item.design.name }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.design and item.design.images.first %}
+                            <img src="{{ item.design.images.first.image.url }}" alt="{{ item.design.name }}" style="width:50px;height:50px;object-fit:cover;">
+                        {% elif item.product.images.first %}
+                            <img src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}" style="width:50px;height:50px;object-fit:cover;">
+                        {% else %}
+                            <img src="https://via.placeholder.com/50" alt="No Image" style="width:50px;height:50px;object-fit:cover;">
+                        {% endif %}
+                    </td>
                     <td>{{ item.size }}</td>
                     <td>
                         {% if item.product.types.first.discount_price %}
@@ -58,6 +76,7 @@
                 {% endfor %}
             </tbody>
         </table>
+
 
         <div class="text-end">
             <h4>Total: ₹{{ total }}</h4>

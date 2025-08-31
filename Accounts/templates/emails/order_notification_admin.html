@@ -35,6 +35,8 @@
     <thead>
       <tr>
         <th align="left" style="font-size:13px; padding:8px; border-bottom:1px solid #eee;">Product</th>
+        <th align="left" style="font-size:13px; padding:8px; border-bottom:1px solid #eee;">Design</th>
+        <th align="center" style="font-size:13px; padding:8px; border-bottom:1px solid #eee;">Image</th>
         <th align="center" style="font-size:13px; padding:8px; border-bottom:1px solid #eee;">Size</th>
         <th align="center" style="font-size:13px; padding:8px; border-bottom:1px solid #eee;">Qty</th>
         <th align="right" style="font-size:13px; padding:8px; border-bottom:1px solid #eee;">Price</th>
@@ -46,6 +48,22 @@
       <tr>
         <td style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
           {{ it.product.name }}
+        </td>
+        <td style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
+          {% if it.design %}
+            {{ it.design.name }}
+          {% else %}
+            —
+          {% endif %}
+        </td>
+       <td align="center" style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
+          {% if it.design and it.design.images.first %}
+            <img src="https://foxxydrip.com{{ it.design.images.first.image.url }}" 
+                alt="{{ it.design.name }}" 
+                style="height:50px; width:auto;">
+          {% else %}
+            —
+          {% endif %}
         </td>
         <td align="center" style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
           {{ it.size|default:"—" }}
@@ -64,7 +82,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="4" align="right" style="padding:10px; font-size:14px;"><strong>Total</strong></td>
+        <td colspan="6" align="right" style="padding:10px; font-size:14px;"><strong>Total</strong></td>
         <td align="right" style="padding:10px; font-size:14px;"><strong>₹{{ order.total_price }}</strong></td>
       </tr>
     </tfoot>

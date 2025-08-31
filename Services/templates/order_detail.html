@@ -5,7 +5,7 @@
 <div class="container mt-4">
     <h2>Order #{{ order.id }}</h2>
     <p><strong>Status:</strong> {{ order.get_status_display }}</p>
-    <p><strong>Date:</strong> {{ order.created_at }}</p>
+    <p><strong>Date:</strong> {{ order.created_at|date:"d M Y, H:i" }}</p>
 
     <h5>Shipping Address</h5>
     <p>
@@ -20,6 +20,8 @@
         <thead>
             <tr>
                 <th>Product</th>
+                <th>Design</th>
+                <th>Image</th>
                 <th>Size</th>
                 <th>Price</th>
                 <th>Quantity</th>
@@ -30,6 +32,20 @@
             {% for item in order.items.all %}
             <tr>
                 <td>{{ item.product.name }}</td>
+                <td>
+                    {% if item.design %}
+                        {{ item.design.name }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.design and item.design.images.first %}
+                        <img src="{{ item.design.images.first.image.url }}" alt="{{ item.design.name }}" style="height:50px; width:auto;">
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
                 <td>{{ item.size }}</td>
                 <td>₹{{ item.price }}</td>
                 <td>{{ item.quantity }}</td>

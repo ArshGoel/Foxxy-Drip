@@ -449,7 +449,8 @@ def checkout(request):
         profile = Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:
         messages.warning(request, "Please complete your profile before checkout.")
-        return redirect("complete_profile")  # 👈 redirect if profile not found
+        return redirect("complete_profile")
+
     cart_items = CartItem.objects.filter(user=request.user)
     total = sum(item.subtotal() for item in cart_items)
 
@@ -457,7 +458,7 @@ def checkout(request):
         messages.warning(request, "Your cart is empty. Add some products before checkout.")
         return redirect("view_cart")
 
-    addresses = profile.addresses.all() #type:ignore
+    addresses = profile.addresses.all()  # type: ignore
 
     if request.method == "POST":
         address_id = request.POST.get("address")
@@ -485,13 +486,14 @@ def checkout(request):
                     status="P"
                 )
 
-                # Create OrderItems & decrease stock per size
+                # ✅ Create OrderItems & decrease stock
                 for item in cart_items:
                     product = item.product
+                    design = getattr(item, "design", None)  # get design if exists
                     size = item.size
                     qty_needed = item.quantity
 
-                    # ✅ Find size entry through ProductColor
+                    # Find size entry in ProductColorSize
                     size_entry = ProductColorSize.objects.filter(
                         color__product=product,
                         size=size
@@ -512,27 +514,28 @@ def checkout(request):
                     size_entry.quantity -= qty_needed
                     size_entry.save()
 
-                    # Create order item
+                    # Create OrderItem with design
                     OrderItem.objects.create(
                         order=order,
                         product=product,
+                        design=design,
                         size=size,
                         quantity=qty_needed,
                         price=item.price
                     )
 
-                # Clear cart after success
+                # Clear cart
                 cart_items.delete()
 
         except transaction.TransactionManagementError:
             return redirect("view_cart")
 
         send_order_emails(order, request=request)
-        messages.success(request, f"Order #{order.id} placed successfully!")  # type:ignore
-        return redirect("order_detail", order_id=order.id)  # type:ignore
+        messages.success(request, f"Order #{order.id} placed successfully!")  # type: ignore
+        return redirect("order_detail", order_id=order.id)  # type: ignore
 
     return render(request, "checkout.html", {
-        "cart_items": cart_items,
+        "cart_items": cart_items, 
         "total": total,
         "addresses": addresses
     })
