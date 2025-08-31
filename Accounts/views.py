@@ -79,12 +79,27 @@ def send_otp_email(name, email, otp):
 
 # ------------------------ Clean Email ------------------------ #
 
+# views.py
+from django.shortcuts import render
+from .models import ProductDesign
 
 def home(request):
     cart_count = 0
     if request.user.is_authenticated:
         cart_count = CartItem.objects.filter(user=request.user).count()
-    return render(request, 'home.html', {'cart_count': cart_count})
+
+    # ✅ Fetch designs instead of products
+    featured_designs = (
+        ProductDesign.objects.filter(id__in=[2, 17, 15])
+        .select_related("color__product", "type")
+        .prefetch_related("images", "color__images", "color__product__images")
+    )
+    
+    return render(request, "home.html", {
+        "cart_count": cart_count,
+        "featured_designs": featured_designs
+    })
+
 
 def FAQ(request):
     cart_count = 0

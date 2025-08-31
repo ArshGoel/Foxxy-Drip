@@ -497,7 +497,7 @@
         </div>
     </section>
 
-    <!-- Featured Products -->
+    {% comment %} <!-- Featured Products -->
     <section class="featured">
         <div class="container">
             <div class="section-header">
@@ -506,96 +506,36 @@
             </div>
             
             <div class="products-grid">
-                <!-- Product 1 -->
+                {% for design in featured_designs %}
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/eab7da75-647f-4440-831b-4b96702c47b1.png" alt="Limited edition graphic hoodie with urban street art design and premium cotton blend fabric">
-                        <div class="product-badge">-20%</div>
+                        {% if design.images.first %}
+                        <img src="{{ design.images.first.image.url }}" alt="{{ design.name }}">
+                    {% elif design.color.images.first %}
+                        <img src="{{ design.color.images.first.image.url }}" alt="{{ design.name }}">
+                    {% elif design.color.product.images.first %}
+                        <img src="{{ design.color.product.images.first.image.url }}" alt="{{ design.name }}">
+                    {% endif %}
                     </div>
+
                     <div class="product-info">
-                        <h3>Urban Graphic Hoodie</h3>
+                        <h3>{{ design.name }}</h3>
                         <div class="product-price">
-                            <div class="price">
-                                $89.99 <span class="old-price">$112.99</span>
-                            </div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
+                            ₹{{ design.discounted_price }}
+                            {% if design.discounted_price != design.price %}
+                                <span class="old-price">₹{{ design.price }}</span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                
-                <!-- Product 2 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4eb1e675-47a8-450f-b1c0-5ee598803374.png" alt="Premium oversized t-shirt with minimalist fox logo and distressed vintage wash effect">
-                    </div>
-                    <div class="product-info">
-                        <h3>Oversized Fox Tee</h3>
-                        <div class="product-price">
-                            <div class="price">$49.99</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Product 3 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/dd611bf8-99fb-4258-b741-a6112f932b88.png" alt="Cargo pants with multiple pockets and tapered fit in olive green military style">
-                        <div class="product-badge">NEW</div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Urban Cargo Pants</h3>
-                        <div class="product-price">
-                            <div class="price">$79.99</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Product 4 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9cb04b5e-c0c0-41c9-a78c-6fd54d2c25bf.png" alt="Designer sneakers with unique color blocking and premium leather construction">
-                    </div>
-                    <div class="product-info">
-                        <h3>Signature Sneakers</h3>
-                        <div class="product-price">
-                            <div class="price">$129.99</div>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
             
             <div class="view-all">
                 <a href="/shop" class="btn btn-dark">VIEW ALL PRODUCTS</a>
             </div>
         </div>
-    </section>
+    </section> {% endcomment %}
 
     <!-- Brand Story -->
     <section class="brand-story">

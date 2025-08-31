@@ -7,7 +7,7 @@ from django.utils.timezone import now
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from django.db.models.signals import post_delete
-
+import math
 # ----------------- PROFILE MODEL ----------------- #
 def profile_picture_upload_path(instance, filename):
     # Get file extension (e.g. .jpg, .png)
@@ -85,12 +85,12 @@ class CartItem(models.Model):
 
     @property
     def price(self):
-        """Return price from design (discounted if available)"""
+        """Return price from design (discounted if available, floored to previous digit)"""
         if self.design:  
             if self.design.discounted_price:
-                return self.design.discounted_price
-            return self.design.price
-        return 0  # fallback if no design
+                return math.floor(self.design.discounted_price)  # ✅ floor
+            return math.floor(self.design.price)  # ✅ floor
+        return 0
 
     def subtotal(self):
         return self.price * self.quantity

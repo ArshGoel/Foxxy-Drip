@@ -96,21 +96,26 @@ class ProductDesign(models.Model):
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="designs")
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    type = models.ForeignKey(ProductType, on_delete=models.SET_NULL, related_name="designs", null=True, blank=True)
+    type = models.ForeignKey(
+        ProductType,
+        on_delete=models.SET_NULL,
+        related_name="designs",
+        null=True,
+        blank=True
+    )
 
     @property
     def price(self):
-        return self.type.price if self.type else Decimal("0.00")
+        return self.type.price if self.type else 0
 
     @property
     def discounted_price(self):
-        return self.type.discounted_price if self.type else Decimal("0.00")
+        return self.type.discounted_price if self.type else 0
 
     def __str__(self):
         if self.type:
             return f"{self.color.name} - {self.name} ({self.type.type_name})"
         return f"{self.color.name} - {self.name}"
-
 
 
 # ----------------- ProductImage -----------------
