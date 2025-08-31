@@ -1,9 +1,10 @@
-import os
+from decimal import Decimal
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.utils.timezone import now
 from django.utils.deconstruct import deconstructible
+import os
 
 
 # ----------------- Image path generator -----------------
@@ -13,21 +14,15 @@ class ProductImagePath:
         ext = filename.split('.')[-1]
         timestamp = int(now().timestamp())
 
-        # Determine base name depending on what the image belongs to
         if hasattr(instance, "design") and instance.design:
-            # If image belongs to a design
             base_name = f"{instance.design.color.product.product_id}_design_{instance.design.id}_{timestamp}"
         elif hasattr(instance, "color") and instance.color:
-            # If image belongs to a color
             base_name = f"{instance.color.product.product_id}_color_{instance.color.id}_{timestamp}"
         elif hasattr(instance, "product") and instance.product:
-            # If image belongs to the product itself
             base_name = f"{instance.product.product_id}_product_{timestamp}"
         else:
-            # fallback
             base_name = f"product_{timestamp}"
 
-        # final path
         return os.path.join("products", f"{base_name}.{ext}")
 
 
@@ -40,9 +35,8 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} ({self.product_id})"
 
-# ----------------- ProductType -----------------
-from decimal import Decimal
 
+# ----------------- ProductType -----------------
 class ProductType(models.Model):
     TYPE_CHOICES = [
         ("plain", "Plain"),
@@ -51,16 +45,22 @@ class ProductType(models.Model):
     ]
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="types")
     type_name = models.CharField(max_length=20, choices=TYPE_CHOICES)
-    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)  # type: ignore
-    discount_percent = models.PositiveIntegerField(default=0)
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)#type:ignore
+    discount_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.0, blank=True, null=True) #type:ignore
 
     @property
     def discounted_price(self):
-        """Always return correct final price"""
-        if self.discount_percent > 0:
-            discount = (Decimal(100) - Decimal(self.discount_percent)) / Decimal(100)
-            return (self.price * discount).quantize(Decimal("0.01"))
+        """If discount_price is set, return it, else return original price"""
+        if self.discount_price and self.discount_price < self.price:
+            return self.discount_price
         return self.price
+
+    @property
+    def discount_percent(self):
+        """Calculate % off automatically"""
+        if self.discount_price and self.discount_price < self.price:
+            return round(100 - (self.discount_price / self.price * 100))
+        return 0
 
     def __str__(self):
         return f"{self.product.name} - {self.type_name}"
@@ -110,7 +110,7 @@ class ProductDesign(models.Model):
 
     @property
     def discounted_price(self):
-        return self.type.discounted_price if self.type else 0
+        return self.type.discount_price if self.type else 0
 
     def __str__(self):
         if self.type:

@@ -75,7 +75,7 @@
             <!-- Price Section -->
             <p class="price mb-2">
               {% if item.design and item.design.type %}
-                {% if item.design.type.discount_percent > 0 %}
+                {% if item.design.type.discount_price %}
                   <span class="text-strike">₹{{ item.design.type.price }}</span>
                   <span class="text-danger ms-2">₹{{ item.design.type.discounted_price }}</span>
                   <span class="badge bg-danger ms-2">-{{ item.design.type.discount_percent }}%</span>
