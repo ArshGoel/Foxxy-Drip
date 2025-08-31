@@ -100,53 +100,43 @@ def aboutus(request):
 
 from Services.models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
 
+from django.shortcuts import render
+from .models import Product
+
+from django.db.models import Prefetch
+
 def shop(request):
+    # Prefetch colors, designs, images in a single query
     products = Product.objects.all().prefetch_related(
-        'colors', 'colors__sizes', 'colors__designs', 'colors__images', 'colors__designs__images'
+        Prefetch('colors', queryset=ProductColor.objects.prefetch_related(
+            Prefetch('designs', queryset=ProductDesign.objects.prefetch_related('images')),
+            'sizes',
+            'images'
+        ))
     )
 
-    products_with_data = []
-
+    # Flatten each product per design for easier template rendering
+    products_with_designs = []
     for product in products:
-        colors_data = []
-
-        for color in product.colors.all(): # type: ignore
-            # Build size stock per color
-            size_stock = {size: 0 for size in ["S", "M", "L", "XL"]}
-            for size_obj in color.sizes.all():
-                size_stock[size_obj.size] = size_obj.quantity
-
-            # Images for this color (general, not design-specific)
-            color_images = [img.image for img in ProductImage.objects.filter(color=color, product=product, design__isnull=True)]
-
-            # Designs for this color
-            designs_data = []
-            for d in ProductDesign.objects.filter(color=color):
-                designs_data.append({
-                    "id": d.id, # type: ignore
-                    "name": d.name,
-                    "description": d.description,
-                    "images": [img.image for img in ProductImage.objects.filter(color=color, design=d)]
+        for color in product.colors.all():
+            # If no designs, still show product+color
+            if color.designs.exists():
+                for design in color.designs.all():
+                    products_with_designs.append({
+                        "product": product,
+                        "color": color,
+                        "design": design,
+                        "image": design.images.first() or color.images.first() or None
+                    })
+            else:
+                products_with_designs.append({
+                    "product": product,
+                    "color": color,
+                    "design": None,
+                    "image": color.images.first() or None
                 })
 
-            colors_data.append({
-                "color_name": color.name,
-                "size_stock": size_stock,
-                "images": color_images,
-                "designs": designs_data
-            })
-
-        # Pick first image overall for display
-        first_image = ProductImage.objects.filter(product=product, color__isnull=False).first()
-        image = first_image.image if first_image else None
-
-        products_with_data.append({
-            "product": product,
-            "colors": colors_data,
-            "image": image
-        })
-
-    return render(request, "shop.html", {"products": products_with_data})
+    return render(request, "shop.html", {"products_with_designs": products_with_designs})
 
 
 @login_required

@@ -35,9 +35,22 @@ class ProductImagePath:
 class Product(models.Model):
     product_id = models.CharField(max_length=20, unique=True, primary_key=True)
     name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.0) #type:ignore
-    discount_percent = models.PositiveIntegerField(default=0)  # discount in %
     date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.product_id})"
+
+# ----------------- ProductType -----------------
+class ProductType(models.Model):
+    TYPE_CHOICES = [
+        ("plain", "Plain"),
+        ("printed", "Printed"),
+        ("embroidery", "Embroidery"),
+    ]
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="types")
+    type_name = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
+    discount_percent = models.PositiveIntegerField(default=0)
 
     @property
     def discounted_price(self):
@@ -46,8 +59,7 @@ class Product(models.Model):
         return self.price
 
     def __str__(self):
-        return f"{self.name} ({self.product_id})"
-
+        return f"{self.product.name} - {self.type_name}"
 
 
 # ----------------- ProductColor -----------------
@@ -80,8 +92,21 @@ class ProductDesign(models.Model):
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="designs")
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
+    type = models.ForeignKey(
+        ProductType,
+        on_delete=models.CASCADE,
+        related_name="designs",
+    )
+
+    def price(self):
+        return self.type.price if self.type else 0
+
+    def discounted_price(self):
+        return self.type.discounted_price if self.type else 0
 
     def __str__(self):
+        if self.type:
+            return f"{self.color.name} - {self.name} ({self.type.type_name})"
         return f"{self.color.name} - {self.name}"
 
 

@@ -1,13 +1,22 @@
 from django.contrib import admin
-from .models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
+from Services.models import (
+    Product, 
+    ProductType,
+    ProductColor,
+    ProductColorSize,
+    ProductDesign,
+    ProductImage,
+)
 
-# Inline for ProductImage
-class ProductImageInline(admin.TabularInline):
-    model = ProductImage
-    extra = 3  # show 3 empty forms by default
-    fields = ['image', 'color', 'design']
+# ---------------- Inline for nested objects ----------------
+class ProductTypeInline(admin.TabularInline):
+    model = ProductType
+    extra = 1
 
-# Inline models
+class ProductColorInline(admin.TabularInline):
+    model = ProductColor
+    extra = 1
+
 class ProductColorSizeInline(admin.TabularInline):
     model = ProductColorSize
     extra = 1
@@ -15,41 +24,54 @@ class ProductColorSizeInline(admin.TabularInline):
 class ProductDesignInline(admin.TabularInline):
     model = ProductDesign
     extra = 1
+    autocomplete_fields = ['type']  # helpful if you have many ProductTypes
 
-class ProductColorInline(admin.TabularInline):
-    model = ProductColor
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
     extra = 1
-    show_change_link = True
+    readonly_fields = ['image_preview']
 
-# Main admin models
+    def image_preview(self, obj):
+        if obj.image:
+            return f'<img src="{obj.image.url}" width="100" />'
+        return ""
+    image_preview.allow_tags = True
+    image_preview.short_description = 'Preview'
+
+
+# ---------------- Register main models ----------------
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "product_id", "price", "date_added")
-    search_fields = ("name", "product_id")
-    inlines = [ProductColorInline, ProductImageInline]
+    list_display = ['product_id', 'name', 'date_added']
+    inlines = [ProductTypeInline, ProductColorInline, ProductImageInline]
+
+@admin.register(ProductType)
+class ProductTypeAdmin(admin.ModelAdmin):
+    list_display = ['product', 'type_name', 'price', 'discount_percent', 'discounted_price']
+    search_fields = ['type_name', 'product__name']  # <-- REQUIRED for autocomplete_fields
 
 @admin.register(ProductColor)
 class ProductColorAdmin(admin.ModelAdmin):
-    list_display = ("name", "product")
-    search_fields = ("name", "product__name")
+    list_display = ['product', 'name']
     inlines = [ProductColorSizeInline, ProductDesignInline]
 
 @admin.register(ProductColorSize)
 class ProductColorSizeAdmin(admin.ModelAdmin):
-    list_display = ("color", "size", "quantity")
-    list_filter = ("size",)
+    list_display = ['color', 'size', 'quantity']
 
 @admin.register(ProductDesign)
 class ProductDesignAdmin(admin.ModelAdmin):
-    list_display = ("name", "color", "get_product")
-    search_fields = ("name", "color__name", "color__product__name")
-    inlines = [ProductImageInline]
-
-    def get_product(self, obj):
-        return obj.color.product
-    get_product.short_description = "Product"
+    list_display = ['color', 'name', 'type', 'price', 'discounted_price']
+    autocomplete_fields = ['type']
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ("product", "color", "design")
-    search_fields = ("product__name", "color__name", "design__name")
+    list_display = ['product', 'color', 'design', 'image']
+    readonly_fields = ['image_preview']
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return f'<img src="{obj.image.url}" width="100" />'
+        return ""
+    image_preview.allow_tags = True
+    image_preview.short_description = 'Preview'

@@ -118,7 +118,7 @@ WSGI_APPLICATION = 'Foxxy_Drip.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'FoxxyDrip',     # Replace with your Aiven database name
+        'NAME': 'FoxxyDrip1',     # Replace with your Aiven database name
         'USER': 'avnadmin',          # Replace with your Aiven database username
         'PASSWORD': 'AVNS_ZBxpNZDSgH38UEicwgp',      # Replace with your Aiven database password
         'HOST': 'url-shortner-arshgoel16-ba75.e.aivencloud.com',        # Replace with your Aiven database hostname
