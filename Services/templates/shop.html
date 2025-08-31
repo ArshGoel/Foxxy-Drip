@@ -40,18 +40,37 @@
       <div class="col-md-4 mb-4">
         <div class="card h-100 shadow-sm border-0 rounded-3 product-card">
 
-          {% if item.image %}
+          <!-- Carousel for multiple design images -->
+          {% if item.design and item.design.images.all %}
+            <div id="carousel-{{ item.design.id }}" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                {% for img in item.design.images.all %}
+                  <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{ img.image.url }}" class="d-block w-100 card-img-top" alt="{{ item.design.name }}">
+                  </div>
+                {% endfor %}
+              </div>
+              {% if item.design.images.count > 1 %}
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ item.design.id }}" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ item.design.id }}" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+              {% endif %}
+            </div>
+          {% elif item.image %}
             <img src="{{ item.image.image.url }}" class="card-img-top" alt="{{ item.product.name }}">
           {% else %}
             <img src="https://via.placeholder.com/400x400?text=No+Image" class="card-img-top" alt="{{ item.product.name }}">
           {% endif %}
 
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title fw-bold">{{ item.product.name }}</h5>
-            <p class="text-muted mb-1">{{ item.color.name }}</p>
             {% if item.design %}
-              <p class="text-muted mb-1">{{ item.design.name }}</p>
+              <h5 class="card-title fw-bold">{{ item.design.name }}</h5>
             {% endif %}
+            <p class="text-muted mb-1">{{ item.product.name }}</p>
+            <p class="text-muted mb-1"><strong>Color:</strong> {{ item.color.name }}</p>
 
             <!-- Price Section -->
             <p class="price mb-2">
@@ -63,8 +82,6 @@
                 {% else %}
                   ₹{{ item.design.type.price }}
                 {% endif %}
-              {% else %}
-                ₹{{ item.product.price }}
               {% endif %}
             </p>
 
