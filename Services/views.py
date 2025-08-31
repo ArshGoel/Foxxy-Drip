@@ -387,6 +387,8 @@ def add_to_cart(request, product_id):
         cart_item, created = CartItem.objects.get_or_create(
             user=request.user,
             product=product,
+            color=color,
+            design=design,
             size=size,
             defaults={"quantity": quantity}
         )

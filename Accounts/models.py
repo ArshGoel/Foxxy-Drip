@@ -73,20 +73,39 @@ class Address(models.Model):
     class Meta:
         verbose_name_plural = "Addresses"
 
-
+from Services.models import ProductColor,ProductDesign
 # ----------------- CART ITEM MODEL ----------------- #
 class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_items")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    size = models.CharField(max_length=5, blank=True) 
+    color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, null=True, blank=True)
+    design = models.ForeignKey(ProductDesign, on_delete=models.CASCADE, null=True, blank=True)
+    size = models.CharField(max_length=5, blank=True)
     quantity = models.PositiveIntegerField(default=1)
 
+    @property
+    def price(self):
+        """Return discounted price if available, else original price"""
+        if hasattr(self.product, 'discounted_price') and self.product.discounted_price:
+            return self.product.discounted_price
+        return self.product.price
+
     def subtotal(self):
-        return self.product.price * self.quantity # type: ignore
+        return self.price * self.quantity
+
+    def get_image(self):
+        """Return proper image for cart item"""
+        if self.design and self.design.images.exists():#type:ignore
+            return self.design.images.first().image.url#type:ignore
+        elif self.color and self.color.images.exists():#type:ignore
+            return self.color.images.first().image.url#type:ignore
+        elif self.product.images.exists():#type:ignore
+            return self.product.images.first().image.url#type:ignore
+        return "https://via.placeholder.com/100x100?text=No+Image"
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name} ({self.size}) x {self.quantity}"
-  
+
 
 # ----------------- WISHLIST MODEL ----------------- #
 class Wishlist(models.Model):

@@ -21,12 +21,9 @@
         <tbody>
             {% for item in cart_items %}
             <tr>
-                <td>
-                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="60" class="me-2">
-                    {{ item.product.name }}
-                </td>
+                <td><img src="{{ item.get_image }}" alt="{{ item.product.name }}" width="80"></td>
+                <td>{{ item.product.name }}</td>
                 <td>{{ item.size }}</td>
-                <td>₹{{ item.product.price }}</td>
                 <td>
                     <form action="{% url 'update_cart_quantity' item.id %}" method="POST" class="d-inline">
                         {% csrf_token %}
