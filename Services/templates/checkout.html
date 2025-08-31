@@ -12,17 +12,20 @@
         {% if addresses %}
             {% for addr in addresses %}
                 <div class="form-check mb-2">
-                <input class="form-check-input" type="radio" name="address" value="{{ addr.id }}" {% if addr.is_default %}checked{% endif %}>
-                <label class="form-check-label">
-                    {{ addr.receiver_name }} - {{ addr.phone }} <br>
-                    {{ addr.address_line1 }}, {{ addr.address_line2 }} <br>
-                    {{ addr.city }}, {{ addr.state }} - {{ addr.postal_code }}, {{ addr.country }}
-                </label>
+                    <input class="form-check-input" type="radio" name="address" value="{{ addr.id }}" {% if addr.is_default %}checked{% endif %}>
+                    <label class="form-check-label">
+                        {{ addr.receiver_name }} - {{ addr.phone }} <br>
+                        {{ addr.address_line1 }}, {{ addr.address_line2 }} <br>
+                        {{ addr.city }}, {{ addr.state }} - {{ addr.postal_code }}, {{ addr.country }}
+                    </label>
                 </div>
             {% endfor %}
-            {% else %}
-            <p class="text-danger">⚠️ You don’t have any addresses yet. Please add one in your profile before placing an order.</p>
-            {% endif %}
+        {% else %}
+            <p class="text-danger">
+                ⚠️ You don’t have any addresses yet. 
+                <a href="{% url 'complete_profile' %}">Complete your profile</a> to add one before placing an order.
+            </p>
+        {% endif %}
 
         <!-- Order Summary -->
         <h5 class="mt-4">Order Summary</h5>
@@ -41,7 +44,14 @@
                 <tr>
                     <td>{{ item.product.name }}</td>
                     <td>{{ item.size }}</td>
-                    <td>₹{{ item.product.price }}</td>
+                    <td>
+                        {% if item.product.types.first.discount_price %}
+                            <span class="text-success">₹{{ item.product.types.first.discount_price }}</span>
+                            <small class="text-muted"><del>₹{{ item.product.types.first.price }}</del></small>
+                        {% else %}
+                            ₹{{ item.product.types.first.price }}
+                        {% endif %}
+                    </td>
                     <td>{{ item.quantity }}</td>
                     <td>₹{{ item.subtotal }}</td>
                 </tr>

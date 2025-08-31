@@ -445,7 +445,11 @@ from django.db import transaction
 
 @login_required
 def checkout(request):
-    profile = get_object_or_404(Profile, user=request.user)
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        messages.warning(request, "Please complete your profile before checkout.")
+        return redirect("complete_profile")  # 👈 redirect if profile not found
     cart_items = CartItem.objects.filter(user=request.user)
     total = sum(item.subtotal() for item in cart_items)
 
@@ -487,41 +491,34 @@ def checkout(request):
                     size = item.size
                     qty_needed = item.quantity
 
-                    # ✅ Map size → field name
-                    size_field_map = {
-                        "XXS": "qty_xxs",
-                        "XS": "qty_xs",
-                        "S": "qty_s",
-                        "M": "qty_m",
-                        "L": "qty_l",
-                        "XL": "qty_xl",
-                        "XXL": "qty_xxl",
-                        "XXXL": "qty_xxxl",
-                    }
+                    # ✅ Find size entry through ProductColor
+                    size_entry = ProductColorSize.objects.filter(
+                        color__product=product,
+                        size=size
+                    ).first()
 
-                    if size not in size_field_map:
+                    if not size_entry:
                         messages.error(request, f"Invalid size {size} for {product.name}")
                         raise transaction.TransactionManagementError("Invalid size")
 
-                    stock_field = size_field_map[size]
-                    current_stock = getattr(product, stock_field)
-
-                    # ✅ Check stock availability
-                    if current_stock < qty_needed:
-                        messages.error(request, f"Not enough stock for {product.name} ({size}). Available: {current_stock}")
+                    if size_entry.quantity < qty_needed:
+                        messages.error(
+                            request,
+                            f"Not enough stock for {product.name} ({size}). Available: {size_entry.quantity}"
+                        )
                         raise transaction.TransactionManagementError("Insufficient stock")
 
-                    # ✅ Deduct stock
-                    setattr(product, stock_field, current_stock - qty_needed)
-                    product.save()
+                    # Deduct stock
+                    size_entry.quantity -= qty_needed
+                    size_entry.save()
 
-                    # Create OrderItem
+                    # Create order item
                     OrderItem.objects.create(
                         order=order,
                         product=product,
                         size=size,
                         quantity=qty_needed,
-                        price=product.price # type: ignore
+                        price=item.price
                     )
 
                 # Clear cart after success
