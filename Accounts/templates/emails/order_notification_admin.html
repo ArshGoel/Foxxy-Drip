@@ -18,6 +18,7 @@
       <strong>Date:</strong> {{ order.created_at|date:"d M Y, H:i" }}<br>
       <strong>User:</strong> {{ order.profile.user.username }} ({{ order.profile.user.email }})<br>
       <strong>Status:</strong> {{ order.get_status_display }}<br>
+      <strong>Payment Mode:</strong> {{ order.payment_mode }}<br>
       <strong>Total:</strong> ₹{{ order.total_price }}
     </p>
   </div>

@@ -24,6 +24,7 @@
       <strong>Order ID:</strong> #{{ order.id }}<br>
       <strong>Placed On:</strong> {{ order.created_at|date:"d M Y, H:i" }}<br>
       <strong>Status:</strong> {{ order.get_status_display }}
+      <strong>Payment Mode:</strong> {{ order.payment_mode }}
     </p>
   </div>
 
