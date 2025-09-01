@@ -69,7 +69,9 @@ class Address(models.Model):
 
     def __str__(self):
         return f"{self.receiver_name} - {self.city}"
-
+    @property
+    def full_address(self):
+        return f"{self.address_line1}, {self.address_line2}, {self.city}, {self.state} - {self.postal_code}"
     class Meta:
         verbose_name_plural = "Addresses"
 
@@ -131,11 +133,16 @@ class Order(models.Model):
         ('D', 'Delivered'),
         ('C', 'Cancelled'),
     ]
+    PAYMENT_CHOICES = [
+        ("COD", "Cash on Delivery"),
+        ("ONLINE", "Online Payment")
+    ]
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="orders")
     address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
-    status = models.CharField(max_length=2, choices=ORDER_STATUS, default='P')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_mode = models.CharField(max_length=20, choices=PAYMENT_CHOICES, default="COD")
+    status = models.CharField(max_length=2, choices=ORDER_STATUS, default='P')
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

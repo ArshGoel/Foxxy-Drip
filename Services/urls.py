@@ -29,8 +29,8 @@ urlpatterns = [
     path("admin/orders/<int:order_id>/update/", views.admin_update_order_status, name="admin_update_order_status"), #type:ignore
     path("download_backup/", views.download_backup, name="download_backup"),
 
-    # path("product/<str:code>/", views.product_detail, name="product_detail"),
-    
+    path("payment_page/", views.payment_page, name="payment_page"),
+
     path("design/<int:design_id>/", views.design_detail, name="design_detail"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
   

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Payment{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <!-- Progress Bar -->
+    <div class="checkout-progress d-flex justify-content-between align-items-center mb-5">
+        <div class="step completed">
+            <span class="circle">1</span>
+            <span class="label">Cart</span>
+        </div>
+        <div class="line"></div>
+        <div class="step completed">
+            <span class="circle">2</span>
+            <span class="label">Checkout</span>
+        </div>
+        <div class="line"></div>
+        <div class="step active">
+            <span class="circle">3</span>
+            <span class="label">Payment</span>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mb-4 text-center">💳 Payment</h2>
+
+    <!-- Payment Options -->
+    <div class="card p-4 shadow-sm rounded-3 mb-4">
+        <h2>Payment</h2>
+        {% if address %}
+    <p><strong>Deliver to:</strong> {{ address.full_address }}</p>
+    {% else %}
+    <p>No address selected. <a href="{% url 'checkout' %}">Go back</a></p>
+    {% endif %}
+
+        <h3>Choose Payment Mode</h3>
+        <form method="post">
+        {% csrf_token %}
+        <label><input type="radio" name="payment_mode" value="COD"> Cash on Delivery</label><br>
+        <label><input type="radio" name="payment_mode" value="UPI"> UPI</label><br>
+        <label><input type="radio" name="payment_mode" value="CARD"> Credit/Debit Card</label><br>
+        <button type="submit" class="btn btn-primary">Place Order</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Progress Bar Styling */
+    .checkout-progress {
+        max-width: 600px;
+        margin: 0 auto;
+        position: relative;
+    }
+    .checkout-progress .step {
+        text-align: center;
+        position: relative;
+        flex: 1;
+    }
+    .checkout-progress .circle {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        border: 2px solid #ccc;
+        background: #fff;
+    }
+    .checkout-progress .label {
+        display: block;
+        margin-top: 8px;
+        font-size: 14px;
+    }
+    .checkout-progress .line {
+        flex: none;
+        width: 100px;
+        height: 3px;
+        background: #ccc;
+        margin: 0 5px;
+    }
+    .checkout-progress .completed .circle {
+        background: #28a745;
+        color: #fff;
+        border-color: #28a745;
+    }
+    .checkout-progress .completed .label {
+        color: #28a745;
+        font-weight: 600;
+    }
+    .checkout-progress .active .circle {
+        border-color: #007bff;
+        color: #007bff;
+    }
+    .checkout-progress .active .label {
+        color: #007bff;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}

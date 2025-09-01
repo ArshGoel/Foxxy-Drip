@@ -8,37 +8,87 @@
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/shop.css' %}" />
 <style>
+/* Card image */
 .card-img-top {
     width: 100%;
-    height: 300px;
+    height: 280px;
     object-fit: cover;
+    border-radius: 10px 10px 0 0;
+    transition: transform 0.3s ease;
 }
+.card-img-top:hover {
+    transform: scale(1.05);
+}
+
+/* Card style */
+.product-card {
+    border: none;
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    background: #fff;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Price styling */
 .price {
     font-size: 1.2rem;
-    font-weight: 600;
+    font-weight: 700;
+    color: #000;
 }
 .text-strike {
     text-decoration: line-through;
     color: #888;
 }
+.badge {
+    font-size: 0.8rem;
+    border-radius: 6px;
+}
+
+/* Button styling */
 .btn-view {
     background-color: #000;
     color: #fff;
     border: none;
+    padding: 10px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 .btn-view:hover {
     background-color: #d63384;
     color: #fff;
 }
+
+/* Title */
+h2.fw-bold {
+    font-size: 2rem;
+    border-left: 5px solid #d63384;
+    padding-left: 12px;
+    margin-bottom: 30px;
+}
+
+/* Responsive grid */
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 220px;
+    }
+    h2.fw-bold {
+        font-size: 1.6rem;
+    }
+}
 </style>
 {% endblock extracss %}
 
 <div class="container mt-4">
-  <h2 class="mb-4 fw-bold">Our Collection</h2>
-  <div class="row">
+  <h2 class="mb-4 fw-bold text-center">Our Collection</h2>
+  <div class="row g-4 justify-content-center">
     {% for item in products_with_designs %}
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm border-0 rounded-3 product-card">
+      <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-center">
+        <div class="card h-100 shadow-sm border-0 rounded-3 product-card" style="max-width: 350px;">
 
           <!-- Carousel for multiple design images -->
           {% if item.design and item.design.images.all %}
@@ -52,10 +102,10 @@
               </div>
               {% if item.design.images.count > 1 %}
                 <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ item.design.id }}" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="carousel-control-prev-icon"></span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ item.design.id }}" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="carousel-control-next-icon"></span>
                 </button>
               {% endif %}
             </div>
@@ -67,13 +117,13 @@
 
           <div class="card-body d-flex flex-column">
             {% if item.design %}
-              <h5 class="card-title fw-bold">{{ item.design.name }}</h5>
+              <h5 class="card-title fw-bold text-center">{{ item.design.name }}</h5>
             {% endif %}
-            <p class="text-muted mb-1">{{ item.product.name }}</p>
-            <p class="text-muted mb-1"><strong>Color:</strong> {{ item.color.name }}</p>
+            <p class="text-muted mb-1 text-center">{{ item.product.name }}</p>
+            <p class="text-muted mb-1 text-center"><strong>Color:</strong> {{ item.color.name }}</p>
 
             <!-- Price Section -->
-            <p class="price mb-2">
+            <p class="price mb-2 text-center">
               {% if item.design and item.design.type %}
                 {% if item.design.type.discount_price %}
                   <span class="text-strike">₹{{ item.design.type.price }}</span>

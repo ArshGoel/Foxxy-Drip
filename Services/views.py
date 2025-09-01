@@ -433,14 +433,6 @@ def view_products(request):
     products = Product.objects.all()
     return render(request, "product_list.html", {"products": products})
 
-# def add_to_cart(request, product_id):
-#     cart_items = request.session.get("cart_items", [])
-#     cart_items.append(product_id)
-#     request.session["cart_items"] = cart_items
-#     messages.success(request, "Product added to cart!")
-#     return redirect("view_cart")
-
-
 from django.db import transaction
 
 @login_required
@@ -455,87 +447,22 @@ def checkout(request):
     total = sum(item.subtotal() for item in cart_items)
 
     if not cart_items:
-        messages.warning(request, "Your cart is empty. Add some products before checkout.")
+        messages.warning(request, "Your cart is empty. Add some products first.")
         return redirect("view_cart")
 
-    addresses = profile.addresses.all()  # type: ignore
+    addresses = profile.addresses.all() #type:ignore
 
     if request.method == "POST":
         address_id = request.POST.get("address")
-
-        if not addresses.exists():
-            messages.error(request, "You need to add an address before placing an order.")
-            return redirect("checkout")
-
         if not address_id:
-            messages.error(request, "Please select a delivery address.")
+            messages.error(request, "Please select an address.")
             return redirect("checkout")
 
-        address = Address.objects.filter(id=address_id, profile=profile).first()
-        if not address:
-            messages.error(request, "Invalid address selected.")
-            return redirect("checkout")
-
-        try:
-            with transaction.atomic():
-                # ✅ Create Order
-                order = Order.objects.create(
-                    profile=profile,
-                    address=address,
-                    total_price=total,
-                    status="P"
-                )
-
-                # ✅ Create OrderItems & decrease stock
-                for item in cart_items:
-                    product = item.product
-                    design = getattr(item, "design", None)  # get design if exists
-                    size = item.size
-                    qty_needed = item.quantity
-
-                    # Find size entry in ProductColorSize
-                    size_entry = ProductColorSize.objects.filter(
-                        color__product=product,
-                        size=size
-                    ).first()
-
-                    if not size_entry:
-                        messages.error(request, f"Invalid size {size} for {product.name}")
-                        raise transaction.TransactionManagementError("Invalid size")
-
-                    if size_entry.quantity < qty_needed:
-                        messages.error(
-                            request,
-                            f"Not enough stock for {product.name} ({size}). Available: {size_entry.quantity}"
-                        )
-                        raise transaction.TransactionManagementError("Insufficient stock")
-
-                    # Deduct stock
-                    size_entry.quantity -= qty_needed
-                    size_entry.save()
-
-                    # Create OrderItem with design
-                    OrderItem.objects.create(
-                        order=order,
-                        product=product,
-                        design=design,
-                        size=size,
-                        quantity=qty_needed,
-                        price=item.price
-                    )
-
-                # Clear cart
-                cart_items.delete()
-
-        except transaction.TransactionManagementError:
-            return redirect("view_cart")
-
-        send_order_emails(order, request=request)
-        messages.success(request, f"Order #{order.id} placed successfully!")  # type: ignore
-        return redirect("order_detail", order_id=order.id)  # type: ignore
+        request.session["checkout_address"] = address_id  # ✅ save temporarily
+        return redirect("payment_page")
 
     return render(request, "checkout.html", {
-        "cart_items": cart_items, 
+        "cart_items": cart_items,
         "total": total,
         "addresses": addresses
     })
@@ -553,9 +480,11 @@ def orders(request):
     orders = Order.objects.filter(profile=profile).order_by("-created_at")
     return render(request, "orders.html", {"orders": orders})
 
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+
 
 # List all orders
 @staff_member_required   # ✅ restrict to staff/admin
@@ -563,11 +492,13 @@ def admin_orders_list(request):
     orders = Order.objects.all().order_by("-created_at")
     return render(request, "admin_orders_list.html", {"orders": orders})
 
+
 # View single order
 @staff_member_required
 def admin_order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, "admin_order_detail.html", {"order": order})
+
 
 # Update order status
 @staff_member_required
@@ -582,13 +513,6 @@ def admin_update_order_status(request, order_id):
         else:
             messages.error(request, "Invalid status.")
         return redirect("admin_order_detail", order_id=order.id) # type:ignore 
-
-
-import os, zipfile, tempfile
-from django.http import FileResponse
-from django.core import management
-from django.conf import settings
-from datetime import datetime
 
 import os, zipfile, tempfile, csv
 from django.http import FileResponse
@@ -630,6 +554,83 @@ def download_backup(request):
 
     return FileResponse(open(zip_filename, "rb"), as_attachment=True, filename=f"backup_{timestamp}.zip")
 
+
 def design_detail(request, design_id):
     design = get_object_or_404(ProductDesign, id=design_id)
     return render(request, "design_detail.html", {"design": design})
+
+
+@login_required
+def payment_page(request):
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        messages.warning(request, "Please complete your profile before checkout.")
+        return redirect("complete_profile")
+
+    cart_items = CartItem.objects.filter(user=request.user)
+    total = sum(item.subtotal() for item in cart_items)
+
+    # ✅ Get address chosen in checkout
+    address_id = request.session.get("checkout_address")
+    address = Address.objects.filter(id=address_id, profile=profile).first()
+
+    if request.method == "POST":
+        payment_mode = request.POST.get("payment_mode")
+        if not payment_mode:
+            messages.error(request, "Please select a payment method.")
+            return redirect("payment_page")
+
+        try:
+            with transaction.atomic():
+                # Create Order
+                order = Order.objects.create(
+                    profile=profile,
+                    address=address,
+                    total_price=total,
+                    status="P",
+                    payment_mode=payment_mode
+                )
+
+                # Add items
+                for item in cart_items:
+                    product = item.product
+                    size = item.size
+                    qty_needed = item.quantity
+
+                    size_entry = ProductColorSize.objects.filter(
+                        color__product=product,
+                        size=size
+                    ).first()
+
+                    if not size_entry or size_entry.quantity < qty_needed:
+                        raise ValueError("Stock issue")
+
+                    size_entry.quantity -= qty_needed
+                    size_entry.save()
+
+                    OrderItem.objects.create(
+                        order=order,
+                        product=product,
+                        design=getattr(item, "design", None),
+                        size=size,
+                        quantity=qty_needed,
+                        price=item.price
+                    )
+
+                # Clear cart
+                cart_items.delete()
+
+        except Exception as e:
+            messages.error(request, f"Error placing order: {e}")
+            return redirect("view_cart")
+        
+        send_order_emails(order, request=request)
+        messages.success(request, f"Order #{order.id} placed successfully!") #type:ignore
+        return redirect("order_detail", order_id=order.id)#type:ignore
+
+    return render(request, "payment_page.html", {
+        "cart_items": cart_items,
+        "total": total,
+        "address": address
+    })
