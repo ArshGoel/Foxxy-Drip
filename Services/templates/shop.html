@@ -92,23 +92,26 @@ h2.fw-bold {
 
           <!-- Carousel for multiple design images -->
           {% if item.design and item.design.images.all %}
-            <div id="carousel-{{ item.design.id }}" class="carousel slide" data-bs-ride="carousel">
-              <div class="carousel-inner">
-                {% for img in item.design.images.all %}
-                  <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <img src="{{ img.image.url }}" class="d-block w-100 card-img-top" alt="{{ item.design.name }}">
-                  </div>
-                {% endfor %}
-              </div>
-              {% if item.design.images.count > 1 %}
-                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ item.design.id }}" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ item.design.id }}" data-bs-slide="next">
-                  <span class="carousel-control-next-icon"></span>
-                </button>
-              {% endif %}
+            <div id="carousel-{{ item.design.id }}" 
+              class="carousel slide" 
+              data-bs-interval="false" 
+              data-bs-touch="true">
+            <div class="carousel-inner">
+              {% for img in item.design.images.all %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <img src="{{ img.image.url }}" class="d-block w-100 card-img-top" alt="{{ item.design.name }}">
+                </div>
+              {% endfor %}
             </div>
+            {% if item.design.images.count > 1 %}
+              <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ item.design.id }}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ item.design.id }}" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+              </button>
+            {% endif %}
+          </div>
           {% elif item.image %}
             <img src="{{ item.image.image.url }}" class="card-img-top" alt="{{ item.product.name }}">
           {% else %}
@@ -147,4 +150,31 @@ h2.fw-bold {
     {% endfor %}
   </div>
 </div>
+<script>
+document.querySelectorAll('.carousel').forEach(carousel => {
+  let startX = 0;
+  let isDown = false;
+
+  // Mouse down
+  carousel.addEventListener('mousedown', e => {
+    isDown = true;
+    startX = e.clientX;
+  });
+
+  // Mouse up
+  carousel.addEventListener('mouseup', e => {
+    if (!isDown) return;
+    let endX = e.clientX;
+    if (startX - endX > 50) {
+      bootstrap.Carousel.getInstance(carousel).next();
+    } else if (endX - startX > 50) {
+      bootstrap.Carousel.getInstance(carousel).prev();
+    }
+    isDown = false;
+  });
+
+  // Prevent text/image dragging
+  carousel.addEventListener('dragstart', e => e.preventDefault());
+});
+</script>
 {% endblock body %}
