@@ -104,6 +104,7 @@
         <div class="mb-3">
           <label for="size" class="form-label fw-semibold">Select Size</label>
           <select name="size" id="size" class="form-select" required>
+            <option value="" disabled selected>-- Select Size --</option>
             {% for size in design.color.sizes.all %}
               <option value="{{ size.size }}">{{ size.get_size_display }}</option>
             {% endfor %}

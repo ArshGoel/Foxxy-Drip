@@ -377,8 +377,13 @@ def add_to_cart(request, design_id):
     # Design already links to product, color, and type
     product = design.color.product
     color = design.color
-    size = request.POST.get("size")   # must be chosen
+    size = request.POST.get("size")  # must be chosen
     quantity = int(request.POST.get("quantity", 1))
+
+    # ✅ Ensure size is selected
+    if not size:
+        messages.error(request, "Please select a size before adding to cart.")
+        return redirect(request.META.get("HTTP_REFERER", "shop"))  # send back to product page
 
     # Create / update CartItem
     cart_item, created = CartItem.objects.get_or_create(
@@ -386,7 +391,7 @@ def add_to_cart(request, design_id):
         product=product,
         color=color,
         design=design,
-        size=size or "",
+        size=size,
         defaults={"quantity": quantity}
     )
 
@@ -394,6 +399,7 @@ def add_to_cart(request, design_id):
         cart_item.quantity += quantity
         cart_item.save()
 
+    messages.success(request, f"{product.name} ({size}) added to cart.")
     return redirect("view_cart")
 
 

@@ -78,10 +78,14 @@ class ProductColor(models.Model):
 # ----------------- ProductColorSize -----------------
 class ProductColorSize(models.Model):
     SIZE_CHOICES = [
+        ("XXS", "Extra Extra Small"),
+        ("XS", "Extra Small"),
         ("S", "Small"),
         ("M", "Medium"),
         ("L", "Large"),
-        ("XL", "Extra Large")
+        ("XL", "Extra Large"),
+        ("XXL", "Extra Extra Large"),
+        ("XXXL", "Extra Extra Extra Large")
     ]
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="sizes")
     size = models.CharField(max_length=5, choices=SIZE_CHOICES)
