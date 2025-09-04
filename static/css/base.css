@@ -439,9 +439,7 @@ btn-login {
     transition: color 0.3s ease;
     text-shadow: 0 0 5px #fff;
 }
-.first-column {
-    margin-right: 100px;
-}
+
 
 .wishlist-icon i {
   transition: color 0.3s ease;
