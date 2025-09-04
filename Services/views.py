@@ -631,7 +631,7 @@ def payment_page(request):
             messages.error(request, f"Error placing order: {e}")
             return redirect("view_cart")
         
-        send_order_emails(order, request=request)
+        # send_order_emails(order, request=request)
         messages.success(request, f"Order #{order.id} placed successfully!") #type:ignore
         return redirect("order_detail", order_id=order.id)#type:ignore
 
