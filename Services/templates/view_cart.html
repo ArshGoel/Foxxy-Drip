@@ -126,9 +126,12 @@
                     </td>
                     <td class="fw-bold">₹{{ item.subtotal }}</td>
                     <td class="text-center">
-                        <a href="{% url 'remove_cart_item' item.id %}" class="btn btn-outline-danger btn-sm">
-                            <i class="bi bi-trash"></i>
-                        </a>
+                        <form action="{% url 'remove_cart_item' item.id %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
@@ -167,9 +170,12 @@
 
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <span class="fw-bold">₹{{ item.subtotal }}</span>
-                            <a href="{% url 'remove_cart_item' item.id %}" class="btn btn-outline-danger btn-sm">
-                                <i class="bi bi-trash"></i>
-                            </a>
+                            <form action="{% url 'remove_cart_item' item.id %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

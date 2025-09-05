@@ -431,8 +431,11 @@ def update_cart_quantity(request, item_id):
 @login_required
 def remove_cart_item(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id, user=request.user)
-    cart_item.delete()
-    messages.success(request, "Item removed from cart.")
+    
+    if request.method == "POST":
+        cart_item.delete()
+        messages.success(request, "Item removed from cart.")
+    
     return redirect("view_cart")
 
 def view_products(request):
@@ -601,11 +604,13 @@ def payment_page(request):
                 # Add items
                 for item in cart_items:
                     product = item.product
+                    color = item.color
                     size = item.size
                     qty_needed = item.quantity
 
+                    # Match correct color + size
                     size_entry = ProductColorSize.objects.filter(
-                        color__product=product,
+                        color=color,
                         size=size
                     ).first()
 
@@ -624,6 +629,7 @@ def payment_page(request):
                         price=item.price
                     )
 
+
                 # Clear cart
                 cart_items.delete()
 
@@ -631,7 +637,7 @@ def payment_page(request):
             messages.error(request, f"Error placing order: {e}")
             return redirect("view_cart")
         
-        # send_order_emails(order, request=request)
+        send_order_emails(order, request=request)
         messages.success(request, f"Order #{order.id} placed successfully!") #type:ignore
         return redirect("order_detail", order_id=order.id)#type:ignore
 
