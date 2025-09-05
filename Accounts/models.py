@@ -17,41 +17,26 @@ def profile_picture_upload_path(instance, filename):
     filename = f"{instance.user.username}-{now().strftime('%d_%m_%Y_%H%M%S')}.{ext}"
     
     # Save inside "profile_images/"
-    return os.path.join('profile_images', filename)
+    return "/static/images/logo.jpg"
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
         ('O', 'Other'),
     ]
-    profile_picture = models.ImageField(upload_to=profile_picture_upload_path,blank=True,null=True)
+    
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
-
     date_joined = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username
-    
-@receiver(post_delete, sender=Profile)
-def delete_profile_picture(sender, instance, **kwargs):
-    if instance.profile_picture:
-        instance.profile_picture.delete(save=False)
 
-@receiver(pre_save, sender=Profile)
-def auto_delete_old_profile_picture_on_change(sender, instance, **kwargs):
-    if not instance.pk:
-        return  
-    try:
-        old_pic = Profile.objects.get(pk=instance.pk).profile_picture
-    except Profile.DoesNotExist:
-        return
-    new_pic = instance.profile_picture
-    if old_pic and (not new_pic or old_pic != new_pic):
-        old_pic.delete(save=False)
+    
 
 
 # ----------------- ADDRESS MODEL ----------------- #

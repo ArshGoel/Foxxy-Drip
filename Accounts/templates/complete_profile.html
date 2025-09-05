@@ -10,11 +10,11 @@
         <form method="POST" enctype="multipart/form-data" class="needs-validation">
             {% csrf_token %}
 
-            <!-- Profile Picture -->
+            {% comment %} <!-- Profile Picture -->
             <div class="mb-3">
                 <label class="form-label">Profile Picture</label>
                 <input type="file" name="profile_picture" class="form-control" required>
-            </div>
+            </div>{% endcomment %}
             
             <!-- First Name -->
             <div class="mb-3">
