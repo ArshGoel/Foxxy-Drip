@@ -130,12 +130,14 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to=ProductImagePath())
 
     def __str__(self):
-        parts = [self.product.name]
+        parts = []
+        if self.product:
+            parts.append(self.product.name)
         if self.color:
             parts.append(self.color.name)
         if self.design:
             parts.append(self.design.name)
-        return " - ".join(parts)
+        return " - ".join(parts) if parts else "Unnamed Image"
 
 
 # ----------------- Auto-delete image files -----------------
