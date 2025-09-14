@@ -8,6 +8,16 @@
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/shop.css' %}" />
 <style>
+/* Global background and text */
+body {
+    background-color: #000;
+    color: #fff;
+}
+
+.container {
+    background-color: #000;
+}
+
 /* Card image */
 .card-img-top {
     width: 100%;
@@ -26,18 +36,19 @@
     border-radius: 12px;
     transition: all 0.3s ease-in-out;
     overflow: hidden;
-    background: #fff;
+    background: #111;
+    color: #fff;
 }
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 18px rgba(255, 255, 255, 0.1);
 }
 
 /* Price styling */
 .price {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #000;
+    color: #fff;
 }
 .text-strike {
     text-decoration: line-through;
@@ -46,11 +57,13 @@
 .badge {
     font-size: 0.8rem;
     border-radius: 6px;
+    background-color: #d63384;
+    color: #fff;
 }
 
 /* Button styling */
 .btn-view {
-    background-color: #000;
+    background-color: #333;
     color: #fff;
     border: none;
     padding: 10px;
@@ -62,16 +75,26 @@
     background-color: #d63384;
     color: #fff;
 }
-
+.product-card .text-muted {
+    color: #fff !important;
+}
 /* Title */
 h2.fw-bold {
     font-size: 2rem;
-    border-left: 5px solid #d63384;
     padding-left: 12px;
     margin-bottom: 30px;
+    color: #fff;
 }
 
-/* Responsive grid */
+/* Card text */
+.card-title {
+    color: #fff;
+}
+.text-muted {
+    color: #ccc;
+}
+
+/* Responsive adjustments for mobile */
 @media (max-width: 768px) {
     .card-img-top {
         height: 220px;
@@ -79,7 +102,24 @@ h2.fw-bold {
     h2.fw-bold {
         font-size: 1.6rem;
     }
+    .card-title {
+        font-size: 1rem;
+    }
+    .text-muted {
+        font-size: 0.85rem;
+    }
+    .price {
+        font-size: 1rem;
+    }
+    .btn-view {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+    .badge {
+        font-size: 0.7rem;
+    }
 }
+
 </style>
 {% endblock extracss %}
 
@@ -87,7 +127,7 @@ h2.fw-bold {
   <h2 class="mb-4 fw-bold text-center">Our Collection</h2>
   <div class="row g-4 justify-content-center">
     {% for item in products_with_designs %}
-      <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-center">
+      <div class="col-6 col-md-4 d-flex justify-content-center">
         <div class="card h-100 shadow-sm border-0 rounded-3 product-card" style="max-width: 350px;">
 
           <!-- Carousel for multiple design images -->
