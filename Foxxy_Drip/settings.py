@@ -121,7 +121,7 @@ WSGI_APPLICATION = 'Foxxy_Drip.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Try',     # Replace with your Aiven database name
+        'NAME': 'FoxxyDrip1',     # Replace with your Aiven database name
         'USER': 'avnadmin',          # Replace with your Aiven database username
         'PASSWORD': 'AVNS_ZBxpNZDSgH38UEicwgp',      # Replace with your Aiven database password
         'HOST': 'url-shortner-arshgoel16-ba75.e.aivencloud.com',        # Replace with your Aiven database hostname
@@ -183,9 +183,3 @@ LOGOUT_URL = "logout"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "login"
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dgut88pus',
-    'API_KEY': '314851692511987',
-    'API_SECRET': 'X8cUOnRdStDkSKO86vugwCQukx8'
-}
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
