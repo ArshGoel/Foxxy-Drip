@@ -580,7 +580,7 @@ def payment_page(request):
     cart_items = CartItem.objects.filter(user=request.user)
     total = sum(item.subtotal() for item in cart_items)
 
-    # ✅ Get address chosen in checkout
+    # ✅ Get address chosen in checkout (if any)
     address_id = request.session.get("checkout_address")
     address = Address.objects.filter(id=address_id, profile=profile).first()
 
@@ -590,25 +590,30 @@ def payment_page(request):
             messages.error(request, "Please select a payment method.")
             return redirect("payment_page")
 
+        # 🚫 Prevent empty orders
+        if not cart_items.exists() or total <= 0:
+            messages.error(request, "Your cart is empty.")
+            return redirect("view_cart")
+
         try:
             with transaction.atomic():
-                # Create Order
+                # ✅ Create Order
                 order = Order.objects.create(
                     profile=profile,
                     address=address,
                     total_price=total,
-                    status="P",
+                    status="P",  # Pending
                     payment_mode=payment_mode
                 )
 
-                # Add items
+                # ✅ Add items to the order
                 for item in cart_items:
                     product = item.product
                     color = item.color
                     size = item.size
                     qty_needed = item.quantity
 
-                    # Match correct color + size
+                    # Match correct color + size entry
                     size_entry = ProductColorSize.objects.filter(
                         color=color,
                         size=size
@@ -629,18 +634,19 @@ def payment_page(request):
                         price=item.price
                     )
 
-
-                # Clear cart
+                # ✅ Clear cart
                 cart_items.delete()
 
         except Exception as e:
             messages.error(request, f"Error placing order: {e}")
             return redirect("view_cart")
-        
-        send_order_emails(order, request=request)
-        messages.success(request, f"Order #{order.id} placed successfully!") #type:ignore
-        return redirect("order_detail", order_id=order.id)#type:ignore
 
+        # ✅ Send confirmation email & success message
+        send_order_emails(order, request=request)
+        messages.success(request, f"Order #{order.id} placed successfully!")  # type:ignore
+        return redirect("order_detail", order_id=order.id)  # type:ignore
+
+    # GET request → show payment page
     return render(request, "payment_page.html", {
         "cart_items": cart_items,
         "total": total,
