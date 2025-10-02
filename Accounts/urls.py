@@ -16,4 +16,5 @@ urlpatterns = [
     path('verify/<str:username>/', views.verify, name='verify'),
     path('validate', views.validate, name='validate'),
     path('complete_profile', views.complete_profile, name='complete_profile'),
+    path('all-products-designs/', views.all_products_designs_view, name='all_products_designs'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

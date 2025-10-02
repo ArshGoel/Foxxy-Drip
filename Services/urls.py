@@ -35,5 +35,6 @@ urlpatterns = [
 
     path("sessions/", views.active_sessions, name="active_sessions"),
     path("sessions/logout/<str:session_key>/", views.logout_other_session, name="logout_other_session"),
+    
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
   

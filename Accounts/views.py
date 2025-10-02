@@ -14,7 +14,9 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from allauth.socialaccount.models import SocialAccount
-
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from .models import Product, ProductDesign
 # ------------------------ Clean Email ------------------------ #
 def send_contact_email(name, email, message):
     subject = f"Foxxy Drip | New Contact Message from {name}"
@@ -82,6 +84,14 @@ def send_otp_email(name, email, otp):
 # views.py
 from django.shortcuts import render
 from .models import ProductDesign
+
+def all_products_designs_view(request):
+    # Prefetch related data to reduce queries
+    products = Product.objects.prefetch_related('colors__designs__images', 'colors__designs__type')
+    context = {
+        'products': products
+    }
+    return render(request, 'all_products_designs.html', context)
 
 def home(request):
     cart_count = 0

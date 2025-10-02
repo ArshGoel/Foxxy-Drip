@@ -376,7 +376,7 @@ def add_to_cart(request, design_id):
     design = get_object_or_404(ProductDesign, id=design_id)
 
     # Design already links to product, color, and type
-    product = design.color.product
+    product = design.color.product # type: ignore
     color = design.color
     size = request.POST.get("size")  # must be chosen
     quantity = int(request.POST.get("quantity", 1))
