@@ -20,46 +20,74 @@
     {% for product in products %}
         <div class="product-card p-3 bg-white rounded shadow-sm">
             <h2>{{ product.name }} <small class="text-muted">({{ product.product_id }})</small></h2>
-            
-            {% comment %} Group designs by type {% endcomment %}
+
+            {% for color in product.colors.all %}
+                <div class="color-section">
+                    <h4>Color: {{ color.name }}</h4>
+
+                    {% comment %} Group designs by type for this color {% endcomment %}
                     {% regroup color.designs.all by type as design_by_type %}
 
-                    {% for color in product.colors.all %}
-                    <div class="color-section">
-
-                        {% comment %} Group designs by type object {% endcomment %}
-                        {% regroup color.designs.all by type as design_by_type %}
-
-                        {% for type_group in design_by_type %}
-                            {% if type_group.grouper %}
-                                <h5>Type: {{ type_group.grouper.type_name }}</h5>
-                            {% else %}
-                                <h5>Type: No type</h5>
-                            {% endif %}
-
-                            <div class="row g-3">
-                                {% for design in type_group.list %}
-                                    <div class="col-12 col-md-4 design-card">
-                                        <div class="card h-100">
-                                            {% if design.images.all %}
-                                                <img src="{{ design.images.all.0.image.url }}" class="card-img-top" alt="{{ design.name }}">
-                                            {% else %}
-                                                <img src="{% static 'no-image.png' %}" class="card-img-top" alt="No Image">
-                                            {% endif %}
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{ design.name }}</h5>
-                                                <p class="card-text">
-                                                    Price: ${{ design.price }}<br>
-                                                    Discounted: ${{ design.discounted_price }}
-                                                </p>
+                    {% for type_group in design_by_type %}
+                    <div class="type-section">
+                        {% if type_group.grouper %}
+                            <h5>Type: {{ type_group.grouper.type_name }}</h5>
+                        {% else %}
+                            <h5>Type: No type</h5>
+                        {% endif %}
+                        <div class="row g-3">
+                            {% for design in type_group.list %}
+                                <div class="col-12 col-md-4 design-card">
+                                <div class="card h-100">
+                                    {% if design.images.count > 1 %}
+                                        <!-- Carousel for multiple images -->
+                                        <div id="carousel-{{ design.id }}" class="carousel slide" data-bs-ride="carousel">
+                                            <div class="carousel-inner">
+                                                {% for img in design.images.all %}
+                                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                        <img src="{{ img.image.url }}" class="d-block w-100" alt="{{ design.name }}">
+                                                    </div>
+                                                {% endfor %}
                                             </div>
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ design.id }}" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ design.id }}" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
                                         </div>
+                                    {% elif design.images.count == 1 %}
+                                        <!-- Single image -->
+                                        <img src="{{ design.images.all.0.image.url }}" class="card-img-top" alt="{{ design.name }}">
+                                    {% else %}
+                                        <!-- Fallback if no image -->
+                                        <img src="{% static 'no-image.png' %}" class="card-img-top" alt="No Image">
+                                    {% endif %}
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ design.name }}</h5>
+                                        <p class="design-color">
+                                            Colors: {% for color in product.colors.all %}
+                                                        {% if design in color.designs.all %}
+                                                            {{ color.name }}{% if not forloop.last %}, {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                        </p>
+                                        <p class="card-text">
+                                            Price: ${{ design.price }}<br>
+                                            Discounted: ${{ design.discounted_price }}
+                                        </p>
                                     </div>
-                                {% endfor %}
+                                </div>
                             </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
                 {% endfor %}
+                </div>
+            {% endfor %}
         </div>
     {% endfor %}
 </div>

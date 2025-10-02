@@ -84,13 +84,33 @@ def send_otp_email(name, email, otp):
 # views.py
 from django.shortcuts import render
 from .models import ProductDesign
+from django.shortcuts import render
+from django.db.models import Prefetch, Case, When, IntegerField
+from .models import Product, ProductColor, ProductDesign
 
+# Define the desired type order
+TYPE_ORDER = ['printed', 'plain', 'embroidery']
 def all_products_designs_view(request):
-    # Prefetch related data to reduce queries
-    products = Product.objects.prefetch_related('colors__designs__images', 'colors__designs__type')
-    context = {
-        'products': products
-    }
+    # Annotate designs with custom ordering
+    custom_order = Case(
+        *[When(type__type_name=t, then=pos) for pos, t in enumerate(TYPE_ORDER)],
+        output_field=IntegerField()
+    )
+
+    # Prefetch designs for each color, ordering by type custom order
+    color_qs = ProductColor.objects.prefetch_related(
+        Prefetch(
+            'designs',
+            queryset=ProductDesign.objects.prefetch_related('images', 'type').order_by(custom_order)
+        )
+    )
+
+    # Prefetch colors for each product
+    products = Product.objects.prefetch_related(
+        Prefetch('colors', queryset=color_qs)
+    )
+
+    context = {'products': products}
     return render(request, 'all_products_designs.html', context)
 
 def home(request):
