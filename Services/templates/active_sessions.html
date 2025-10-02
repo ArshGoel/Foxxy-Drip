@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% block title %}Active Sessions{% endblock %}
+
+{% block body %}
+<h2 class="title">💻 Active Sessions</h2>
+
+{% if sessions %}
+<div class="session-container">
+  {% for session in sessions %}
+  <div class="session-card">
+
+    <!-- Device / Browser Icon -->
+    <div class="session-header">
+      <div class="device-icon">
+        {% if "Mobile" in session.user_agent %}
+          📱
+        {% elif "iPad" in session.user_agent or "Tablet" in session.user_agent %}
+          📟
+        {% else %}
+          🖥️
+        {% endif %}
+      </div>
+      <div class="browser-info">
+        <p class="browser-name">
+          {% if "Chrome" in session.user_agent %}Chrome
+          {% elif "Firefox" in session.user_agent %}Firefox
+          {% elif "Edge" in session.user_agent %}Edge
+          {% elif "Safari" in session.user_agent %}Safari
+          {% else %}Unknown Browser
+          {% endif %}
+        </p>
+        <p class="user-agent">{{ session.user_agent|default:"Unknown" }}</p>
+      </div>
+    </div>
+
+    <!-- Session Info -->
+    <div class="session-info">
+      <strong>IP:</strong> {{ session.ip }}
+    </div>
+    <div class="session-info">
+      <strong>Last Activity:</strong> {{ session.last_activity }}
+    </div>
+
+    <!-- Buttons -->
+    <div class="session-actions">
+      {% if session.session_key != request.session.session_key %}
+        <form method="POST" action="{% url 'logout_other_session' session.session_key %}">
+          {% csrf_token %}
+          <button type="submit" class="btn logout-btn"
+                  onclick="return confirm('Are you sure you want to log out this session?');">
+            🔒 Log Out
+          </button>
+        </form>
+      {% else %}
+        <button class="btn current-btn" disabled>✅ Current Session</button>
+      {% endif %}
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="no-sessions">No active sessions found.</p>
+{% endif %}
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+}
+
+.title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.session-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.session-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 300px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.session-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+.session-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.device-icon {
+    font-size: 2rem;
+    margin-right: 10px;
+}
+
+.browser-info .browser-name {
+    font-weight: bold;
+    margin: 0;
+}
+
+.browser-info .user-agent {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.session-info {
+    margin-bottom: 10px;
+}
+
+.session-info strong {
+    display: inline-block;
+    width: 120px;
+}
+
+.session-actions {
+    margin-top: 10px;
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    color: #fff;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.logout-btn {
+    background-color: #e74c3c;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+.current-btn {
+    background-color: #27ae60;
+    cursor: default;
+}
+
+.current-btn:disabled {
+    opacity: 0.9;
+}
+
+.no-sessions {
+    text-align: center;
+    color: #555;
+    font-size: 1.2rem;
+    margin-top: 20px;
+}
+</style>
+{% endblock body %}

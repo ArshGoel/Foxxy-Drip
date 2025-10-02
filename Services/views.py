@@ -9,6 +9,9 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from user_sessions.models import Session
+from django.shortcuts import render, redirect
 
 def send_order_emails(order, request=None):
     """
@@ -652,3 +655,16 @@ def payment_page(request):
         "total": total,
         "address": address
     })
+
+
+@login_required
+def active_sessions(request):
+    # List all sessions for this user
+    sessions = Session.objects.filter(user=request.user)
+    return render(request, "active_sessions.html", {"sessions": sessions})
+
+@login_required
+def logout_other_session(request, session_key):
+    # End a specific session (other than current one)
+    Session.objects.filter(user=request.user, session_key=session_key).delete()
+    return redirect("active_sessions")

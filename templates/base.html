@@ -62,6 +62,7 @@
                     <li class="nav-item">
                         <a class="nav-link {% block contactusactive %}{% endblock contactusactive %}" href="{% url "contactus" %}">Contact us</a>
                     </li>
+                   
                     {% endif %}
                     {% if request.user.is_authenticated %}
                         {% if request.user.is_superuser %}
@@ -110,6 +111,7 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'active_sessions' %}">Active Sessions</a></li>
                                 {% if request.user.is_superuser %}
                                 <li><a class="dropdown-item" href="{% url 'admin_orders_list' %}">All Orders</a></li>
                                 {% else %}

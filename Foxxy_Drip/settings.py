@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.facebook",
     "allauth.socialaccount.providers.github",
-
+    'user_sessions',
     "cloudinary_storage"
 ]
 
@@ -81,6 +81,7 @@ SOCIALACCOUNT_PROVIDERS = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'user_sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -89,6 +90,9 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     "allauth.account.middleware.AccountMiddleware"
 ]
+
+SESSION_ENGINE = "user_sessions.backends.db"# default
+SESSION_COOKIE_AGE = 1209600 
 
 ROOT_URLCONF = 'Foxxy_Drip.urls'
 

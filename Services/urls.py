@@ -32,5 +32,8 @@ urlpatterns = [
     path("payment_page/", views.payment_page, name="payment_page"),
 
     path("design/<int:design_id>/", views.design_detail, name="design_detail"),
+
+    path("sessions/", views.active_sessions, name="active_sessions"),
+    path("sessions/logout/<str:session_key>/", views.logout_other_session, name="logout_other_session"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
   
