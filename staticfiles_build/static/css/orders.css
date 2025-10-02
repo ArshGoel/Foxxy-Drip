@@ -1,0 +1,68 @@
+/* Page title */
+h2.page-title {
+  font-weight: 700;
+  font-size: 2rem;
+  border-left: 5px solid #d63384;
+  padding-left: 12px;
+  margin-bottom: 30px;
+}
+
+/* Order Card */
+.order-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+.order-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Header */
+.order-card .card-header {
+  background: linear-gradient(45deg, #000, #d63384);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Table images */
+.order-items img {
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Responsive Table */
+@media (max-width: 768px) {
+  .order-items table thead {
+    display: none;
+  }
+  .order-items table,
+  .order-items tbody,
+  .order-items tr,
+  .order-items td {
+    display: block;
+    width: 100%;
+  }
+  .order-items tr {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+  }
+  .order-items td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+  .order-items td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 15px;
+    font-weight: bold;
+    text-align: left;
+    color: #555;
+  }
+}

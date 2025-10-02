@@ -4,60 +4,7 @@
 
 {% block body %}
 {% block extracss %}
-<style>
-    /* Progress Bar Styling */
-    .checkout-progress {
-        max-width: 600px;
-        margin: 0 auto;
-        position: relative;
-    }
-    .checkout-progress .step {
-        text-align: center;
-        position: relative;
-        flex: 1;
-    }
-    .checkout-progress .circle {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        border: 2px solid #ccc;
-        background: #fff;
-    }
-    .checkout-progress .label {
-        display: block;
-        margin-top: 8px;
-        font-size: 14px;
-    }
-    .checkout-progress .line {
-        flex: none;
-        width: 100px;
-        height: 3px;
-        background: #ccc;
-        margin: 0 5px;
-    }
-    .checkout-progress .completed .circle {
-        background: #28a745;
-        color: #fff;
-        border-color: #28a745;
-    }
-    .checkout-progress .completed .label {
-        color: #28a745;
-        font-weight: 600;
-    }
-    .checkout-progress .active .circle {
-        border-color: #007bff;
-        color: #007bff;
-    }
-    .checkout-progress .active .label {
-        color: #007bff;
-        font-weight: 600;
-    }
-</style>
-
+<link rel="stylesheet" href="{% static 'css/view_cart.css' %}">
 {% endblock extracss %}
 <div class="container py-4">
 <!-- Progress Bar -->
