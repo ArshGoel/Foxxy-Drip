@@ -1,17 +1,20 @@
-import json
-from django.contrib import messages
-from django.shortcuts import render
-from Accounts.models import Profile,Address,CartItem, Order, OrderItem
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, ProductImage
-from django.contrib.auth.decorators import login_required
+from django.apps import apps
+from datetime import datetime
+from django.urls import reverse
 from django.conf import settings
+from django.db import transaction
+import os, zipfile, tempfile, csv
+from django.contrib import messages
+from django.http import FileResponse
+from user_sessions.models import Session
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from user_sessions.models import Session
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
+from Accounts.models import Profile,Address,CartItem, Order, OrderItem
+from django.contrib.admin.views.decorators import staff_member_required
+from .models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
+
 
 def send_order_emails(order, request=None):
     """
@@ -123,12 +126,14 @@ def manage_address(request):
     addresses = profile.addresses.all()  # type: ignore
     return render(request, "address/manage_address.html", {"addresses": addresses})
 
+
 @login_required
 def delete_address(request, address_id):
     address = get_object_or_404(Address, id=address_id, profile__user=request.user)
     address.delete()
     messages.success(request, "Address deleted successfully!")
     return redirect("manage_address")
+
 
 @login_required
 def make_default_address(request, address_id):
@@ -144,6 +149,7 @@ def make_default_address(request, address_id):
 
     messages.success(request, "Default address updated successfully!")
     return redirect("manage_address")
+
 
 @login_required
 def edit_address(request, address_id):
@@ -172,13 +178,10 @@ def edit_address(request, address_id):
 
     return render(request, "address/edit_address.html", {"address": address})
 
+
 def wishlist(request):
     return render(request, 'wishlist.html') 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
 
 @login_required
 def upload_product(request):
@@ -324,11 +327,11 @@ def edit_product(request, product_id):
     })
 
 
-# ---------- Product List ----------
 def product_list(request):
     products = Product.objects.all().order_by('-date_added')
 
     return render(request, "product_list.html", {"products": products})
+
 
 def product_designs_view(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
@@ -339,11 +342,7 @@ def product_designs_view(request, product_id):
             designs.append({"color": color.name, "design": design, "images": images})
     return render(request, "product_designs.html", {"product": product, "designs": designs})
 
-# ---------- View Single Product ----------
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product
 
-# @login_required
 def view_product(request, pk):
     product = get_object_or_404(Product, product_id=pk)
 
@@ -369,7 +368,6 @@ def view_product(request, pk):
             return redirect("view_cart")
 
     return render(request, "view_product.html", {"product": product})
-
 
 
 @login_required
@@ -441,11 +439,11 @@ def remove_cart_item(request, item_id):
     
     return redirect("view_cart")
 
+
 def view_products(request):
     products = Product.objects.all()
     return render(request, "product_list.html", {"products": products})
 
-from django.db import transaction
 
 @login_required
 def checkout(request):
@@ -493,26 +491,18 @@ def orders(request):
     return render(request, "orders.html", {"orders": orders})
 
 
-from django.contrib.admin.views.decorators import staff_member_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-
-
-# List all orders
-@staff_member_required   # ✅ restrict to staff/admin
+@staff_member_required  
 def admin_orders_list(request):
     orders = Order.objects.all().order_by("-created_at")
     return render(request, "admin_orders_list.html", {"orders": orders})
 
 
-# View single order
 @staff_member_required
 def admin_order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, "admin_order_detail.html", {"order": order})
 
 
-# Update order status
 @staff_member_required
 def admin_update_order_status(request, order_id):
     order = get_object_or_404(Order, id=order_id)
@@ -526,11 +516,6 @@ def admin_update_order_status(request, order_id):
             messages.error(request, "Invalid status.")
         return redirect("admin_order_detail", order_id=order.id) # type:ignore 
 
-import os, zipfile, tempfile, csv
-from django.http import FileResponse
-from django.apps import apps
-from django.conf import settings
-from datetime import datetime
 
 @staff_member_required
 def download_backup(request):
@@ -662,6 +647,7 @@ def active_sessions(request):
     # List all sessions for this user
     sessions = Session.objects.filter(user=request.user)
     return render(request, "active_sessions.html", {"sessions": sessions})
+
 
 @login_required
 def logout_other_session(request, session_key):
