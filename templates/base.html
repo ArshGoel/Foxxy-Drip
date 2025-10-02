@@ -68,6 +68,9 @@
                         <li class="nav-item">
                             <a class="nav-link {% block uploadproductactive %}{% endblock uploadproductactive %}" href="{% url 'upload_product' %}">Manage Product</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% block ordersactive %}{% endblock ordersactive %}" href="{% url 'admin_orders_list' %}">Manage Orders</a>
+                        </li>
                         {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="https://wa.me/919121759882">Customize</a>

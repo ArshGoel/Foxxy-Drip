@@ -1,8 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Order #{{ order.id }} - Admin{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
+<div class="container mt-4 mb-4">
     <h2>Order #{{ order.id }}</h2>
     <p><strong>User:</strong> {{ order.profile.user.username }}</p>
     <p><strong>Status:</strong> {{ order.get_status_display }}</p>
@@ -22,6 +23,8 @@
         <thead>
             <tr>
                 <th>Product</th>
+                <th>Design</th>
+                <th>Image</th>
                 <th>Size</th>
                 <th>Price</th>
                 <th>Qty</th>
@@ -32,6 +35,20 @@
             {% for item in order.items.all %}
             <tr>
                 <td>{{ item.product.name }}</td>
+                <td>
+                    {% if item.design %}
+                        {{ item.design.name }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.design and item.design.images.first %}
+                        <img src="{{ item.design.images.first.image.url }}" alt="{{ item.design.name }}" style="height:50px; width:auto;">
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
                 <td>{{ item.size }}</td>
                 <td>₹{{ item.price }}</td>
                 <td>{{ item.quantity }}</td>
@@ -53,7 +70,7 @@
     </form>
 
     <div class="mt-3">
-        <a href="{% url 'admin_orders_list' %}" class="btn btn-secondary">Back to Orders</a>
+        <a href="{% url 'admin_orders_list' %}" class="btn btn-primary">Back to Orders</a>
     </div>
 </div>
 {% endblock %}
