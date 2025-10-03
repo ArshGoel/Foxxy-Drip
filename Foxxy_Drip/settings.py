@@ -1,13 +1,13 @@
 import os
-import cloudinary_storage
+from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'x7qba81wr%o2d31pp_m(i*!pah(5&5)o)8h7oaybd&pixn!0ki'
+SECRET_KEY = config("SECRET_KEY")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="").split(",") #type:ignore
 
 CSRF_TRUSTED_ORIGINS = [
     "https://foxxy-drip.onrender.com",
@@ -29,14 +29,12 @@ INSTALLED_APPS = [
     'Services',
 
     'whitenoise.runserver_nostatic',
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
-    "allauth.socialaccount.providers.facebook",
-    "allauth.socialaccount.providers.github",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'user_sessions',
-    "cloudinary_storage"
+    'cloudinary_storage',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -46,35 +44,6 @@ SOCIALACCOUNT_PROVIDERS = {
             "email"
         ],
         "AUTH_PARAMS":{"access_type": "online"}
-    },
-    'facebook': {
-        'METHOD': 'oauth2',  # Set to 'js_sdk' to use the Facebook connect SDK
-        'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
-        'SCOPE': ['email', 'public_profile'],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-        'INIT_PARAMS': {'cookie': True},
-        'FIELDS': [
-            'id',
-            'first_name',
-            'last_name',
-            'middle_name',
-            'name',
-            'name_format',
-            'picture',
-            'short_name'
-        ],
-        'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': 'path.to.callable',
-        'VERIFIED_EMAIL': False,
-        'VERSION': 'v13.0',
-        'GRAPH_API_URL': 'https://graph.facebook.com/v13.0',
-    },
-    'github': {
-        'SCOPE': [
-            'user',
-            'repo',
-            'read:org',
-        ],
     }
 }
  
@@ -88,7 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    "allauth.account.middleware.AccountMiddleware"
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 SESSION_ENGINE = "user_sessions.backends.db"# default
@@ -125,14 +94,14 @@ WSGI_APPLICATION = 'Foxxy_Drip.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'FoxxyDrip1',     # Replace with your Aiven database name
-        'USER': 'avnadmin',          # Replace with your Aiven database username
-        'PASSWORD': 'AVNS_ZBxpNZDSgH38UEicwgp',      # Replace with your Aiven database password
-        'HOST': 'url-shortner-arshgoel16-ba75.e.aivencloud.com',        # Replace with your Aiven database hostname
-        'PORT': '12743',        # Replace with your Aiven database port
+        'NAME': config("DB_NAME"),
+        'USER': config("DB_USER"),
+        'PASSWORD': config("DB_PASSWORD"),
+        'HOST': config("DB_HOST"),
+        'PORT': config("DB_PORT"),
         'OPTIONS': {
-            'sslmode': 'require',   
-            'options': '-c timezone=UTC'            # Enforce SSL for Aiven connections
+            'sslmode': 'require',
+            'options': '-c timezone=UTC'
         },
     }
 }
@@ -174,11 +143,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #EMAIL CONFIGURATION
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'foxxydrip.contact@gmail.com'
-EMAIL_HOST_PASSWORD = 'rohuszrvpgneznab' 
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
