@@ -1,8 +1,10 @@
-{% extends "base.html" %} {% load static %} {% block title %}Privacy Policy |
-FOXXY DRIP{% endblock title %} {% block body %} {% block extracss %}
-{% comment %} <link rel="stylesheet" href="{% static 'css/privacy_policy.css' %}" /> {% endcomment %}
+{% extends "base.html" %} 
+{% load static %} 
+{% block title %}Privacy Policy | FOXXY DRIP{% endblock title %} 
+{% block body %} 
+{% block extracss %}
+ {% comment%} <link rel="stylesheet" href="{% static 'css/privacy_policy.css' %}" /> {%endcomment %} 
 {% endblock extracss %}
-
 <style>
   /* Language buttons */
   .languages {
@@ -126,16 +128,66 @@ FOXXY DRIP{% endblock title %} {% block body %} {% block extracss %}
 </style>
 
 <div class="languages">
-  <button class="active" data-lang="en">English</button>
-  <button data-lang="gu">ગુજરાતી</button>
-  <button data-lang="ta">தமிழ்</button>
-  <button data-lang="te">తెలుగు</button>
-  <button data-lang="mr">मराठी</button>
-  <button data-lang="ml">മലയാളം</button>
-  <button data-lang="bn">বাংলা</button>
-  <button data-lang="kn">ಕನ್ನಡ</button>
-  <button data-lang="hi">हिंदी</button>
-  <button data-lang="or">ଓଡ଼ିଆ</button>
+  <button
+    class="{% if initial_lang_code == 'en' %}active{% endif %}"
+    data-lang="en"
+  >
+    English
+  </button>
+  <button
+    class="{% if initial_lang_code == 'gu' %}active{% endif %}"
+    data-lang="gu"
+  >
+    ગુજરાતી
+  </button>
+  <button
+    class="{% if initial_lang_code == 'ta' %}active{% endif %}"
+    data-lang="ta"
+  >
+    தமிழ்
+  </button>
+  <button
+    class="{% if initial_lang_code == 'te' %}active{% endif %}"
+    data-lang="te"
+  >
+    తెలుగు
+  </button>
+  <button
+    class="{% if initial_lang_code == 'mr' %}active{% endif %}"
+    data-lang="mr"
+  >
+    मराठी
+  </button>
+  <button
+    class="{% if initial_lang_code == 'ml' %}active{% endif %}"
+    data-lang="ml"
+  >
+    മലയാളം
+  </button>
+  <button
+    class="{% if initial_lang_code == 'bn' %}active{% endif %}"
+    data-lang="bn"
+  >
+    বাংলা
+  </button>
+  <button
+    class="{% if initial_lang_code == 'kn' %}active{% endif %}"
+    data-lang="kn"
+  >
+    ಕನ್ನಡ
+  </button>
+  <button
+    class="{% if initial_lang_code == 'hi' %}active{% endif %}"
+    data-lang="hi"
+  >
+    हिंदी
+  </button>
+  <button
+    class="{% if initial_lang_code == 'or' %}active{% endif %}"
+    data-lang="or"
+  >
+    ଓଡ଼ିଆ
+  </button>
 </div>
 
 <div class="container">
@@ -196,250 +248,578 @@ FOXXY DRIP{% endblock title %} {% block body %} {% block extracss %}
 <script>
   // Content for all 10 languages
   const privacyContent = {
-    "en": {
-      "section1": {
-          "title":"Privacy Policy",
-          "content": "This Privacy Policy describes how (collectively 'THE NERDS & CO', 'we', 'our', 'us') collect, use, share, protect or otherwise process your information/personal data through our website https://foxxydrip.com/ (hereinafter referred to as 'Platform'). Please note that you may browse certain sections of the Platform without registering with us. We do not offer any product/service under this Platform outside India and your personal data will primarily be stored and processed in India. By visiting this Platform, providing your information or availing any product/service offered on the Platform, you expressly agree to be bound by the terms and conditions of this Privacy Policy, the Terms of Use and the applicable service/product terms and conditions, and agree to be governed by the laws of India including data protection and privacy laws. If you do not agree, please do not use or access our Platform."
+    en: {
+      section1: {
+        title: "Privacy Policy",
+        content:
+          "This Privacy Policy describes how (collectively 'THE NERDS & CO', 'we', 'our', 'us') collect, use, share, protect or otherwise process your information/personal data through our website https://foxxydrip.com/ (hereinafter referred to as 'Platform'). Please note that you may browse certain sections of the Platform without registering with us. We do not offer any product/service under this Platform outside India and your personal data will primarily be stored and processed in India. By visiting this Platform, providing your information or availing any product/service offered on the Platform, you expressly agree to be bound by the terms and conditions of this Privacy Policy, the Terms of Use and the applicable service/product terms and conditions, and agree to be governed by the laws of India including data protection and privacy laws. If you do not agree, please do not use or access our Platform.",
       },
-      "section2": {
-          "title":"Information Collection",
-          "content": "We collect your personal data when you use our Platform, services or otherwise interact with us during the course of our relationship. And related information provided from time to time. Some of the information that we may collect includes but is not limited to personal data / information provided to us during sign-up/registering or using our Platform such as name, date of birth, address, telephone/mobile number, email ID and/or any such information shared as proof of identity or address. Some of the sensitive personal data may be collected with your consent, such as your bank account or credit or debit card or other payment instrument information or biometric information such as your facial features or physiological information (in order to enable use of certain features when opted for, available on the Platform) etc all of the above being in accordance with applicable law(s) You always have the option to not provide information, by choosing not to use a particular service or feature on the Platform. We may track your behaviour, preferences, and other information that you choose to provide on our Platform. This information is compiled and analysed on an aggregated basis. We will also collect your information related to your transactions on Platform and such third-party business partner platforms. When such a third-party business partner collects your personal data directly from you, you will be governed by their privacy policies. We shall not be responsible for the third-party business partner's privacy practices or the content of their privacy policies, and we request you to read their privacy policies prior to disclosing any information. If you receive an email, a call from a person/association claiming to be NEXVED CLINICAL RESEARCH ACADEMY seeking any personal data like debit/credit card PIN, net- banking or mobile banking password, we request you to never provide such information. If you have already revealed such information, report it immediately to an appropriate law enforcement agency."
+      section2: {
+        title: "Information Collection",
+        content:
+          "We collect your personal data when you use our Platform, services or otherwise interact with us during the course of our relationship. And related information provided from time to time. Some of the information that we may collect includes but is not limited to personal data / information provided to us during sign-up/registering or using our Platform such as name, date of birth, address, telephone/mobile number, email ID and/or any such information shared as proof of identity or address. Some of the sensitive personal data may be collected with your consent, such as your bank account or credit or debit card or other payment instrument information or biometric information such as your facial features or physiological information (in order to enable use of certain features when opted for, available on the Platform) etc all of the above being in accordance with applicable law(s) You always have the option to not provide information, by choosing not to use a particular service or feature on the Platform. We may track your behaviour, preferences, and other information that you choose to provide on our Platform. This information is compiled and analysed on an aggregated basis. We will also collect your information related to your transactions on Platform and such third-party business partner platforms. When such a third-party business partner collects your personal data directly from you, you will be governed by their privacy policies. We shall not be responsible for the third-party business partner's privacy practices or the content of their privacy policies, and we request you to read their privacy policies prior to disclosing any information. If you receive an email, a call from a person/association claiming to be NEXVED CLINICAL RESEARCH ACADEMY seeking any personal data like debit/credit card PIN, net- banking or mobile banking password, we request you to never provide such information. If you have already revealed such information, report it immediately to an appropriate law enforcement agency.",
       },
-      "section3": {
-          "title":"Usage",
-          "content":"We use personal data to provide the services you request. To the extent we use your personal data to market to you, we will provide you the ability to opt-out of such uses. We use  your personal data to assist sellers and business partners in handling and fulfilling orders; enhancing customer experience; to resolve disputes; troubleshoot problems; inform you about online and offline offers, products, services, and updates; customise your experience; detect and protect us against error, fraud and other criminal activity; enforce our terms and conditions; conduct marketing research, analysis and surveys; and as otherwise described to you at the time of collection of information. You understand that your access to these products/services may be affected in the event permission is not provided to us."
+      section3: {
+        title: "Usage",
+        content:
+          "We use personal data to provide the services you request. To the extent we use your personal data to market to you, we will provide you the ability to opt-out of such uses. We use  your personal data to assist sellers and business partners in handling and fulfilling orders; enhancing customer experience; to resolve disputes; troubleshoot problems; inform you about online and offline offers, products, services, and updates; customise your experience; detect and protect us against error, fraud and other criminal activity; enforce our terms and conditions; conduct marketing research, analysis and surveys; and as otherwise described to you at the time of collection of information. You understand that your access to these products/services may be affected in the event permission is not provided to us.",
       },
-      "section4": {
-          "title":"Information Sharing and Disclosures",
-          "content":"We may share your personal data internally within our group entities, our other corporat  entities, and affiliates to provide you access to the services and products offered by them. These entities and affiliates may market to you as a result of such sharing unless you explicitly opt-out. We may disclose personal data to third parties such as sellers, business partners, third party service providers including logistics partners, prepaid payment instrument issuers, third-party reward programs and other payment opted by you. These disclosure may be required for us to provide you access to our services and products offered to you, to comply with our legal obligations, to enforce our user agreement, to facilitate our marketing and advertising activities, to prevent, detect, mitigate, and investigate fraudulent or illegal activities related to our services. We may disclose personal and sensitive personal data to government agencies or other authorised law enforcement agencies if required to do so by law or in the good faith belief that such disclosure is reasonably necessary to respond to subpoenas, court orders, or other legal process. We may disclose personal data to law enforcement offices, third party rights owners, or others in the good faith belief that such disclosure is reasonably necessary to: enforce our Terms of Use or Privacy Policy; respond to claims that an advertisement, posting or other content violates the rights of a third party; or protect the rights, property or personal safety of our users or the general public."
+      section4: {
+        title: "Information Sharing and Disclosures",
+        content:
+          "We may share your personal data internally within our group entities, our other corporat  entities, and affiliates to provide you access to the services and products offered by them. These entities and affiliates may market to you as a result of such sharing unless you explicitly opt-out. We may disclose personal data to third parties such as sellers, business partners, third party service providers including logistics partners, prepaid payment instrument issuers, third-party reward programs and other payment opted by you. These disclosure may be required for us to provide you access to our services and products offered to you, to comply with our legal obligations, to enforce our user agreement, to facilitate our marketing and advertising activities, to prevent, detect, mitigate, and investigate fraudulent or illegal activities related to our services. We may disclose personal and sensitive personal data to government agencies or other authorised law enforcement agencies if required to do so by law or in the good faith belief that such disclosure is reasonably necessary to respond to subpoenas, court orders, or other legal process. We may disclose personal data to law enforcement offices, third party rights owners, or others in the good faith belief that such disclosure is reasonably necessary to: enforce our Terms of Use or Privacy Policy; respond to claims that an advertisement, posting or other content violates the rights of a third party; or protect the rights, property or personal safety of our users or the general public.",
       },
-      "section5": {
-          "title":"Reasonable Security Practices",
-          "content":"To protect your personal data from unauthorised access or disclosure, loss or misuse we adopt reasonable security practices and procedures. Once your information is in our possession or whenever you access your account information, we adhere to our security guidelines to protect it against unauthorised access and offer the use Of a secure server. However, the transmission of information is not completely secure for reasons beyond our control. By using the Platform, the users accept the security implications of data transmission over the internet and the World Wide Web which cannot always be guaranteed as completely secure, and therefore, there would always remain certain inherent risks regarding use of the Platform. Users are responsible for ensuring the protection of login and password records for their account. "
+      section5: {
+        title: "Reasonable Security Practices",
+        content:
+          "To protect your personal data from unauthorised access or disclosure, loss or misuse we adopt reasonable security practices and procedures. Once your information is in our possession or whenever you access your account information, we adhere to our security guidelines to protect it against unauthorised access and offer the use Of a secure server. However, the transmission of information is not completely secure for reasons beyond our control. By using the Platform, the users accept the security implications of data transmission over the internet and the World Wide Web which cannot always be guaranteed as completely secure, and therefore, there would always remain certain inherent risks regarding use of the Platform. Users are responsible for ensuring the protection of login and password records for their account. ",
       },
-      "section6": {
-          "title":"Data Deletion and Retention",
-          "content":"You have an option to delete your account by visiting your profile and settings on our Platform , this action would result in you losing all information related to your account. You may also write to us at the contact information provided below to assist you with these requests. We may in event of any pending grievance, claims, pending shipments or any other services we may refuse or delay deletion of the account. Once the account is deleted, you will lose access to the account. We retain your personal data information for a period no longer than is required for the purpose for which it was collected or as required under any applicable law. However, we may retain data related to you if we believe it may be necessary to prevent fraud or future abuse or for other legitimate purposes. We may continue to retain your data in anonymised form for analytical and research purposes."
+      section6: {
+        title: "Data Deletion and Retention",
+        content:
+          "You have an option to delete your account by visiting your profile and settings on our Platform , this action would result in you losing all information related to your account. You may also write to us at the contact information provided below to assist you with these requests. We may in event of any pending grievance, claims, pending shipments or any other services we may refuse or delay deletion of the account. Once the account is deleted, you will lose access to the account. We retain your personal data information for a period no longer than is required for the purpose for which it was collected or as required under any applicable law. However, we may retain data related to you if we believe it may be necessary to prevent fraud or future abuse or for other legitimate purposes. We may continue to retain your data in anonymised form for analytical and research purposes.",
       },
-      "section7": {
-          "title":"Your Rights",
-          "content":"You may access, rectify, and update your personal data directly through the functionalities provided on the Platform. "
+      section7: {
+        title: "Your Rights",
+        content:
+          "You may access, rectify, and update your personal data directly through the functionalities provided on the Platform. ",
       },
-      "section8": {
-          "title":"Consent",
-          "content":"By visiting our Platform or by providing your information, you consent to the collection, use, storage, disclosure and otherwise processing of your information on the Platform in accordance with this Privacy Policy. If you disclose to us any personal data relating to other people, you represent that you have the authority to do so and permit us to use the information in accordance with this Privacy Policy. You, while providing your personal data over the Platform or any partner platforms or establishments, consent to us (including our other corporate entities, affiliates, lending partners, technology partners, marketing channels, business partners and other third parties) to contact you through SMS, instant messaging apps, call and/or e-mail for the purposes specified in this Privacy Policy. You have an option to withdraw your consent that you have already provided by writing to the Grievance Officer at the contact information provided below. Please mention Withdrawal of consent for processing personal data in your subject line of your communication. We may verify such requests before acting on our request. However, please note that your withdrawal of consent will not be retrospective and will be in accordance with the Terms of Use, this Privacy Policy, and applicable laws. In the event you withdraw consent given to us under this Privacy Policy, we reserve the right to restrict or deny the provision of our services for which we consider such information to be necessary. "
+      section8: {
+        title: "Consent",
+        content:
+          "By visiting our Platform or by providing your information, you consent to the collection, use, storage, disclosure and otherwise processing of your information on the Platform in accordance with this Privacy Policy. If you disclose to us any personal data relating to other people, you represent that you have the authority to do so and permit us to use the information in accordance with this Privacy Policy. You, while providing your personal data over the Platform or any partner platforms or establishments, consent to us (including our other corporate entities, affiliates, lending partners, technology partners, marketing channels, business partners and other third parties) to contact you through SMS, instant messaging apps, call and/or e-mail for the purposes specified in this Privacy Policy. You have an option to withdraw your consent that you have already provided by writing to the Grievance Officer at the contact information provided below. Please mention Withdrawal of consent for processing personal data in your subject line of your communication. We may verify such requests before acting on our request. However, please note that your withdrawal of consent will not be retrospective and will be in accordance with the Terms of Use, this Privacy Policy, and applicable laws. In the event you withdraw consent given to us under this Privacy Policy, we reserve the right to restrict or deny the provision of our services for which we consider such information to be necessary. ",
       },
-      "section9": {
-          "title":"Changes to this Privacy Policy",
-          "content":"Please check our Privacy Policy periodically for changes. We may update this Privacy Policy to reflect changes to our information practices. We may alert / notify you about the significant changes to the Privacy Policy, in the manner as may be required under applicable laws."
-      }
+      section9: {
+        title: "Changes to this Privacy Policy",
+        content:
+          "Please check our Privacy Policy periodically for changes. We may update this Privacy Policy to reflect changes to our information practices. We may alert / notify you about the significant changes to the Privacy Policy, in the manner as may be required under applicable laws.",
+      },
     },
-    "gu": {
-      "section1": {
-          "title":"ગોપનીયતા નીતિ",
-          "content":"આ ગોપનીયતા નીતિ વર્ણવે છે કે કેવી રીતે (સામૂહિક રીતે 'ધ નર્ડ્સ એન્ડ કંપની', 'અમે', 'અમારું', 'અમને') અમારી વેબસાઇટ https://foxxydrip.com/ (ત્યારબાદ 'પ્લેટફોર્મ' તરીકે ઓળખાય છે) દ્વારા તમારી માહિતી/વ્યક્તિગત ડેટા એકત્રિત, ઉપયોગ, શેર, સુરક્ષિત અથવા અન્યથા પ્રક્રિયા કરીએ છીએ. કૃપા કરીને નોંધો કે તમે અમારી સાથે નોંધણી કરાવ્યા વિના પ્લેટફોર્મના અમુક વિભાગો બ્રાઉઝ કરી શકો છો. અમે આ પ્લેટફોર્મ હેઠળ ભારતની બહાર કોઈપણ ઉત્પાદન/સેવાની ઑફર કરતા નથી અને તમારો વ્યક્તિગત ડેટા મુખ્યત્વે ભારતમાં સંગ્રહિત અને પ્રક્રિયા કરવામાં આવશે. આ પ્લેટફોર્મની મુલાકાત લઈને, તમારી માહિતી પ્રદાન કરીને અથવા પ્લેટફોર્મ પર ઓફર કરાયેલ કોઈપણ ઉત્પાદન/સેવાનો લાભ લઈને, તમે આ ગોપનીયતા નીતિ, ઉપયોગની શરતો અને લાગુ સેવા/ઉત્પાદન નિયમો અને શરતોથી બંધાયેલા રહેવા માટે સ્પષ્ટપણે સંમત થાઓ છો, અને ડેટા સુરક્ષા અને ગોપનીયતા કાયદા સહિત ભારતના કાયદાઓ દ્વારા સંચાલિત થવા માટે સંમત થાઓ છો. જો તમે સંમત ન હોવ, તો કૃપા કરીને અમારા પ્લેટફોર્મનો ઉપયોગ કરશો નહીં અથવા તેને એક્સેસ કરશો નહીં."
+    gu: {
+      section1: {
+        title: "ગોપનીયતા નીતિ",
+        content:
+          "આ ગોપનીયતા નીતિ વર્ણવે છે કે 'THE NERDS & CO' (સામૂહિક રીતે 'અમે', 'અમારા', 'અમને') અમારી વેબસાઇટ https://foxxydrip.com/ (ત્યારબાદ 'પ્લેટફોર્મ' તરીકે ઓળખાશે) દ્વારા તમારી માહિતી/વ્યક્તિગત ડેટા કેવી રીતે એકત્રિત કરે છે, તેનો ઉપયોગ કરે છે, શેર કરે છે, તેનું રક્ષણ કરે છે અથવા અન્યથા પ્રક્રિયા કરે છે. કૃપા કરીને નોંધ લો કે તમે અમારી સાથે નોંધણી કર્યા વિના પ્લેટફોર્મના ચોક્કસ વિભાગો બ્રાઉઝ કરી શકો છો. અમે આ પ્લેટફોર્મ હેઠળ ભારતની બહાર કોઈપણ ઉત્પાદન/સેવા ઓફર કરતા નથી અને તમારો વ્યક્તિગત ડેટા મુખ્યત્વે ભારતમાં સંગ્રહિત અને પ્રક્રિયા કરવામાં આવશે. આ પ્લેટફોર્મની મુલાકાત લઈને, તમારી માહિતી પ્રદાન કરીને અથવા પ્લેટફોર્મ પર ઓફર કરેલ કોઈપણ ઉત્પાદન/સેવાનો લાભ લઈને, તમે સ્પષ્ટપણે આ ગોપનીયતા નીતિની શરતો અને નિયમો, ઉપયોગની શરતો (Terms of Use) અને લાગુ પડતી સેવા/ઉત્પાદનની શરતો અને નિયમો દ્વારા બંધાયેલા રહેવા માટે સંમત થાઓ છો, અને ડેટા સુરક્ષા અને ગોપનીયતા કાયદાઓ સહિત ભારતના કાયદાઓ દ્વારા સંચાલિત થવા માટે સંમત થાઓ છો. જો તમે સંમત ન હોવ, તો કૃપા કરીને અમારા પ્લેટફોર્મનો ઉપયોગ કરશો નહીં અથવા તેને ઍક્સેસ કરશો નહીં.",
       },
-      "section2": {
-          "title":"માહિતી સંગ્રહ",
-          "content":"અમે નોંધણી અને સેવાઓના ઉપયોગ દરમિયાન વ્યક્તિગત માહિતી એકત્રિત કરીએ છીએ, જેમાં નામ, ઇમેઇલ, ફોન અને સરનામું શામેલ છે."
+      section2: {
+        title: "માહિતી સંગ્રહ",
+        content:
+          "જ્યારે તમે અમારા પ્લેટફોર્મ, સેવાઓનો ઉપયોગ કરો છો અથવા અમારા સંબંધના સમયગાળા દરમિયાન અન્યથા અમારી સાથે વાર્તાલાપ કરો છો ત્યારે અમે તમારો વ્યક્તિગત ડેટા અને સમયાંતરે પ્રદાન કરેલ સંબંધિત માહિતી એકત્રિત કરીએ છીએ. કેટલીક માહિતી જે અમે એકત્રિત કરી શકીએ છીએ તેમાં પ્લેટફોર્મ પર સાઇન-અપ/નોંધણી કરતી વખતે અથવા તેનો ઉપયોગ કરતી વખતે અમને આપવામાં આવેલ વ્યક્તિગત ડેટા/માહિતી શામેલ છે, જેમ કે નામ, જન્મ તારીખ, સરનામું, ટેલિફોન/મોબાઇલ નંબર, ઇમેઇલ આઇડી અને/અથવા ઓળખ અથવા સરનામાના પુરાવા તરીકે શેર કરેલી આવી કોઈપણ માહિતી. તમારી સંમતિથી કેટલીક સંવેદનશીલ વ્યક્તિગત ડેટા એકત્રિત કરી શકાય છે, જેમ કે તમારું બેંક એકાઉન્ટ અથવા ક્રેડિટ અથવા ડેબિટ કાર્ડ અથવા અન્ય ચુકવણી સાધનની માહિતી અથવા બાયોમેટ્રિક માહિતી જેમ કે તમારા ચહેરાના લક્ષણો અથવા શારીરિક માહિતી (પ્લેટફોર્મ પર ઉપલબ્ધ કેટલીક સુવિધાઓનો ઉપયોગ સક્ષમ કરવા માટે, જ્યારે પસંદ કરવામાં આવે ત્યારે) વગેરે, ઉપરોક્ત તમામ લાગુ કાયદા(ઓ) અનુસાર છે. પ્લેટફોર્મ પર કોઈ ચોક્કસ સેવા અથવા સુવિધાનો ઉપયોગ ન કરવાનું પસંદ કરીને, તમારી પાસે માહિતી પ્રદાન ન કરવાનો વિકલ્પ હંમેશા રહેલો છે. અમે તમારા વર્તન, પસંદગીઓ અને અન્ય માહિતીને ટ્રૅક કરી શકીએ છીએ જે તમે અમારા પ્લેટફોર્મ પર પ્રદાન કરવાનું પસંદ કરો છો. આ માહિતી સંકલિત અને એકીકૃત ધોરણે વિશ્લેષણ કરવામાં આવે છે. અમે પ્લેટફોર્મ પરના તમારા વ્યવહારો અને આવા તૃતીય-પક્ષ વ્યવસાય ભાગીદાર પ્લેટફોર્મ્સ સંબંધિત તમારી માહિતી પણ એકત્રિત કરીશું. જ્યારે આવો તૃતીય-પક્ષ વ્યવસાય ભાગીદાર તમારો વ્યક્તિગત ડેટા સીધો તમારી પાસેથી એકત્રિત કરે છે, ત્યારે તમે તેમની ગોપનીયતા નીતિઓ દ્વારા સંચાલિત થશો. અમે તૃતીય-પક્ષ વ્યવસાય ભાગીદારની ગોપનીયતા પ્રથાઓ અથવા તેમની ગોપનીયતા નીતિઓની સામગ્રી માટે જવાબદાર હોઈશું નહીં, અને અમે તમને કોઈપણ માહિતી જાહેર કરતા પહેલા તેમની ગોપનીયતા નીતિઓ વાંચવા વિનંતી કરીએ છીએ. જો તમને કોઈ વ્યક્તિ/સંસ્થા તરફથી NEXVED CLINICAL RESEARCH ACADEMY હોવાનો દાવો કરતો ઇમેઇલ, કૉલ આવે જે ડેબિટ/ક્રેડિટ કાર્ડ PIN, નેટ-બેંકિંગ અથવા મોબાઇલ બેંકિંગ પાસવર્ડ જેવો કોઈપણ વ્યક્તિગત ડેટા માંગી રહી હોય, તો અમે તમને વિનંતી કરીએ છીએ કે આવી માહિતી ક્યારેય પ્રદાન ન કરો. જો તમે આવી માહિતી પહેલેથી જ જાહેર કરી દીધી હોય, તો તેની જાણ તરત જ યોગ્ય કાયદા અમલીકરણ એજન્સીને કરો.",
       },
-      "section3": {
-          "title":"ઉપયોગ",
-          "content":"અમે સેવાઓ પ્રદાન કરવા, અનુભવ વધારવા, છેતરપિંડી શોધવા અને માર્કેટિંગ સંશોધન માટે વ્યક્તિગત ડેટાનો ઉપયોગ કરીએ છીએ."
+      section3: {
+        title: "ઉપયોગ",
+        content:
+          "તમે વિનંતી કરો છો તે સેવાઓ પ્રદાન કરવા માટે અમે વ્યક્તિગત ડેટાનો ઉપયોગ કરીએ છીએ. અમે તમારા વ્યક્તિગત ડેટાનો ઉપયોગ તમને માર્કેટિંગ કરવા માટે જે હદ સુધી કરીએ છીએ, તે માટે અમે તમને આવા ઉપયોગોમાંથી ઓપ્ટ-આઉટ કરવાની ક્ષમતા પ્રદાન કરીશું. અમે તમારા વ્યક્તિગત ડેટાનો ઉપયોગ વેચાણકર્તાઓ અને વ્યવસાય ભાગીદારોને ઓર્ડર સંભાળવામાં અને પૂર્ણ કરવામાં સહાય કરવા; ગ્રાહક અનુભવ વધારવા; વિવાદોનું નિરાકરણ લાવવા; સમસ્યાઓનું નિવારણ કરવા; તમને ઑનલાઇન અને ઑફલાઇન ઑફર્સ, ઉત્પાદનો, સેવાઓ અને અપડેટ્સ વિશે માહિતી આપવા; તમારા અનુભવને કસ્ટમાઇઝ કરવા; ભૂલ, છેતરપિંડી અને અન્ય ગુનાહિત પ્રવૃત્તિ સામે અમને શોધવા અને સુરક્ષિત કરવા; અમારી શરતો અને નિયમોને લાગુ કરવા; માર્કેટિંગ સંશોધન, વિશ્લેષણ અને સર્વેક્ષણો હાથ ધરવા; અને માહિતી સંગ્રહના સમયે તમને અન્યથા વર્ણવ્યા મુજબ કરીએ છીએ. તમે સમજો છો કે જો અમને પરવાનગી આપવામાં ન આવે તો આ ઉત્પાદનો/સેવાઓ સુધી તમારી પહોંચને અસર થઈ શકે છે.",
       },
-      "section4": {"title":"માહિતી શેરિંગ અને જાહેરાત","content":"અમે આનુષંગિકો, ભાગીદારો સાથે અથવા કાનૂની જવાબદારીઓનું પાલન કરવા માટે ડેટા શેર કરી શકીએ છીએ."},
-      "section5": {"title":"વાજબી સુરક્ષા પદ્ધતિઓ","content":"અમે તમારા ડેટાને સુરક્ષિત રાખવા માટે વાજબી સુરક્ષા પગલાં અપનાવીએ છીએ, પરંતુ સંપૂર્ણ સુરક્ષાની ખાતરી આપી શકતા નથી."},
-      "section6": {"title":"ડેટા ડિલીટ અને રીટેન્શન","content":"વપરાશકર્તાઓ તેમના એકાઉન્ટ ડિલીટ કરી શકે છે. જ્યાં સુધી જરૂરી હોય અથવા કાયદાકીય રીતે આવશ્યક હોય ત્યાં સુધી ડેટા જાળવી રાખવામાં આવે છે."},
-      "section7": {"title":"તમારા અધિકારો","content":"તમે પ્લેટફોર્મ દ્વારા તમારા વ્યક્તિગત ડેટાને એક્સેસ, સુધારી અને અપડેટ કરી શકો છો."},
-      "section8": {"title":"સંમતિ","content":"પ્લેટફોર્મનો ઉપયોગ કરીને, તમે આ ગોપનીયતા નીતિ અનુસાર ડેટા સંગ્રહ અને પ્રક્રિયા માટે સંમતિ આપો છો."},
-      "section9": {"title":"આ ગોપનીયતા નીતિમાં ફેરફારો","content":"અમે સમયાંતરે આ નીતિને અપડેટ કરી શકીએ છીએ. વપરાશકર્તાઓએ તેની નિયમિત સમીક્ષા કરવી જોઈએ."}
+      section4: {
+        title:
+          "માહિતીનું વિતરણ અને ખુલાસાઓ",
+        content:
+          "અમે તમારા વ્યક્તિગત ડેટાને આંતરિક રીતે અમારા જૂથની સંસ્થાઓ, અમારી અન્ય કોર્પોરેટ સંસ્થાઓ અને આનુષંગિકોમાં શેર કરી શકીએ છીએ જેથી તમને તેમના દ્વારા ઓફર કરવામાં આવતી સેવાઓ અને ઉત્પાદનોની ઍક્સેસ મળી શકે. આ સંસ્થાઓ અને આનુષંગિકો આવી વહેંચણીના પરિણામે તમને માર્કેટિંગ કરી શકે છે સિવાય કે તમે સ્પષ્ટપણે ઓપ્ટ-આઉટ ન કરો. અમે વ્યક્તિગત ડેટા તૃતીય પક્ષો જેમ કે વેચાણકર્તાઓ, વ્યવસાય ભાગીદારો, તૃતીય પક્ષ સેવા પ્રદાતાઓ જેમાં લોજિસ્ટિક્સ ભાગીદારો, પ્રીપેડ ચુકવણી સાધન જારી કરનારા, તૃતીય-પક્ષ પુરસ્કાર કાર્યક્રમો અને તમારા દ્વારા પસંદ કરાયેલ અન્ય ચુકવણીને જાહેર કરી શકીએ છીએ. આ ખુલાસાઓ તમારા માટે અમારી સેવાઓ અને ઉત્પાદનોની ઍક્સેસ પ્રદાન કરવા, અમારી કાનૂની જવાબદારીઓનું પાલન કરવા, અમારા વપરાશકર્તા કરારને લાગુ કરવા, અમારી માર્કેટિંગ અને જાહેરાત પ્રવૃત્તિઓને સરળ બનાવવા, અમારી સેવાઓ સંબંધિત કપટપૂર્ણ અથવા ગેરકાયદેસર પ્રવૃત્તિઓને અટકાવવા, શોધવા, ઘટાડવા અને તપાસવા માટે જરૂરી હોઈ શકે છે. જો કાયદા દ્વારા આવું કરવું જરૂરી હોય અથવા સદ્ભાવનાપૂર્વક માનતા હોઈએ કે સબપોઇના, કોર્ટ ઓર્ડર અથવા અન્ય કાનૂની પ્રક્રિયાનો જવાબ આપવા માટે આવા ખુલાસા વ્યાજબી રીતે જરૂરી છે, તો અમે સરકારી એજન્સીઓ અથવા અન્ય અધિકૃત કાયદા અમલીકરણ એજન્સીઓને વ્યક્તિગત અને સંવેદનશીલ વ્યક્તિગત ડેટા જાહેર કરી શકીએ છીએ. અમે કાયદા અમલીકરણ કચેરીઓ, તૃતીય પક્ષ અધિકારોના માલિકો અથવા અન્ય લોકોને સદ્ભાવનાપૂર્વક માનતા હોઈએ કે આવા ખુલાસા વ્યાજબી રીતે જરૂરી છે: અમારી ઉપયોગની શરતો અથવા ગોપનીયતા નીતિને લાગુ કરવા; જાહેરાત, પોસ્ટિંગ અથવા અન્ય સામગ્રી તૃતીય પક્ષના અધિકારોનું ઉલ્લંઘન કરે છે તેવા દાવાઓનો જવાબ આપવા; અથવા અમારા વપરાશકર્તાઓ અથવા સામાન્ય લોકોના અધિકારો, મિલકત અથવા વ્યક્તિગત સલામતીનું રક્ષણ કરવા.",
+      },
+      section5: {
+        title: "વાજબી સુરક્ષા પદ્ધતિઓ",
+        content:
+          "અનધિકૃત ઍક્સેસ અથવા જાહેરાત, નુકસાન અથવા દુરુપયોગથી તમારા વ્યક્તિગત ડેટાને સુરક્ષિત રાખવા માટે અમે વાજબી સુરક્ષા પદ્ધતિઓ અને પ્રક્રિયાઓ અપનાવીએ છીએ. એકવાર તમારી માહિતી અમારા કબજામાં આવી જાય અથવા જ્યારે પણ તમે તમારી એકાઉન્ટ માહિતીને ઍક્સેસ કરો, ત્યારે અમે તેને અનધિકૃત ઍક્સેસ સામે સુરક્ષિત રાખવા માટે અમારી સુરક્ષા માર્ગદર્શિકાઓનું પાલન કરીએ છીએ અને સુરક્ષિત સર્વરનો ઉપયોગ ઓફર કરીએ છીએ. જો કે, અમારા નિયંત્રણની બહારના કારણોસર માહિતીનું પ્રસારણ સંપૂર્ણપણે સુરક્ષિત નથી. પ્લેટફોર્મનો ઉપયોગ કરીને, વપરાશકર્તાઓ ઇન્ટરનેટ અને વર્લ્ડ વાઇડ વેબ પર ડેટા ટ્રાન્સમિશનની સુરક્ષા અસરો સ્વીકારે છે જે હંમેશા સંપૂર્ણપણે સુરક્ષિત હોવાની ખાતરી આપી શકાતી નથી, અને તેથી, પ્લેટફોર્મના ઉપયોગ સંબંધિત ચોક્કસ આંતરિક જોખમો હંમેશા રહેશે. વપરાશકર્તાઓ તેમના એકાઉન્ટ માટે લોગિન અને પાસવર્ડ રેકોર્ડ્સનું રક્ષણ સુનિશ્ચિત કરવા માટે જવાબદાર છે.",
+      },
+      section6: {
+        title: "ડેટા કાઢી નાખવો અને જાળવણી",
+        content:
+          "તમારી પાસે અમારા પ્લેટફોર્મ પર તમારી પ્રોફાઇલ અને સેટિંગ્સની મુલાકાત લઈને તમારું એકાઉન્ટ કાઢી નાખવાનો વિકલ્પ છે, આ ક્રિયાને કારણે તમારા એકાઉન્ટ સંબંધિત તમામ માહિતી ગુમાવશો. તમે આ વિનંતીઓમાં તમને મદદ કરવા માટે નીચે આપેલા સંપર્ક માહિતી પર પણ અમને લખી શકો છો. કોઈપણ બાકી ફરિયાદ, દાવા, બાકી શિપમેન્ટ અથવા અન્ય કોઈપણ સેવાઓના કિસ્સામાં અમે એકાઉન્ટ કાઢી નાખવાનો ઇનકાર અથવા વિલંબ કરી શકીએ છીએ. એકવાર એકાઉન્ટ કાઢી નાખવામાં આવે, પછી તમે એકાઉન્ટની ઍક્સેસ ગુમાવશો. અમે તમારા વ્યક્તિગત ડેટાની માહિતી તે હેતુ માટે જરૂરી હોય તેના કરતાં વધુ સમય માટે અથવા કોઈપણ લાગુ કાયદા હેઠળ જરૂરી હોય તેટલા સમય માટે જાળવીએ છીએ. જો કે, જો અમને લાગે કે છેતરપિંડી અથવા ભાવિ દુરુપયોગને રોકવા માટે અથવા અન્ય કાયદેસર હેતુઓ માટે તે જરૂરી હોઈ શકે છે, તો અમે તમારા સંબંધિત ડેટાને જાળવી શકીએ છીએ. અમે વિશ્લેષણાત્મક અને સંશોધન હેતુઓ માટે તમારા ડેટાને અનામી સ્વરૂપમાં જાળવવાનું ચાલુ રાખી શકીએ છીએ.",
+      },
+      section7: {
+        title: "તમારા અધિકારો",
+        content:
+          "તમે પ્લેટફોર્મ પર પ્રદાન કરેલ કાર્યો દ્વારા સીધા જ તમારા વ્યક્તિગત ડેટાને ઍક્સેસ કરી શકો છો, સુધારી શકો છો અને અપડેટ કરી શકો છો.",
+      },
+      section8: {
+        title: "સંમતિ",
+        content:
+          'અમારા પ્લેટફોર્મની મુલાકાત લઈને અથવા તમારી માહિતી પ્રદાન કરીને, તમે આ ગોપનીયતા નીતિ અનુસાર પ્લેટફોર્મ પર તમારી માહિતીના સંગ્રહ, ઉપયોગ, સંગ્રહ, જાહેરાત અને અન્યથા પ્રક્રિયા માટે સંમતિ આપો છો. જો તમે અમને અન્ય લોકો સંબંધિત કોઈપણ વ્યક્તિગત ડેટા જાહેર કરો છો, તો તમે રજૂ કરો છો કે તમારી પાસે આવું કરવાનો અધિકાર છે અને અમને આ ગોપનીયતા નીતિ અનુસાર માહિતીનો ઉપયોગ કરવાની પરવાનગી આપો છો. તમે, પ્લેટફોર્મ અથવા કોઈપણ ભાગીદાર પ્લેટફોર્મ અથવા સંસ્થાઓ પર તમારો વ્યક્તિગત ડેટા પ્રદાન કરતી વખતે, આ ગોપનીયતા નીતિમાં ઉલ્લેખિત હેતુઓ માટે SMS, ઇન્સ્ટન્ટ મેસેજિંગ એપ્લિકેશન્સ, કૉલ અને/અથવા ઇ-મેઇલ દ્વારા તમારો સંપર્ક કરવા માટે અમને (અમારી અન્ય કોર્પોરેટ સંસ્થાઓ, આનુષંગિકો, ધિરાણ ભાગીદારો, ટેક્નોલોજી ભાગીદારો, માર્કેટિંગ ચેનલો, વ્યવસાય ભાગીદારો અને અન્ય તૃતીય પક્ષો સહિત) સંમતિ આપો છો. તમારી પાસે નીચે આપેલા સંપર્ક માહિતી પર ફરિયાદ અધિકારીને લખીને તમે પહેલેથી જ આપેલી તમારી સંમતિ પાછી ખેંચવાનો વિકલ્પ છે. કૃપા કરીને તમારા સંચારની વિષય લીટીમાં "વ્યક્તિગત ડેટાની પ્રક્રિયા માટે સંમતિ પાછી ખેંચવી" નો ઉલ્લેખ કરો. અમે અમારી વિનંતી પર કાર્ય કરતા પહેલા આવી વિનંતીઓની ચકાસણી કરી શકીએ છીએ. જો કે, કૃપા કરીને નોંધ લો કે તમારી સંમતિ પાછી ખેંચવી પૂર્વવર્તી રહેશે નહીં અને તે ઉપયોગની શરતો, આ ગોપનીયતા નીતિ અને લાગુ કાયદાઓ અનુસાર હશે. જો તમે આ ગોપનીયતા નીતિ હેઠળ અમને આપેલી સંમતિ પાછી ખેંચો છો, તો અમે અમારી સેવાઓની જોગવાઈને પ્રતિબંધિત અથવા નકારવાનો અધિકાર અનામત રાખીએ છીએ જેના માટે અમે આવી માહિતીને જરૂરી માનીએ છીએ.',
+      },
+      section9: {
+        title: "આ ગોપનીયતા નીતિમાં ફેરફારો",
+        content:
+          "ફેરફારો માટે કૃપા કરીને સમયાંતરે અમારી ગોપનીયતા નીતિ તપાસો. અમે અમારી માહિતી પ્રથાઓમાં ફેરફારોને પ્રતિબિંબિત કરવા માટે આ ગોપનીયતા નીતિને અપડેટ કરી શકીએ છીએ. અમે તમને લાગુ કાયદાઓ હેઠળ જરૂરી હોય તે રીતે ગોપનીયતા નીતિમાં નોંધપાત્ર ફેરફારો વિશે ચેતવણી/સૂચિત કરી શકીએ છીએ.",
+      },
     },
-    "ta": {
-      "section1": {
-          "title":"தனியுரிமைக் கொள்கை",
-          "content":"இந்த தனியுரிமைக் கொள்கை (ஒட்டுமொத்தமாக 'THE NERDS & CO', 'நாங்கள்', 'எங்கள்', 'எங்களுக்கு') எங்கள் வலைத்தளமான https://foxxydrip.com/ (இனி 'தளம்' என்று குறிப்பிடப்படுகிறது) மூலம் உங்கள் தகவல்/தனிப்பட்ட தரவை எவ்வாறு சேகரிக்கிறோம், பயன்படுத்துகிறோம், பகிர்கிறோம், பாதுகாக்கிறோம் அல்லது செயலாக்குகிறோம் என்பதை விவரிக்கிறது. எங்களிடம் பதிவு செய்யாமலேயே தளத்தின் சில பகுதிகளை நீங்கள் உலாவலாம் என்பதை நினைவில் கொள்ளவும். இந்த தளத்தின் கீழ் நாங்கள் இந்தியாவிற்கு வெளியே எந்தவொரு தயாரிப்பு/சேவையையும் வழங்குவதில்லை, மேலும் உங்கள் தனிப்பட்ட தரவு முதன்மையாக இந்தியாவிலேயே சேமிக்கப்பட்டு செயலாக்கப்படும். இந்த தளத்தைப் பார்வையிடுவதன் மூலமாகவோ, உங்கள் தகவலை வழங்குவதன் மூலமாகவோ அல்லது தளத்தில் வழங்கப்படும் ஏதேனும் தயாரிப்பு/சேவையைப் பெறுவதன் மூலமாகவோ, இந்த தனியுரிமைக் கொள்கையின் விதிமுறைகள் மற்றும் நிபந்தனைகள், பயன்பாட்டு விதிமுறைகள் மற்றும் பொருந்தக்கூடிய சேவை/தயாரிப்பு விதிமுறைகள் மற்றும் நிபந்தனைகளுக்குக் கட்டுப்படுவதை நீங்கள் வெளிப்படையாக ஒப்புக்கொள்கிறீர்கள், மேலும் தரவு பாதுகாப்பு மற்றும் தனியுரிமைச் சட்டங்கள் உட்பட இந்தியச் சட்டங்களால் ஆளப்படுவதை ஒப்புக்கொள்கிறீர்கள். நீங்கள் ஒப்புக்கொள்ளவில்லை என்றால், தயவுசெய்து எங்கள் தளத்தைப் பயன்படுத்த வேண்டாம் அல்லது அணுக வேண்டாம்."
-      },
-      "section2": {
-          "title":"தகவல் சேகரிப்பு",
-          "content":"பதிவு செய்யும் போதும் சேவைகளைப் பயன்படுத்தும் போதும் பெயர், மின்னஞ்சல், தொலைபேசி மற்றும் முகவரி உள்ளிட்ட தனிப்பட்ட தகவல்களைச் சேகரிக்கிறோம்."
-      },
-      "section3": {
-          "title":"பயன்பாடு",
-          "content":"சேவைகளை வழங்க, அனுபவத்தை மேம்படுத்த, மோசடியைக் கண்டறிய மற்றும் சந்தைப்படுத்தல் ஆராய்ச்சிக்காக தனிப்பட்ட தரவைப் பயன்படுத்துகிறோம்."
-      },
-      "section4": {"title":"தகவல் பகிர்வு மற்றும் வெளிப்படுத்தல்கள்","content":"இணை நிறுவனங்கள், கூட்டாளர்களுடன் அல்லது சட்டப்பூர்வ கடமைகளுக்கு இணங்க தரவைப் பகிரலாம்."},
-      "section5": {"title":"நியாயமான பாதுகாப்பு நடைமுறைகள்","content":"உங்கள் தரவைப் பாதுகாக்க நியாயமான பாதுகாப்பு நடவடிக்கைகளை நாங்கள் மேற்கொள்கிறோம், ஆனால் முழுமையான பாதுகாப்பிற்கு உத்தரவாதம் அளிக்க முடியாது."},
-      "section6": {"title":"தரவை நீக்குதல் மற்றும் தக்கவைத்தல்","content":"பயனர்கள் தங்கள் கணக்குகளை நீக்கலாம். தேவைப்படும் வரை அல்லது சட்டப்பூர்வமாக தேவைப்படும் வரை தரவு தக்கவைக்கப்படும்."},
-      "section7": {"title":"உங்கள் உரிமைகள்","content":"தளத்தின் மூலம் உங்கள் தனிப்பட்ட தரவை நீங்கள் அணுகலாம், திருத்தலாம் மற்றும் புதுப்பிக்கலாம்."},
-      "section8": {"title":"சம்மதம்","content":"தளத்தைப் பயன்படுத்துவதன் மூலம், இந்த தனியுரிமைக் கொள்கையின்படி தரவு சேகரிப்பு மற்றும் செயலாக்கத்திற்கு நீங்கள் ஒப்புக்கொள்கிறீர்கள்."},
-      "section9": {"title":"இந்த தனியுரிமைக் கொள்கையில் மாற்றங்கள்","content":"நாங்கள் இந்தக் கொள்கையை அவ்வப்போது புதுப்பிக்கலாம். பயனர்கள் அதைத் தவறாமல் மதிப்பாய்வு செய்ய வேண்டும்."}
+    ta: {
+       "section1": {
+          "title": "தனியுரிமைக் கொள்கை",
+          "content": "தனியுரிமைக் கொள்கை - இந்தக் தனியுரிமைக் கொள்கையானது, ('தி நெர்ட்ஸ் & கோ', 'நாங்கள்', 'எங்கள்', 'நமக்கு' என கூட்டாக அழைக்கப்படுபவர்கள்) எங்களின் https://foxxydrip.com/ இணையதளம் (இனிமேல் 'தளம்' என குறிப்பிடப்படும்) மூலம் உங்கள் தகவல்/தனிப்பட்ட தரவை எவ்வாறு சேகரிக்கிறோம், பயன்படுத்துகிறோம், பகிர்கிறோம், பாதுகாக்கிறோம் அல்லது வேறுவிதமாகச் செயலாக்குகிறோம் என்பதை விவரிக்கிறது. எங்களிடம் பதிவு செய்யாமலேயே தளத்தின் சில பகுதிகளை நீங்கள் உலாவலாம் என்பதை நினைவில் கொள்ளவும். இந்தத் தளத்தின் கீழ் நாங்கள் இந்தியாவிற்கு வெளியே எந்தவொரு தயாரிப்பு/சேவையையும் வழங்குவதில்லை, மேலும் உங்கள் தனிப்பட்ட தரவு முதன்மையாக இந்தியாவில் சேமிக்கப்பட்டு செயலாக்கப்படும். இந்தத் தளத்தைப் பார்வையிடுவதன் மூலமும், உங்கள் தகவலை வழங்குவதன் மூலமும் அல்லது தளத்தில் வழங்கப்படும் எந்தவொரு தயாரிப்பு/சேவையையும் பெறுவதன் மூலமும், இந்தக் தனியுரிமைக் கொள்கையின் விதிமுறைகள் மற்றும் நிபந்தனைகள், பயன்பாட்டு விதிமுறைகள் (Terms of Use) மற்றும் பொருந்தக்கூடிய சேவை/தயாரிப்பு விதிமுறைகள் மற்றும் நிபந்தனைகளுக்குக் கட்டுப்படுவதை நீங்கள் வெளிப்படையாக ஒப்புக்கொள்கிறீர்கள், மேலும் தரவு பாதுகாப்பு மற்றும் தனியுரிமைச் சட்டங்கள் உட்பட இந்தியச் சட்டங்களின் கீழ் நிர்வகிக்கப்படுவதற்கும் ஒப்புக்கொள்கிறீர்கள். நீங்கள் ஒப்புக்கொள்ளவில்லை என்றால், எங்கள் தளத்தைப் பயன்படுத்தவோ அல்லது அணுகவோ வேண்டாம்."
+        },
+        "section2": {
+          "title": "தகவல் சேகரிப்பு",
+          "content": "நீங்கள் எங்கள் தளம், சேவைகளைப் பயன்படுத்தும் போது அல்லது எங்கள் உறவின் போது எங்களுடன் வேறுவிதமாகத் தொடர்பு கொள்ளும்போது உங்கள் தனிப்பட்ட தரவையும் அவ்வப்போது வழங்கப்படும் தொடர்புடைய தகவல்களையும் நாங்கள் சேகரிக்கிறோம். நாங்கள் சேகரிக்கக்கூடிய சில தகவல்களில், தளத்தில் பதிவு செய்யும்/பதிவு செய்யும் போது அல்லது பயன்படுத்தும் போது எங்களுக்கு வழங்கப்பட்ட தனிப்பட்ட தரவு/தகவல் அடங்கும், ஆனால் அவை மட்டும் அல்ல, பெயர், பிறந்த தேதி, முகவரி, தொலைபேசி/மொபைல் எண், மின்னஞ்சல் ஐடி மற்றும்/அல்லது அடையாளம் அல்லது முகவரிச் சான்றாகப் பகிரப்பட்ட அத்தகைய எந்தவொரு தகவலும் அடங்கும். உங்கள் வங்கி கணக்கு அல்லது கிரெடிட் அல்லது டெபிட் கார்டு அல்லது பிற கட்டணக் கருவித் தகவல் அல்லது உங்கள் முக அம்சங்கள் அல்லது உடலியல் தகவல் போன்ற பயோமெட்ரிக் தகவல்கள் (தளத்தில் கிடைக்கும் சில அம்சங்களைப் பயன்படுத்த உதவும் வகையில், தேர்வுசெய்யப்படும் போது) போன்ற சில முக்கியமான தனிப்பட்ட தரவு உங்கள் சம்மதத்துடன் சேகரிக்கப்படலாம், இவை அனைத்தும் பொருந்தக்கூடிய சட்டம்(கள்) இணங்க இருக்கும். தளத்தில் ஒரு குறிப்பிட்ட சேவை அல்லது அம்சத்தைப் பயன்படுத்த வேண்டாம் என்று தேர்ந்தெடுப்பதன் மூலம், தகவலை வழங்காமல் இருக்க உங்களுக்கு எப்போதும் விருப்பம் உள்ளது. நீங்கள் எங்கள் தளத்தில் வழங்கத் தேர்ந்தெடுக்கும் உங்கள் நடத்தை, விருப்பத்தேர்வுகள் மற்றும் பிற தகவல்களை நாங்கள் கண்காணிக்கலாம். இந்தத் தகவல் தொகுக்கப்பட்டு ஒருங்கிணைந்த அடிப்படையில் பகுப்பாய்வு செய்யப்படுகிறது. தளத்திலும் அத்தகைய மூன்றாம் தரப்பு வணிகப் பங்குதாரர் தளங்களிலும் உங்கள் பரிவர்த்தனைகள் தொடர்பான தகவல்களையும் நாங்கள் சேகரிப்போம். அத்தகைய மூன்றாம் தரப்பு வணிகப் பங்குதாரர் உங்கள் தனிப்பட்ட தரவை உங்களிடமிருந்து நேரடியாகச் சேகரிக்கும்போது, நீங்கள் அவர்களின் தனியுரிமைக் கொள்கைகளால் நிர்வகிக்கப்படுவீர்கள். மூன்றாம் தரப்பு வணிகப் பங்குதாரரின் தனியுரிமை நடைமுறைகள் அல்லது அவர்களின் தனியுரிமைக் கொள்கைகளின் உள்ளடக்கத்திற்கு நாங்கள் பொறுப்பல்ல, மேலும் எந்தவொரு தகவலையும் வெளியிடுவதற்கு முன் அவர்களின் தனியுரிமைக் கொள்கைகளைப் படிக்குமாறு நாங்கள் உங்களைக் கேட்டுக்கொள்கிறோம். டெபிட்/கிரெடிட் கார்டு PIN, நெட்-பேங்கிங் அல்லது மொபைல் பேங்கிங் கடவுச்சொல் போன்ற எந்தவொரு தனிப்பட்ட தரவையும் கோரும் NEXVED CLINICAL RESEARCH ACADEMY என்று கூறிக்கொள்ளும் ஒரு நபர்/சங்கத்திடமிருந்து உங்களுக்கு மின்னஞ்சல், அழைப்பு வந்தால், அத்தகைய தகவலை ஒருபோதும் வழங்க வேண்டாம் என்று நாங்கள் உங்களைக் கேட்டுக்கொள்கிறோம். அத்தகைய தகவலை நீங்கள் ஏற்கனவே வெளிப்படுத்தியிருந்தால், உடனடியாக ஒரு பொருத்தமான சட்ட அமலாக்க முகமையிடம் புகாரளிக்கவும்."
+        },
+        "section3": {
+          "title": "பயன்பாடு",
+          "content": "நீங்கள் கோரும் சேவைகளை வழங்க நாங்கள் தனிப்பட்ட தரவைப் பயன்படுத்துகிறோம். உங்கள் தனிப்பட்ட தரவை உங்களுக்குச் சந்தைப்படுத்த நாங்கள் பயன்படுத்தும் அளவிற்கு, அத்தகைய பயன்பாடுகளிலிருந்து விலகுவதற்கான திறனை (opt-out) நாங்கள் உங்களுக்கு வழங்குவோம். ஆர்டர்களைக் கையாள்வதற்கும் நிறைவேற்றுவதற்கும் விற்பனையாளர்கள் மற்றும் வணிகப் பங்காளர்களுக்கு உதவுவதற்கும்; வாடிக்கையாளர் அனுபவத்தை மேம்படுத்துவதற்கும்; தகராறுகளைத் தீர்ப்பதற்கும்; சிக்கல்களைச் சரிசெய்வதற்கும்; ஆன்லைன் மற்றும் ஆஃப்லைன் சலுகைகள், தயாரிப்புகள், சேவைகள் மற்றும் புதுப்பிப்புகள் பற்றி உங்களுக்குத் தெரிவிப்பதற்கும்; உங்கள் அனுபவத்தைத் தனிப்பயனாக்குவதற்கும்; பிழை, மோசடி மற்றும் பிற குற்றச் செயல்களிலிருந்து எங்களைக் கண்டறிந்து பாதுகாப்பதற்கும்; எங்கள் விதிமுறைகள் மற்றும் நிபந்தனைகளைச் செயல்படுத்துவதற்கும்; சந்தைப்படுத்தல் ஆராய்ச்சி, பகுப்பாய்வு மற்றும் ஆய்வுகளை நடத்துவதற்கும்; மற்றும் தகவல் சேகரிப்பின் போது உங்களுக்கு வேறுவிதமாக விவரிக்கப்பட்டுள்ளபடி நாங்கள் உங்கள் தனிப்பட்ட தரவைப் பயன்படுத்துகிறோம். எங்களுக்கு அனுமதி வழங்கப்படாத பட்சத்தில் இந்தத் தயாரிப்புகள்/சேவைகளுக்கான உங்கள் அணுகல் பாதிக்கப்படலாம் என்பதை நீங்கள் புரிந்துகொள்கிறீர்கள்."
+        },
+        "section4": {
+          "title": "தகவல் பகிர்தல் மற்றும் வெளியிடுதல்கள்",
+          "content": "எங்கள் குழு நிறுவனங்கள், எங்கள் பிற பெருநிறுவன நிறுவனங்கள் மற்றும் இணை நிறுவனங்களுக்குள் உங்கள் தனிப்பட்ட தரவை நாங்கள் உள்நாட்டில் பகிரலாம், அவற்றால் வழங்கப்படும் சேவைகள் மற்றும் தயாரிப்புகளுக்கான அணுகலை உங்களுக்கு வழங்கலாம். நீங்கள் வெளிப்படையாக விலகும் வரை (opt-out) இந்த நிறுவனங்கள் மற்றும் இணை நிறுவனங்கள் அத்தகைய பகிர்வின் விளைவாக உங்களுக்குச் சந்தைப்படுத்தலாம். விற்பனையாளர்கள், வணிகப் பங்காளர்கள், தளவாடப் பங்காளர்கள், ப்ரீபெய்ட் கட்டணக் கருவி வழங்குநர்கள், மூன்றாம் தரப்பு வெகுமதித் திட்டங்கள் மற்றும் நீங்கள் தேர்ந்தெடுத்த பிற கட்டணம் உட்பட மூன்றாம் தரப்பு சேவை வழங்குநர்கள் போன்ற மூன்றாம் தரப்பினருக்கு நாங்கள் தனிப்பட்ட தரவை வெளியிடலாம். உங்களுக்கு எங்கள் சேவைகள் மற்றும் தயாரிப்புகளுக்கான அணுகலை வழங்குவதற்கும், எங்கள் சட்டப்பூர்வ கடமைகளுக்கு இணங்குவதற்கும், எங்கள் பயனர் ஒப்பந்தத்தை அமல்படுத்துவதற்கும், எங்கள் சந்தைப்படுத்தல் மற்றும் விளம்பர நடவடிக்கைகளுக்கு உதவுவதற்கும், எங்கள் சேவைகள் தொடர்பான மோசடி அல்லது சட்டவிரோத நடவடிக்கைகளைத் தடுப்பதற்கும், கண்டறிவதற்கும், தணிப்பதற்கும் மற்றும் விசாரிப்பதற்கும் இந்த வெளியிடுதல்கள் எங்களுக்குத் தேவைப்படலாம். சட்டப்படி அவ்வாறு செய்ய வேண்டியிருந்தால் அல்லது சப்-போனாக்கள், நீதிமன்ற உத்தரவுகள் அல்லது பிற சட்டப்பூர்வ செயல்முறைகளுக்குப் பதிலளிக்க அத்தகைய வெளியிடுதல் நியாயமாகத் தேவை என்று நல்ல நம்பிக்கையுடன் நம்பினால், அரசு நிறுவனங்கள் அல்லது பிற அங்கீகரிக்கப்பட்ட சட்ட அமலாக்க முகமைகளுக்கு தனிப்பட்ட மற்றும் முக்கியமான தனிப்பட்ட தரவை நாங்கள் வெளியிடலாம். எங்கள் பயன்பாட்டு விதிமுறைகள் அல்லது தனியுரிமைக் கொள்கையை அமல்படுத்துவதற்கும்; ஒரு விளம்பரம், இடுகை அல்லது பிற உள்ளடக்கம் மூன்றாம் தரப்பினரின் உரிமைகளை மீறுகிறது என்ற கூற்றுக்களுக்குப் பதிலளிப்பதற்கும்; அல்லது எங்கள் பயனர்கள் அல்லது பொதுமக்களின் உரிமைகள், சொத்து அல்லது தனிப்பட்ட பாதுகாப்பைப் பாதுகாப்பதற்கும் அத்தகைய வெளியிடுதல் நியாயமாகத் தேவை என்று நல்ல நம்பிக்கையுடன் நம்பினால், சட்ட அமலாக்க அலுவலகங்கள், மூன்றாம் தரப்பு உரிமைகள் உரிமையாளர்கள் அல்லது பிறருக்கு தனிப்பட்ட தரவை நாங்கள் வெளியிடலாம்."
+        },
+        "section5": {
+          "title": "நியாயமான பாதுகாப்பு நடைமுறைகள்",
+          "content": "அங்கீகரிக்கப்படாத அணுகல் அல்லது வெளியிடுதல், இழப்பு அல்லது தவறான பயன்பாட்டிலிருந்து உங்கள் தனிப்பட்ட தரவைப் பாதுகாக்க, நாங்கள் நியாயமான பாதுகாப்பு நடைமுறைகள் மற்றும் நடைமுறைகளை ஏற்றுக்கொள்கிறோம். உங்கள் தகவல் எங்கள் வசம் இருக்கும் போது அல்லது நீங்கள் உங்கள் கணக்குத் தகவலை அணுகும் போதெல்லாம், அங்கீகரிக்கப்படாத அணுகலுக்கு எதிராக அதைப் பாதுகாக்க எங்கள் பாதுகாப்புக் வழிகாட்டுதல்களை நாங்கள் கடைபிடிக்கிறோம் மற்றும் பாதுகாப்பான சேவையகத்தைப் பயன்படுத்துவதை வழங்குகிறோம். இருப்பினும், எங்கள் கட்டுப்பாட்டிற்கு அப்பாற்பட்ட காரணங்களால் தகவலின் பரிமாற்றம் முற்றிலும் பாதுகாப்பானது அல்ல. தளத்தைப் பயன்படுத்துவதன் மூலம், இணையம் மற்றும் உலகளாவிய வலையில் தரவு பரிமாற்றத்தின் பாதுகாப்புக் குறிப்புகளைப் பயனர்கள் ஏற்றுக்கொள்கிறார்கள், இது எப்போதும் முற்றிலும் பாதுகாப்பானது என்று உத்தரவாதம் அளிக்க முடியாது, எனவே, தளத்தைப் பயன்படுத்துவது தொடர்பாக சில உள்ளார்ந்த அபாயங்கள் எப்போதும் இருக்கும். பயனர்கள் தங்கள் கணக்கிற்கான உள்நுழைவு மற்றும் கடவுச்சொல் பதிவுகளின் பாதுகாப்பை உறுதி செய்வதற்குப் பொறுப்பாவார்கள்."
+        },
+        "section6": {
+          "title": "தரவு நீக்கம் மற்றும் தக்கவைப்பு",
+          "content": "எங்கள் தளத்தில் உங்கள் சுயவிவரம் மற்றும் அமைப்புகளுக்குச் சென்று உங்கள் கணக்கை நீக்க உங்களுக்கு விருப்பம் உள்ளது, இந்தச் செயல் உங்கள் கணக்கு தொடர்பான அனைத்துத் தகவல்களையும் இழக்க நேரிடும். இந்தக் கோரிக்கைகளில் உங்களுக்கு உதவ கீழே வழங்கப்பட்ட தொடர்புத் தகவலில் நீங்கள் எங்களுக்கு எழுதலாம். நிலுவையில் உள்ள எந்தவொரு குறை, உரிமைகோரல்கள், நிலுவையில் உள்ள கப்பல் அல்லது வேறு ஏதேனும் சேவைகள் ஏற்பட்டால், நாங்கள் கணக்கை நீக்குவதை மறுக்கலாம் அல்லது தாமதப்படுத்தலாம். கணக்கு நீக்கப்பட்டதும், நீங்கள் கணக்கிற்கான அணுகலை இழப்பீர்கள். உங்கள் தனிப்பட்ட தரவுத் தகவலை அது சேகரிக்கப்பட்ட நோக்கத்திற்காகத் தேவைப்படுவதை விட அதிக காலத்திற்கு அல்லது பொருந்தக்கூடிய எந்தவொரு சட்டத்தின் கீழ் தேவைப்படுவதை விட அதிக காலத்திற்கு நாங்கள் தக்கவைக்க மாட்டோம். இருப்பினும், மோசடி அல்லது எதிர்கால துஷ்பிரயோகத்தைத் தடுக்க அல்லது பிற நியாயமான நோக்கங்களுக்காக இது தேவை என்று நாங்கள் நம்பினால், உங்களுடன் தொடர்புடைய தரவை நாங்கள் தக்கவைக்கலாம். பகுப்பாய்வு மற்றும் ஆராய்ச்சிக் காரணங்களுக்காக உங்கள் தரவை அநாமதேயமாக்கப்பட்ட வடிவத்தில் தொடர்ந்து வைத்திருக்கலாம்."
+        },
+        "section7": {
+          "title": "உங்கள் உரிமைகள்",
+          "content": "தளத்தில் வழங்கப்பட்ட செயல்பாடுகள் மூலம் உங்கள் தனிப்பட்ட தரவை நீங்கள் நேரடியாக அணுகலாம், சரிசெய்யலாம் மற்றும் புதுப்பிக்கலாம்."
+        },
+        "section8": {
+          "title": "சம்மதம்",
+          "content": "எங்கள் தளத்தைப் பார்வையிடுவதன் மூலம் அல்லது உங்கள் தகவலை வழங்குவதன் மூலம், இந்தக் தனியுரிமைக் கொள்கையின்படி தளத்தில் உங்கள் தகவலைச் சேகரித்தல், பயன்படுத்துதல், சேமித்தல், வெளியிடுதல் மற்றும் வேறுவிதமாகச் செயலாக்குவதற்கு நீங்கள் சம்மதம் தெரிவிக்கிறீர்கள். மற்ற நபர்கள் தொடர்பான எந்தவொரு தனிப்பட்ட தரவையும் நீங்கள் எங்களிடம் வெளியிட்டால், அவ்வாறு செய்ய உங்களுக்கு அதிகாரம் உள்ளது என்பதையும், இந்தக் தனியுரிமைக் கொள்கையின்படி தகவலைப் பயன்படுத்த எங்களுக்கு அனுமதி அளிப்பதையும் நீங்கள் பிரதிநிதித்துவப்படுத்துகிறீர்கள். நீங்கள், தளத்திலோ அல்லது ஏதேனும் கூட்டாளர் தளங்களிலோ அல்லது ஸ்தாபனங்களிலோ உங்கள் தனிப்பட்ட தரவை வழங்கும்போது, இந்தக் தனியுரிமைக் கொள்கையில் குறிப்பிடப்பட்டுள்ள நோக்கங்களுக்காக SMS, உடனடி செய்தியிடல் பயன்பாடுகள், அழைப்பு மற்றும்/அல்லது மின்னஞ்சல் மூலம் உங்களைத் தொடர்புகொள்ள எங்களுக்கு (எங்கள் மற்ற பெருநிறுவன நிறுவனங்கள், இணை நிறுவனங்கள், கடன் வழங்கும் பங்காளர்கள், தொழில்நுட்ப பங்காளர்கள், சந்தைப்படுத்தல் சேனல்கள், வணிகப் பங்காளர்கள் மற்றும் பிற மூன்றாம் தரப்பினர் உட்பட) சம்மதம் தெரிவிக்கிறீர்கள். கீழே வழங்கப்பட்ட தொடர்புத் தகவலில் உள்ள குறை தீர்க்கும் அதிகாரிக்கு எழுதுவதன் மூலம் நீங்கள் ஏற்கனவே வழங்கிய உங்கள் சம்மதத்தைத் திரும்பப் பெற உங்களுக்கு விருப்பம் உள்ளது. உங்கள் தகவல்தொடர்பின் பொருள் வரியில் \"தனிப்பட்ட தரவைச் செயலாக்குவதற்கான சம்மதத்தைத் திரும்பப் பெறுதல்\" என்று குறிப்பிடவும். எங்கள் கோரிக்கையின் மீது செயல்படுவதற்கு முன் அத்தகைய கோரிக்கைகளை நாங்கள் சரிபார்க்கலாம். இருப்பினும், உங்கள் சம்மதத்தைத் திரும்பப் பெறுதல் பின்னோக்கிச் செல்லாது என்பதையும், இது பயன்பாட்டு விதிமுறைகள், இந்தக் தனியுரிமைக் கொள்கை மற்றும் பொருந்தக்கூடிய சட்டங்களின்படி இருக்கும் என்பதையும் நினைவில் கொள்ளவும். இந்தக் தனியுரிமைக் கொள்கையின் கீழ் எங்களுக்கு வழங்கப்பட்ட சம்மதத்தை நீங்கள் திரும்பப் பெற்றால், அத்தகைய தகவல் அவசியம் என்று நாங்கள் கருதும் எங்கள் சேவைகளை வழங்குவதைத் தடைசெய்ய அல்லது மறுக்க எங்களுக்கு உரிமை உள்ளது."
+        },
+        "section9": {
+          "title": "இந்தத் தனியுரிமைக் கொள்கையில் மாற்றங்கள்",
+          "content": "மாற்றங்களுக்கு எங்கள் தனியுரிமைக் கொள்கையை அவ்வப்போது சரிபார்க்கவும். எங்கள் தகவல் நடைமுறைகளில் ஏற்படும் மாற்றங்களைப் பிரதிபலிக்கும் வகையில் இந்தக் தனியுரிமைக் கொள்கையை நாங்கள் புதுப்பிக்கலாம். பொருந்தக்கூடிய சட்டங்களின் கீழ் தேவைப்படக்கூடிய விதத்தில் தனியுரிமைக் கொள்கையில் உள்ள குறிப்பிடத்தக்க மாற்றங்கள் குறித்து நாங்கள் உங்களுக்கு எச்சரிக்கை/அறிவிக்கலாம்."
+        }
     },
-    "te": {
-      "section1": {
-          "title":"గోప్యతా విధానం",
-          "content":"ఈ గోప్యతా విధానం (సమిష్టిగా 'THE NERDS & CO', 'మేము', 'మా', 'మాకు') మా వెబ్‌సైట్ https://foxxydrip.com/ (ఇకపై 'ప్లాట్‌ఫారమ్'గా సూచించబడుతుంది) ద్వారా మీ సమాచారం/వ్యక్తిగత డేటాను ఎలా సేకరిస్తాము, ఉపయోగిస్తాము, పంచుకుంటాము, రక్షిస్తాము లేదా ప్రాసెస్ చేస్తామో వివరిస్తుంది. దయచేసి మీరు మాతో నమోదు చేసుకోకుండానే ప్లాట్‌ఫారమ్‌లోని కొన్ని విభాగాలను బ్రౌజ్ చేయవచ్చని గమనించండి. మేము ఈ ప్లాట్‌ఫారమ్ కింద భారతదేశం వెలుపల ఏ ఉత్పత్తి/సేవను అందించము మరియు మీ వ్యక్తిగత డేటా ప్రధానంగా భారతదేశంలో నిల్వ చేయబడుతుంది మరియు ప్రాసెస్ చేయబడుతుంది. ఈ ప్లాట్‌ఫారమ్‌ను సందర్శించడం ద్వారా, మీ సమాచారాన్ని అందించడం ద్వారా లేదా ప్లాట్‌ఫారమ్‌లో అందించే ఏదైనా ఉత్పత్తి/సేవను పొందడం ద్వారా, మీరు ఈ గోప్యతా విధానం, వినియోగ నిబంధనలు మరియు వర్తించే సేవ/ఉత్పత్తి నిబంధనలు మరియు షరతులకు కట్టుబడి ఉండటానికి స్పష్టంగా అంగీకరిస్తున్నారు మరియు డేటా రక్షణ మరియు గోప్యతా చట్టాలతో సహా భారతీయ చట్టాలచే పాలించబడటానికి అంగీకరిస్తున్నారు. మీరు అంగీకరించకపోతే, దయచేసి మా ప్లాట్‌ఫారమ్‌ను ఉపయోగించవద్దు లేదా యాక్సెస్ చేయవద్దు."
-      },
-      "section2": {
-          "title":"సమాచార సేకరణ",
-          "content":"మేము రిజిస్ట్రేషన్ మరియు సేవల ఉపయోగం సమయంలో పేరు, ఇమెయిల్, ఫోన్ మరియు చిరునామాతో సహా వ్యక్తిగత సమాచారాన్ని సేకరిస్తాము."
-      },
-      "section3": {
-          "title":"వినియోగం",
-          "content":"మేము సేవలను అందించడానికి, అనుభవాన్ని మెరుగుపరచడానికి, మోసాన్ని గుర్తించడానికి మరియు మార్కెటింగ్ పరిశోధన కోసం వ్యక్తిగత డేటాను ఉపయోగిస్తాము."
-      },
-      "section4": {"title":"సమాచార భాగస్వామ్యం మరియు బహిర్గతం","content":"మేము అనుబంధ సంస్థలు, భాగస్వాములతో లేదా చట్టపరమైన బాధ్యతలకు అనుగుణంగా డేటాను పంచుకోవచ్చు."},
-      "section5": {"title":"సహేతుకమైన భద్రతా పద్ధతులు","content":"మేము మీ డేటాను రక్షించడానికి సహేతుకమైన భద్రతా చర్యలను పాటిస్తాము, కానీ పూర్తి భద్రతకు హామీ ఇవ్వలేము."},
-      "section6": {"title":"డేటా తొలగింపు మరియు నిలుపుదల","content":"వినియోగదారులు వారి ఖాతాలను తొలగించవచ్చు. అవసరమైనంత కాలం లేదా చట్టబద్ధంగా అవసరమైనంత కాలం డేటా నిలుపుకోబడుతుంది."},
-      "section7": {"title":"మీ హక్కులు","content":"మీరు ప్లాట్‌ఫారమ్ ద్వారా మీ వ్యక్తిగత డేటాను యాక్సెస్ చేయవచ్చు, సరిదిద్దుకోవచ్చు మరియు నవీకరించవచ్చు."},
-      "section8": {"title":"సమ్మతి","content":"ప్లాట్‌ఫారమ్‌ను ఉపయోగించడం ద్వారా, మీరు ఈ గోప్యతా విధానానికి అనుగుణంగా డేటా సేకరణ మరియు ప్రాసెసింగ్‌కు సమ్మతిస్తున్నారు."},
-      "section9": {"title":"ఈ గోప్యతా విధానంలో మార్పులు","content":"మేము ఈ విధానాన్ని కాలానుగుణంగా నవీకరించవచ్చు. వినియోగదారులు దీన్ని క్రమం తప్పకుండా సమీక్షించాలి."}
+    te: {
+        "section1": {
+          "title": "గోప్యతా విధానం ",
+          "content": "గోప్యతా విధానం - ఈ గోప్యతా విధానం (సమిష్టిగా 'THE NERDS & CO', 'మేము', 'మా', 'మన') మా వెబ్‌సైట్ https://foxxydrip.com/ (ఇకపై 'ప్లాట్‌ఫారమ్'గా సూచించబడుతుంది) ద్వారా మీ సమాచారం/వ్యక్తిగత డేటాను ఎలా సేకరిస్తాము, ఉపయోగిస్తాము, పంచుకుంటాము, రక్షిస్తాము లేదా ఇతరత్రా ప్రాసెస్ చేస్తాము అనే దానిని వివరిస్తుంది. దయచేసి మీరు మాతో నమోదు చేసుకోకుండానే ప్లాట్‌ఫారమ్‌లోని కొన్ని విభాగాలను బ్రౌజ్ చేయవచ్చని గమనించండి. మేము ఈ ప్లాట్‌ఫారమ్ కింద భారతదేశం వెలుపల ఎటువంటి ఉత్పత్తి/సేవను అందించము మరియు మీ వ్యక్తిగత డేటా ప్రధానంగా భారతదేశంలో నిల్వ చేయబడుతుంది మరియు ప్రాసెస్ చేయబడుతుంది. ఈ ప్లాట్‌ఫారమ్‌ను సందర్శించడం, మీ సమాచారాన్ని అందించడం లేదా ప్లాట్‌ఫారమ్‌లో అందించే ఏదైనా ఉత్పత్తి/సేవను పొందడం ద్వారా, మీరు ఈ గోప్యతా విధానం యొక్క నిబంధనలు మరియు షరతులు, వినియోగ నిబంధనలు (Terms of Use) మరియు వర్తించే సేవ/ఉత్పత్తి నిబంధనలు మరియు షరతులకు కట్టుబడి ఉండటానికి స్పష్టంగా అంగీకరిస్తున్నారు మరియు డేటా రక్షణ మరియు గోప్యతా చట్టాలతో సహా భారత చట్టాల ద్వారా నిర్వహించబడటానికి అంగీకరిస్తున్నారు. మీరు అంగీకరించకపోతే, దయచేసి మా ప్లాట్‌ఫారమ్‌ను ఉపయోగించవద్దు లేదా యాక్సెస్ చేయవద్దు."
+        },
+        "section2": {
+          "title": "సమాచార సేకరణ",
+          "content": "మీరు మా ప్లాట్‌ఫారమ్‌ను, సేవలను ఉపయోగించినప్పుడు లేదా మా సంబంధం యొక్క సమయంలో మాతో ఇతరత్రా సంభాషించినప్పుడు మేము మీ వ్యక్తిగత డేటాను మరియు ఎప్పటికప్పుడు అందించబడిన సంబంధిత సమాచారాన్ని సేకరిస్తాము. మేము సేకరించగల కొన్ని సమాచారంలో ప్లాట్‌ఫారమ్‌లో సైన్-అప్/నమోదు చేసేటప్పుడు లేదా ఉపయోగించేటప్పుడు మాకు అందించబడిన వ్యక్తిగత డేటా/సమాచారం ఉంటుంది, కానీ వాటికి మాత్రమే పరిమితం కాదు, పేరు, పుట్టిన తేదీ, చిరునామా, టెలిఫోన్/మొబైల్ నంబర్, ఇమెయిల్ ఐడి మరియు/లేదా గుర్తింపు లేదా చిరునామా రుజువుగా భాగస్వామ్యం చేయబడిన అటువంటి ఏదైనా సమాచారం. మీ బ్యాంక్ ఖాతా లేదా క్రెడిట్ లేదా డెబిట్ కార్డ్ లేదా ఇతర చెల్లింపు పరికర సమాచారం లేదా మీ ముఖ లక్షణాలు లేదా శారీరక సమాచారం వంటి బయోమెట్రిక్ సమాచారం (ప్లాట్‌ఫారమ్‌లో అందుబాటులో ఉన్న కొన్ని ఫీచర్‌లను ఎంచుకున్నప్పుడు ఉపయోగించడానికి వీలుగా) వంటి కొన్ని సున్నితమైన వ్యక్తిగత డేటా మీ సమ్మతితో సేకరించబడవచ్చు, ఇవన్నీ వర్తించే చట్టం(లు) ప్రకారం ఉంటాయి. ప్లాట్‌ఫారమ్‌లోని నిర్దిష్ట సేవ లేదా ఫీచర్‌ను ఉపయోగించకూడదని ఎంచుకోవడం ద్వారా, సమాచారాన్ని అందించకుండా ఉండటానికి మీకు ఎల్లప్పుడూ అవకాశం ఉంటుంది. మీరు మా ప్లాట్‌ఫారమ్‌లో అందించడానికి ఎంచుకున్న మీ ప్రవర్తన, ప్రాధాన్యతలు మరియు ఇతర సమాచారాన్ని మేము ట్రాక్ చేయవచ్చు. ఈ సమాచారం సంకలనం చేయబడుతుంది మరియు సమగ్ర ప్రాతిపదికన విశ్లేషించబడుతుంది. ప్లాట్‌ఫారమ్‌లోని మీ లావాదేవీలకు మరియు అటువంటి మూడవ పక్ష వ్యాపార భాగస్వామి ప్లాట్‌ఫారమ్‌లకు సంబంధించిన మీ సమాచారాన్ని కూడా మేము సేకరిస్తాము. అటువంటి మూడవ పక్ష వ్యాపార భాగస్వామి మీ వ్యక్తిగత డేటాను మీ నుండి నేరుగా సేకరించినప్పుడు, మీరు వారి గోప్యతా విధానాల ద్వారా నిర్వహించబడతారు. మూడవ పక్ష వ్యాపార భాగస్వామి యొక్క గోప్యతా పద్ధతులు లేదా వారి గోప్యతా విధానాల యొక్క కంటెంట్‌కు మేము బాధ్యత వహించము మరియు ఏదైనా సమాచారాన్ని బహిర్గతం చేయడానికి ముందు వారి గోప్యతా విధానాలను చదవాలని మేము మిమ్మల్ని అభ్యర్థిస్తున్నాము. డెబిట్/క్రెడిట్ కార్డ్ PIN, నెట్-బ్యాంకింగ్ లేదా మొబైల్ బ్యాంకింగ్ పాస్‌వర్డ్ వంటి ఏదైనా వ్యక్తిగత డేటాను కోరుతూ NEXVED CLINICAL RESEARCH ACADEMY అని చెప్పుకునే వ్యక్తి/సంస్థ నుండి మీకు ఇమెయిల్, కాల్ వస్తే, అటువంటి సమాచారాన్ని ఎప్పుడూ అందించవద్దని మేము మిమ్మల్ని అభ్యర్థిస్తున్నాము. మీరు ఇప్పటికే అటువంటి సమాచారాన్ని వెల్లడించి ఉంటే, వెంటనే తగిన చట్ట అమలు సంస్థకు నివేదించండి."
+        },
+        "section3": {
+          "title": "వినియోగం",
+          "content": "మీరు అభ్యర్థించే సేవలను అందించడానికి మేము వ్యక్తిగత డేటాను ఉపయోగిస్తాము. మేము మీ వ్యక్తిగత డేటాను మీకు మార్కెటింగ్ చేయడానికి ఉపయోగించే మేరకు, అటువంటి ఉపయోగాల నుండి వైదొలగే (opt-out) సామర్థ్యాన్ని మేము మీకు అందిస్తాము. విక్రేతలు మరియు వ్యాపార భాగస్వాములకు ఆర్డర్‌లను నిర్వహించడంలో మరియు నెరవేర్చడంలో సహాయం చేయడానికి; కస్టమర్ అనుభవాన్ని మెరుగుపరచడానికి; వివాదాలను పరిష్కరించడానికి; సమస్యలను పరిష్కరించడానికి; ఆన్‌లైన్ మరియు ఆఫ్‌లైన్ ఆఫర్‌లు, ఉత్పత్తులు, సేవలు మరియు అప్‌డేట్‌ల గురించి మీకు తెలియజేయడానికి; మీ అనుభవాన్ని అనుకూలీకరించడానికి; లోపం, మోసం మరియు ఇతర క్రిమినల్ కార్యకలాపాల నుండి మమ్మల్ని గుర్తించడానికి మరియు రక్షించడానికి; మా నిబంధనలు మరియు షరతులను అమలు చేయడానికి; మార్కెటింగ్ పరిశోధన, విశ్లేషణ మరియు సర్వేలను నిర్వహించడానికి; మరియు సమాచారాన్ని సేకరించే సమయంలో మీకు వివరించిన విధంగా మేము మీ వ్యక్తిగత డేటాను ఉపయోగిస్తాము. మాకు అనుమతి ఇవ్వని పక్షంలో ఈ ఉత్పత్తులు/సేవలకు మీ యాక్సెస్ ప్రభావితం కావచ్చని మీరు అర్థం చేసుకున్నారు."
+        },
+        "section4": {
+          "title": "సమాచార భాగస్వామ్యం మరియు వెల్లడి",
+          "content": "మీకు అందించే సేవలు మరియు ఉత్పత్తులకు మీకు యాక్సెస్‌ను అందించడానికి మేము మీ వ్యక్తిగత డేటాను మా గ్రూప్ ఎంటిటీలు, మా ఇతర కార్పొరేట్ ఎంటిటీలు మరియు అనుబంధ సంస్థలలో అంతర్గతంగా పంచుకోవచ్చు. మీరు స్పష్టంగా వైదొలగకపోతే (opt-out) ఈ ఎంటిటీలు మరియు అనుబంధ సంస్థలు అటువంటి భాగస్వామ్యం ఫలితంగా మీకు మార్కెటింగ్ చేయవచ్చు. విక్రేతలు, వ్యాపార భాగస్వాములు, లాజిస్టిక్స్ భాగస్వాములు, ప్రీపెయిడ్ చెల్లింపు పరికరాల జారీదారులు, మూడవ పక్ష రివార్డ్ ప్రోగ్రామ్‌లు మరియు మీరు ఎంచుకున్న ఇతర చెల్లింపుతో సహా మూడవ పక్ష సేవా ప్రదాతలు వంటి మూడవ పక్షాలకు మేము వ్యక్తిగత డేటాను బహిర్గతం చేయవచ్చు. మీకు మా సేవలు మరియు ఉత్పత్తులకు యాక్సెస్‌ను అందించడానికి, మా చట్టపరమైన బాధ్యతలకు అనుగుణంగా ఉండటానికి, మా వినియోగదారు ఒప్పందాన్ని అమలు చేయడానికి, మా మార్కెటింగ్ మరియు ప్రకటన కార్యకలాపాలను సులభతరం చేయడానికి, మా సేవలకు సంబంధించిన మోసపూరిత లేదా చట్టవిరుద్ధ కార్యకలాపాలను నిరోధించడానికి, గుర్తించడానికి, తగ్గించడానికి మరియు పరిశోధించడానికి ఈ వెల్లడి అవసరం కావచ్చు. చట్టం ద్వారా అలా చేయవలసి వస్తే లేదా సబ్పోనెనాలు, కోర్టు ఆదేశాలు లేదా ఇతర చట్టపరమైన ప్రక్రియకు ప్రతిస్పందించడానికి అటువంటి వెల్లడి సహేతుకంగా అవసరమని మంచి విశ్వాసంతో విశ్వసిస్తే, మేము ప్రభుత్వ ఏజెన్సీలకు లేదా ఇతర అధీకృత చట్ట అమలు సంస్థలకు వ్యక్తిగత మరియు సున్నితమైన వ్యక్తిగత డేటాను బహిర్గతం చేయవచ్చు. మా వినియోగ నిబంధనలు లేదా గోప్యతా విధానాన్ని అమలు చేయడానికి; ఒక ప్రకటన, పోస్టింగ్ లేదా ఇతర కంటెంట్ మూడవ పక్షం యొక్క హక్కులను ఉల్లంఘిస్తుందనే వాదనలకు ప్రతిస్పందించడానికి; లేదా మా వినియోగదారులు లేదా సాధారణ ప్రజల హక్కులు, ఆస్తి లేదా వ్యక్తిగత భద్రతను రక్షించడానికి అటువంటి వెల్లడి సహేతుకంగా అవసరమని మంచి విశ్వాసంతో విశ్వసిస్తే, మేము చట్ట అమలు కార్యాలయాలు, మూడవ పక్ష హక్కుల యజమానులు లేదా ఇతరులకు వ్యక్తిగత డేటాను బహిర్గతం చేయవచ్చు."
+        },
+        "section5": {
+          "title": "సహేతుకమైన భద్రతా పద్ధతులు",
+          "content": "అనధికార యాక్సెస్ లేదా వెల్లడి, నష్టం లేదా దుర్వినియోగం నుండి మీ వ్యక్తిగత డేటాను రక్షించడానికి మేము సహేతుకమైన భద్రతా పద్ధతులు మరియు విధానాలను అవలంబిస్తాము. మీ సమాచారం మా ఆధీనంలో ఉన్న తర్వాత లేదా మీరు మీ ఖాతా సమాచారాన్ని యాక్సెస్ చేసినప్పుడల్లా, అనధికార యాక్సెస్ నుండి రక్షించడానికి మేము మా భద్రతా మార్గదర్శకాలకు కట్టుబడి ఉంటాము మరియు సురక్షిత సర్వర్‌ను ఉపయోగించడానికి అందిస్తాము. అయినప్పటికీ, మా నియంత్రణకు మించిన కారణాల వల్ల సమాచారం యొక్క ప్రసారం పూర్తిగా సురక్షితం కాదు. ప్లాట్‌ఫారమ్‌ను ఉపయోగించడం ద్వారా, ఇంటర్నెట్ మరియు వరల్డ్ వైడ్ వెబ్‌లో డేటా ప్రసారం యొక్క భద్రతా చిక్కులను వినియోగదారులు అంగీకరిస్తారు, ఇది ఎల్లప్పుడూ పూర్తిగా సురక్షితంగా ఉంటుందని హామీ ఇవ్వబడదు, అందువల్ల, ప్లాట్‌ఫారమ్‌ను ఉపయోగించడం గురించి కొన్ని అంతర్లీన నష్టాలు ఎల్లప్పుడూ ఉంటాయి. వినియోగదారులు వారి ఖాతా కోసం లాగిన్ మరియు పాస్‌వర్డ్ రికార్డుల రక్షణను నిర్ధారించడానికి బాధ్యత వహిస్తారు."
+        },
+        "section6": {
+          "title": "డేటా తొలగింపు మరియు నిలుపుదల",
+          "content": "మీరు మా ప్లాట్‌ఫారమ్‌లో మీ ప్రొఫైల్ మరియు సెట్టింగ్‌లను సందర్శించడం ద్వారా మీ ఖాతాను తొలగించే అవకాశం ఉంది, ఈ చర్య మీ ఖాతాకు సంబంధించిన మొత్తం సమాచారాన్ని కోల్పోవడానికి దారితీస్తుంది. ఈ అభ్యర్థనలలో మీకు సహాయం చేయడానికి మీరు దిగువ అందించిన సంప్రదింపు సమాచారం వద్ద కూడా మాకు వ్రాయవచ్చు. ఏదైనా పెండింగ్‌లో ఉన్న ఫిర్యాదు, క్లెయిమ్‌లు, పెండింగ్ షిప్‌మెంట్లు లేదా ఏదైనా ఇతర సేవలు ఉన్న సందర్భంలో మేము ఖాతా తొలగింపును తిరస్కరించవచ్చు లేదా ఆలస్యం చేయవచ్చు. ఖాతా తొలగించబడిన తర్వాత, మీరు ఖాతాకు యాక్సెస్‌ను కోల్పోతారు. మీ వ్యక్తిగత డేటా సమాచారాన్ని అది సేకరించబడిన ప్రయోజనం కోసం అవసరమైన దానికంటే ఎక్కువ కాలం పాటు లేదా వర్తించే ఏదైనా చట్టం కింద అవసరమైన విధంగా మేము నిలుపుకుంటాము. అయితే, మోసాన్ని లేదా భవిష్యత్తులో దుర్వినియోగాన్ని నిరోధించడానికి లేదా ఇతర చట్టబద్ధమైన ప్రయోజనాల కోసం ఇది అవసరం కావచ్చు అని మేము విశ్వసిస్తే, మేము మీకు సంబంధించిన డేటాను నిలుపుకోవచ్చు. విశ్లేషణాత్మక మరియు పరిశోధన ప్రయోజనాల కోసం మీ డేటాను అనామక రూపంలో నిలుపుకోవడం కొనసాగించవచ్చు."
+        },
+        "section7": {
+          "title": "మీ హక్కులు ",
+          "content": "మీరు ప్లాట్‌ఫారమ్‌లో అందించబడిన కార్యాచరణల ద్వారా నేరుగా మీ వ్యక్తిగత డేటాను యాక్సెస్ చేయవచ్చు, సరిదిద్దవచ్చు మరియు అప్‌డేట్ చేయవచ్చు."
+        },
+        "section8": {
+          "title": "సమ్మతి",
+          "content": "మా ప్లాట్‌ఫారమ్‌ను సందర్శించడం ద్వారా లేదా మీ సమాచారాన్ని అందించడం ద్వారా, ఈ గోప్యతా విధానానికి అనుగుణంగా ప్లాట్‌ఫారమ్‌లో మీ సమాచారాన్ని సేకరించడం, ఉపయోగించడం, నిల్వ చేయడం, బహిర్గతం చేయడం మరియు ఇతరత్రా ప్రాసెస్ చేయడానికి మీరు సమ్మతిస్తారు. మీరు ఇతరులకు సంబంధించిన ఏదైనా వ్యక్తిగత డేటాను మాకు బహిర్గతం చేస్తే, అలా చేయడానికి మీకు అధికారం ఉందని మరియు ఈ గోప్యతా విధానానికి అనుగుణంగా సమాచారాన్ని ఉపయోగించడానికి మమ్మల్ని అనుమతించాలని మీరు ప్రాతినిధ్యం వహిస్తున్నారు. మీరు, ప్లాట్‌ఫారమ్‌లో లేదా ఏదైనా భాగస్వామి ప్లాట్‌ఫారమ్‌లు లేదా సంస్థలలో మీ వ్యక్తిగత డేటాను అందిస్తున్నప్పుడు, ఈ గోప్యతా విధానంలో పేర్కొన్న ప్రయోజనాల కోసం SMS, తక్షణ సందేశ యాప్‌లు, కాల్ మరియు/లేదా ఇ-మెయిల్ ద్వారా మిమ్మల్ని సంప్రదించడానికి మాకు (మా ఇతర కార్పొరేట్ ఎంటిటీలు, అనుబంధ సంస్థలు, రుణ భాగస్వాములు, సాంకేతిక భాగస్వాములు, మార్కెటింగ్ ఛానెల్‌లు, వ్యాపార భాగస్వాములు మరియు ఇతర మూడవ పక్షాలతో సహా) సమ్మతిస్తారు. మీరు ఇప్పటికే అందించిన మీ సమ్మతిని దిగువ అందించిన సంప్రదింపు సమాచారం వద్ద గ్రీవెన్స్ ఆఫీసర్‌కు వ్రాయడం ద్వారా ఉపసంహరించుకోవడానికి మీకు అవకాశం ఉంది. దయచేసి మీ సంభాషణ యొక్క సబ్జెక్ట్ లైన్‌లో \"వ్యక్తిగత డేటాను ప్రాసెస్ చేయడానికి సమ్మతి ఉపసంహరణ\" అని పేర్కొనండి. మేము మా అభ్యర్థనపై చర్య తీసుకునే ముందు అటువంటి అభ్యర్థనలను ధృవీకరించవచ్చు. అయితే, మీ సమ్మతి ఉపసంహరణ వెనుకచూపుతో ఉండదని మరియు ఇది వినియోగ నిబంధనలు, ఈ గోప్యతా విధానం మరియు వర్తించే చట్టాలకు అనుగుణంగా ఉంటుందని దయచేసి గమనించండి. ఈ గోప్యతా విధానం కింద మాకు ఇచ్చిన సమ్మతిని మీరు ఉపసంహరించుకున్న సందర్భంలో, అటువంటి సమాచారం అవసరమని మేము భావించే మా సేవల యొక్క నిబంధనను పరిమితం చేయడానికి లేదా నిరాకరించడానికి మాకు హక్కు ఉంది."
+        },
+        "section9": {
+          "title": "ఈ గోప్యతా విధానానికి మార్పులు",
+          "content": "మార్పుల కోసం దయచేసి మా గోప్యతా విధానాన్ని క్రమానుగతంగా తనిఖీ చేయండి. మా సమాచార పద్ధతులలో మార్పులను ప్రతిబింబించడానికి మేము ఈ గోప్యతా విధానాన్ని నవీకరించవచ్చు. వర్తించే చట్టాల ప్రకారం అవసరమైన విధంగా గోప్యతా విధానానికి సంబంధించిన ముఖ్యమైన మార్పుల గురించి మేము మీకు హెచ్చరించవచ్చు / తెలియజేయవచ్చు."
+        }
     },
-    "mr": {
-      "section1": {
-          "title":"गोपनीयता धोरण",
-          "content":"हे गोपनीयता धोरण (एकत्रितपणे 'THE NERDS & CO', 'आम्ही', 'आमचे', 'आम्हाला') आमच्या https://foxxydrip.com/ ('प्लॅटफॉर्म' म्हणून संदर्भित) वेबसाइटद्वारे तुमची माहिती/वैयक्तिक डेटा कसा संकलित, वापर, सामायिक, संरक्षित किंवा अन्यथा प्रक्रिया करतो याचे वर्णन करते. कृपया लक्षात घ्या की तुम्ही आमच्याकडे नोंदणी न करता प्लॅટफॉर्मचे काही विभाग ब्राउझ करू शकता. आम्ही या प्लॅटफॉर्मअंतर्गत भारताबाहेर कोणतेही उत्पादन/सेवा देत नाही आणि तुमचा वैयक्तिक डेटा प्रामुख्याने भारतात संग्रहित आणि प्रक्रिया केला जाईल. या प्लॅटफॉर्मला भेट देऊन, तुमची माहिती प्रदान करून किंवा प्लॅટफॉर्मवर ऑफर केलेल्या कोणत्याही उत्पादन/सेवेचा लाभ घेऊन, तुम्ही या गोपनीयता धोरणाच्या अटी व शर्ती, वापराच्या अटी आणि लागू सेवा/उत्पादन अटी व शर्तींना बांधील असण्यास स्पष्टपणे सहमत आहात आणि डेटा संरक्षण आणि गोपनीयता कायद्यांसह भारतीय कायद्यांद्वारे शासित होण्यास सहमत आहात. तुम्ही सहमत नसल्यास, कृपया आमचा प्लॅटफॉर्म वापरू नका किंवा त्यात प्रवेश करू नका."
-      },
-      "section2": {
-          "title":"माहिती संकलन",
-          "content":"आम्ही नोंदणी आणि सेवांच्या वापरादरम्यान नाव, ईमेल, फोन आणि पत्ता यासह वैयक्तिक माहिती संकलित करतो."
-      },
-      "section3": {
-          "title":"वापर",
-          "content":"आम्ही सेवा प्रदान करण्यासाठी, अनुभव वाढवण्यासाठी, फसवणूक शोधण्यासाठी आणि विपणन संशोधनासाठी वैयक्तिक डेटा वापरतो."
-      },
-      "section4": {"title":"माहिती सामायिकरण आणि प्रकटीकरण","content":"आम्ही संलग्न, भागीदारांसह किंवा कायदेशीर जबाबदाऱ्यांचे पालन करण्यासाठी डेटा सामायिक करू शकतो."},
-      "section5": {"title":"वाजवी सुरक्षा पद्धती","content":"आम्ही तुमचा डेटा संरक्षित करण्यासाठी वाजवी सुरक्षा उपाययोजना करतो, परंतु संपूर्ण सुरक्षिततेची हमी देऊ शकत नाही."},
-      "section6": {"title":"डेटा हटवणे आणि राखून ठेवणे","content":"वापरकर्ते त्यांची खाती हटवू शकतात. जोपर्यंत आवश्यक असेल किंवा कायदेशीररित्या आवश्यक असेल तोपर्यंत डेटा राखून ठेवला जातो."},
-      "section7": {"title":"तुमचे अधिकार","content":"तुम्ही प्लॅटफॉर्मद्वारे तुमचा वैयक्तिक डेटा ઍક્સેસ करू शकता, दुरुस्त करू शकता आणि अद्यतनित करू शकता."},
-      "section8": {"title":"संमती","content":"प्लॅटफॉर्म वापरून, तुम्ही या गोपनीयता धोरणानुसार डेटा संकलन आणि प्रक्रियेसाठी संमती देता."},
-      "section9": {"title":"या गोपनीयता धोरणातील बदल","content":"आम्ही हे धोरण वेळोवेळी अद्यतनित करू शकतो. वापरकर्त्यांनी त्याचे नियमितपणे पुनरावलोकन केले पाहिजे."}
+    mr: {
+       "section1": {
+          "title": "गोपनीयता धोरण",
+          "content": "गोपनीयता धोरण - हे गोपनीयता धोरण ('THE NERDS & CO', 'आम्ही', 'आमचे', 'आम्हाला' म्हणून एकत्रितपणे) आमच्या https://foxxydrip.com/ वेबसाइटद्वारे (यानंतर 'प्लॅटफॉर्म' म्हणून संदर्भित) तुमची माहिती/वैयक्तिक डेटा कसा गोळा करतो, वापरतो, सामायिक करतो, संरक्षित करतो किंवा अन्यथा प्रक्रिया करतो याचे वर्णन करते. कृपया लक्षात घ्या की तुम्ही आमच्याकडे नोंदणी न करता प्लॅटफॉर्मचे काही विभाग ब्राउझ करू शकता. आम्ही या प्लॅटफॉर्म अंतर्गत भारताबाहेर कोणतेही उत्पादन/सेवा देत नाही आणि तुमचा वैयक्तिक डेटा प्रामुख्याने भारतात संग्रहित आणि प्रक्रिया केला जाईल. या प्लॅटफॉर्मला भेट देऊन, तुमची माहिती प्रदान करून किंवा प्लॅटफॉर्मवर ऑफर केलेल्या कोणत्याही उत्पादन/सेवेचा लाभ घेऊन, तुम्ही या गोपनीयता धोरणाच्या अटी व शर्ती, वापराच्या अटी (Terms of Use) आणि लागू असलेल्या सेवा/उत्पादन अटी व शर्तींना बांधील राहण्यास स्पष्टपणे सहमत आहात आणि डेटा संरक्षण आणि गोपनीयता कायद्यांसह भारतीय कायद्यांद्वारे शासित होण्यास सहमत आहात. तुम्ही सहमत नसल्यास, कृपया आमचे प्लॅटफॉर्म वापरू नका किंवा त्यावर प्रवेश करू नका."
+        },
+        "section2": {
+          "title": "माहिती संकलन",
+          "content": "जेव्हा तुम्ही आमचे प्लॅटफॉर्म, सेवा वापरता किंवा आमच्या संबंधादरम्यान आमच्याशी अन्यथा संवाद साधता तेव्हा आम्ही तुमचा वैयक्तिक डेटा आणि वेळोवेळी प्रदान केलेली संबंधित माहिती गोळा करतो. आम्ही गोळा करू शकणाऱ्या काही माहितीमध्ये प्लॅटफॉर्मवर साइन-अप/नोंदणी करताना किंवा वापरताना आम्हाला प्रदान केलेला वैयक्तिक डेटा/माहिती समाविष्ट आहे, परंतु यापुरती मर्यादित नाही, जसे की नाव, जन्मतारीख, पत्ता, टेलिफोन/मोबाइल नंबर, ईमेल आयडी आणि/किंवा ओळख किंवा पत्त्याचा पुरावा म्हणून सामायिक केलेली कोणतीही माहिती. तुमचा बँक खाते किंवा क्रेडिट किंवा डेबिट कार्ड किंवा इतर पेमेंट इन्स्ट्रुमेंट माहिती किंवा तुमचे चेहर्यावरील वैशिष्ट्ये किंवा शारीरिक माहिती यासारखी बायोमेट्रिक माहिती (प्लॅटफॉर्मवर उपलब्ध असलेल्या काही वैशिष्ट्यांचा वापर सक्षम करण्यासाठी, निवडल्यास) यांसारखा काही संवेदनशील वैयक्तिक डेटा तुमच्या संमतीने गोळा केला जाऊ शकतो, या सर्व गोष्टी लागू कायद्यानुसार असतील. प्लॅटफॉर्मवरील विशिष्ट सेवा किंवा वैशिष्ट्य न वापरणे निवडून, तुमच्याकडे माहिती न देण्याचा पर्याय नेहमीच असतो. तुम्ही आमच्या प्लॅटफॉर्मवर प्रदान करणे निवडलेले तुमचे वर्तन, प्राधान्ये आणि इतर माहिती आम्ही ट्रॅक करू शकतो. ही माहिती एकत्रित आणि एकत्रित आधारावर विश्लेषण केली जाते. आम्ही प्लॅटफॉर्मवरील तुमच्या व्यवहारांशी संबंधित आणि अशा तृतीय-पक्ष व्यावसायिक भागीदार प्लॅटफॉर्मवरील तुमची माहिती देखील गोळा करू. जेव्हा असा तृतीय-पक्ष व्यावसायिक भागीदार तुमचा वैयक्तिक डेटा थेट तुमच्याकडून गोळा करतो, तेव्हा तुम्ही त्यांच्या गोपनीयता धोरणांद्वारे शासित व्हाल. आम्ही तृतीय-पक्ष व्यावसायिक भागीदाराच्या गोपनीयता पद्धतींसाठी किंवा त्यांच्या गोपनीयता धोरणांच्या सामग्रीसाठी जबाबदार राहणार नाही आणि आम्ही तुम्हाला कोणतीही माहिती उघड करण्यापूर्वी त्यांचे गोपनीयता धोरण वाचण्याची विनंती करतो. जर तुम्हाला NEXVED CLINICAL RESEARCH ACADEMY असल्याचा दावा करणाऱ्या व्यक्ती/संस्थेकडून ईमेल किंवा कॉल आला आणि ते डेबिट/क्रेडिट कार्ड पिन, नेट-बँकिंग किंवा मोबाईल बँकिंग पासवर्ड यांसारखा कोणताही वैयक्तिक डेटा मागत असतील, तर आम्ही तुम्हाला विनंती करतो की अशी माहिती कधीही देऊ नका. जर तुम्ही अशी माहिती आधीच उघड केली असेल, तर लगेच योग्य कायद्याची अंमलबजावणी करणाऱ्या एजन्सीकडे त्याची तक्रार करा."
+        },
+        "section3": {
+          "title": "वापर",
+          "content": "तुम्ही विनंती केलेल्या सेवा प्रदान करण्यासाठी आम्ही वैयक्तिक डेटा वापरतो. आम्ही तुमचा वैयक्तिक डेटा तुम्हाला मार्केटिंग करण्यासाठी ज्या मर्यादेपर्यंत वापरतो, त्या मर्यादेपर्यंत आम्ही तुम्हाला अशा वापरांसाठी **ऑप्ट-आउट** करण्याची क्षमता प्रदान करू. आम्ही तुमचा वैयक्तिक डेटा विक्रेते आणि व्यावसायिक भागीदारांना ऑर्डर हाताळण्यास आणि पूर्ण करण्यात मदत करण्यासाठी; ग्राहकांचा अनुभव वाढवण्यासाठी; वाद सोडवण्यासाठी; समस्यांचे निवारण करण्यासाठी; ऑनलाइन आणि ऑफलाइन ऑफर, उत्पादने, सेवा आणि अद्यतनांबद्दल तुम्हाला माहिती देण्यासाठी; तुमचा अनुभव सानुकूलित करण्यासाठी; त्रुटी, फसवणूक आणि इतर गुन्हेगारी कृत्यांपासून आम्हाला शोधण्यासाठी आणि संरक्षित करण्यासाठी; आमच्या अटी व शर्तींची अंमलबजावणी करण्यासाठी; विपणन संशोधन, विश्लेषण आणि सर्वेक्षण आयोजित करण्यासाठी; आणि माहिती संकलनाच्या वेळी तुम्हाला अन्यथा वर्णन केल्यानुसार वापरतो. तुमच्याकडून परवानगी न मिळाल्यास या उत्पादने/सेवांपर्यंत तुमचा प्रवेश प्रभावित होऊ शकतो हे तुम्हाला समजते."
+        },
+        "section4": {
+          "title": "माहितीची देवाणघेवाण आणि खुलासे",
+          "content": "आम्ही तुमचा वैयक्तिक डेटा अंतर्गतपणे आमच्या समूह संस्था, आमच्या इतर कॉर्पोरेट संस्था आणि संलग्न संस्थांमध्ये सामायिक करू शकतो जेणेकरून तुम्हाला त्यांच्याद्वारे ऑफर केलेल्या सेवा आणि उत्पादनांचा प्रवेश मिळेल. तुम्ही स्पष्टपणे **ऑप्ट-आउट** केल्याशिवाय या संस्था आणि संलग्न संस्था अशा सामायिकरणामुळे तुम्हाला मार्केटिंग करू शकतात. आम्ही विक्रेते, व्यावसायिक भागीदार, लॉजिस्टिक्स भागीदार, प्रीपेड पेमेंट इन्स्ट्रुमेंट जारीकर्ते, तृतीय-पक्ष रिवॉर्ड प्रोग्राम्स आणि तुमच्याद्वारे निवडलेले इतर पेमेंटसह तृतीय-पक्ष सेवा प्रदात्यांसारख्या तृतीय पक्षांना वैयक्तिक डेटा उघड करू शकतो. तुम्हाला आमच्या सेवा आणि उत्पादनांचा प्रवेश प्रदान करण्यासाठी, आमच्या कायदेशीर बंधनांचे पालन करण्यासाठी, आमच्या वापरकर्ता कराराची अंमलबजावणी करण्यासाठी, आमच्या विपणन आणि जाहिरात क्रियाकलापांना सुलभ करण्यासाठी, आमच्या सेवांशी संबंधित फसवणूक किंवा बेकायदेशीर क्रियाकलापांना प्रतिबंध करणे, शोधणे, कमी करणे आणि तपासणे यासाठी हे खुलासे आम्हाला आवश्यक असू शकतात. कायद्याने असे करणे आवश्यक असल्यास किंवा सबपोइना, न्यायालयाचे आदेश किंवा इतर कायदेशीर प्रक्रियेला प्रतिसाद देण्यासाठी असा खुलासा वाजवीपणे आवश्यक आहे या चांगल्या विश्वासाने आम्ही सरकारी संस्था किंवा इतर अधिकृत कायद्याची अंमलबजावणी करणाऱ्या एजन्सींना वैयक्तिक आणि संवेदनशील वैयक्तिक डेटा उघड करू शकतो. आम्ही कायद्याची अंमलबजावणी कार्यालये, तृतीय-पक्ष हक्क मालक किंवा इतरांना चांगल्या विश्वासाने उघड करू शकतो की असा खुलासा वाजवीपणे आवश्यक आहे: आमच्या वापराच्या अटी किंवा गोपनीयता धोरणाची अंमलबजावणी करण्यासाठी; जाहिरात, पोस्टिंग किंवा इतर सामग्री तृतीय पक्षाच्या हक्कांचे उल्लंघन करते या दाव्यांना प्रतिसाद देण्यासाठी; किंवा आमच्या वापरकर्त्यांचे किंवा सामान्य लोकांचे हक्क, मालमत्ता किंवा वैयक्तिक सुरक्षितता संरक्षित करण्यासाठी."
+        },
+        "section5": {
+          "title": "वाजवी सुरक्षा पद्धती",
+          "content": "तुमचा वैयक्तिक डेटा अनधिकृत प्रवेश किंवा खुलासा, नुकसान किंवा गैरवापरातून संरक्षित करण्यासाठी आम्ही वाजवी सुरक्षा पद्धती आणि प्रक्रिया अवलंबतो. एकदा तुमची माहिती आमच्या ताब्यात आल्यावर किंवा जेव्हाही तुम्ही तुमच्या खात्याच्या माहितीवर प्रवेश करता, तेव्हा आम्ही अनधिकृत प्रवेशापासून त्याचे संरक्षण करण्यासाठी आमच्या सुरक्षा मार्गदर्शक तत्त्वांचे पालन करतो आणि सुरक्षित सर्व्हरचा वापर करण्याची ऑफर देतो. तथापि, आमच्या नियंत्रणाबाहेरील कारणांमुळे माहितीचे प्रसारण पूर्णपणे सुरक्षित नाही. प्लॅटफॉर्मचा वापर करून, वापरकर्ते इंटरनेट आणि वर्ल्ड वाइड वेबवर डेटा ट्रान्समिशनच्या सुरक्षा समस्या स्वीकारतात जे नेहमी पूर्णपणे सुरक्षित असल्याची हमी दिली जाऊ शकत नाही, आणि त्यामुळे, प्लॅटफॉर्मच्या वापरासंदर्भात काही मूळ धोके नेहमीच राहतील. वापरकर्ते त्यांच्या खात्यासाठी लॉगिन आणि पासवर्ड रेकॉर्डचे संरक्षण सुनिश्चित करण्यासाठी जबाबदार आहेत."
+        },
+        "section6": {
+          "title": "डेटा हटवणे आणि धारणा",
+          "content": "तुम्हाला आमच्या प्लॅटफॉर्मवर तुमच्या प्रोफाइल आणि सेटिंग्जला भेट देऊन तुमचे खाते हटवण्याचा पर्याय आहे, या कृतीमुळे तुमच्या खात्याशी संबंधित सर्व माहिती तुम्ही गमावाल. या विनंत्यांमध्ये तुम्हाला मदत करण्यासाठी तुम्ही खाली दिलेल्या संपर्क माहितीवर आम्हाला लिहू शकता. कोणत्याही प्रलंबित तक्रार, दावे, प्रलंबित शिपमेंट किंवा इतर कोणत्याही सेवांच्या घटनेत आम्ही खाते हटवण्यास नकार देऊ शकतो किंवा विलंब करू शकतो. एकदा खाते हटवल्यानंतर, तुम्ही खात्याचा प्रवेश गमावाल. आम्ही तुमच्या वैयक्तिक डेटाची माहिती ज्या उद्देशासाठी ती गोळा केली गेली होती त्यासाठी आवश्यक असलेल्या वेळेपेक्षा जास्त कालावधीसाठी किंवा कोणत्याही लागू कायद्यानुसार आवश्यक असलेल्या वेळेसाठी ठेवत नाही. तथापि, आम्हाला वाटत असेल की फसवणूक किंवा भविष्यातील गैरवापर टाळण्यासाठी किंवा इतर कायदेशीर हेतूंसाठी आवश्यक असू शकते, तर आम्ही तुमच्याशी संबंधित डेटा राखून ठेवू शकतो. आम्ही विश्लेषणात्मक आणि संशोधन हेतूंसाठी तुमचा डेटा अनामित स्वरूपात ठेवणे सुरू ठेवू शकतो."
+        },
+        "section7": {
+          "title": "तुमचे अधिकार",
+          "content": "तुम्ही प्लॅटफॉर्मवर प्रदान केलेल्या कार्यक्षमतेद्वारे थेट तुमच्या वैयक्तिक डेटावर प्रवेश करू शकता, तो दुरुस्त करू शकता आणि अद्यतनित करू शकता."
+        },
+        "section8": {
+          "title": "संमती",
+          "content": "आमच्या प्लॅटफॉर्मला भेट देऊन किंवा तुमची माहिती प्रदान करून, तुम्ही या गोपनीयता धोरणानुसार प्लॅटफॉर्मवर तुमची माहिती गोळा करणे, वापरणे, संग्रहित करणे, उघड करणे आणि अन्यथा प्रक्रिया करण्यास संमती देता. तुम्ही आम्हाला इतर लोकांशी संबंधित कोणताही वैयक्तिक डेटा उघड केल्यास, तुम्ही असे करण्यास अधिकृत आहात आणि या गोपनीयता धोरणानुसार माहिती वापरण्याची आम्हाला परवानगी देता असे तुम्ही प्रतिनिधित्व करता. तुम्ही, प्लॅटफॉर्मवर किंवा कोणत्याही भागीदार प्लॅटफॉर्मवर किंवा आस्थापनांवर तुमचा वैयक्तिक डेटा प्रदान करताना, या गोपनीयता धोरणामध्ये निर्दिष्ट केलेल्या हेतूंसाठी SMS, इन्स्टंट मेसेजिंग अॅप्स, कॉल आणि/किंवा ई-मेलद्वारे तुमच्याशी संपर्क साधण्यासाठी आम्हाला (आमच्या इतर कॉर्पोरेट संस्था, संलग्न संस्था, कर्ज भागीदार, तंत्रज्ञान भागीदार, विपणन चॅनेल, व्यावसायिक भागीदार आणि इतर तृतीय पक्षांसह) संमती देता. तुम्ही खाली दिलेल्या संपर्क माहितीवर तक्रार अधिकाऱ्याला लिहून तुम्ही आधीच दिलेली तुमची संमती मागे घेण्याचा पर्याय तुमच्याकडे आहे. कृपया तुमच्या संवादाच्या विषय ओळीत \"वैयक्तिक डेटावर प्रक्रिया करण्यासाठी संमती मागे घेणे\" याचा उल्लेख करा. आम्ही तुमच्या विनंतीवर कारवाई करण्यापूर्वी अशा विनंत्यांची पडताळणी करू शकतो. तथापि, कृपया लक्षात घ्या की तुमची संमती मागे घेणे पूर्वलक्षी नसेल आणि ते वापराच्या अटी, हे गोपनीयता धोरण आणि लागू कायद्यांनुसार असेल. तुम्ही या गोपनीयता धोरणाखाली आम्हाला दिलेली संमती मागे घेतल्यास, ज्यासाठी आम्हाला अशी माहिती आवश्यक वाटते अशा आमच्या सेवांची तरतूद प्रतिबंधित करण्याचा किंवा नाकारण्याचा अधिकार आम्ही राखून ठेवतो."
+        },
+        "section9": {
+          "title": "या गोपनीयता धोरणातील बदल",
+          "content": "बदलांसाठी कृपया वेळोवेळी आमचे गोपनीयता धोरण तपासा. आमच्या माहितीच्या पद्धतींमधील बदल दर्शवण्यासाठी आम्ही हे गोपनीयता धोरण अद्यतनित करू शकतो. लागू कायद्यांनुसार आवश्यक असलेल्या पद्धतीने आम्ही तुम्हाला गोपनीयता धोरणातील महत्त्वपूर्ण बदलांबद्दल अलर्ट / सूचित करू शकतो."
+        }
     },
-    "ml": {
-      "section1": {
-          "title":"സ്വകാര്യതാ നയം",
-          "content":"ഈ സ്വകാര്യതാ നയം (കൂട്ടായി 'THE NERDS & CO', 'ഞങ്ങൾ', 'ഞങ്ങളുടെ', 'നമ്മുടെ') ഞങ്ങളുടെ വെബ്സൈറ്റായ https://foxxydrip.com/ ('പ്ലാറ്റ്ഫോം' എന്ന് ഇനിമുതൽ അറിയപ്പെടുന്നു) വഴി നിങ്ങളുടെ വിവരങ്ങൾ/വ്യക്തിഗത ഡാറ്റ എങ്ങനെ ശേഖരിക്കുന്നു, ഉപയോഗിക്കുന്നു, പങ്കിടുന്നു, സംരക്ഷിക്കുന്നു അല്ലെങ്കിൽ പ്രോസസ്സ് ചെയ്യുന്നു എന്ന് വിവരിക്കുന്നു. ഞങ്ങളിൽ രജിസ്റ്റർ ചെയ്യാതെ തന്നെ നിങ്ങൾക്ക് പ്ലാറ്റ്‌ഫോമിന്റെ ചില ഭാഗങ്ങൾ ബ്രൗസ് ചെയ്യാമെന്ന് ദയവായി ശ്രദ്ധിക്കുക. ഈ പ്ലാറ്റ്‌ഫോമിന് കീഴിൽ ഞങ്ങൾ ഇന്ത്യയ്ക്ക് പുറത്ത് ഒരു ഉൽപ്പന്നവും/സേവനവും വാഗ്ദാനം ചെയ്യുന്നില്ല, നിങ്ങളുടെ സ്വകാര്യ ഡാറ്റ പ്രാഥമികമായി ഇന്ത്യയിലായിരിക്കും സംഭരിക്കുകയും പ്രോസസ്സ് ചെയ്യുകയും ചെയ്യുക. ഈ പ്ലാറ്റ്ഫോം സന്ദർശിക്കുന്നതിലൂടെയോ, നിങ്ങളുടെ വിവരങ്ങൾ നൽകുന്നതിലൂടെയോ, അല്ലെങ്കിൽ പ്ലാറ്റ്‌ഫോമിൽ വാഗ്ദാനം ചെയ്യുന്ന ഏതെങ്കിലും ഉൽപ്പന്നം/സേവനം പ്രയോജനപ്പെടുത്തുന്നതിലൂടെയോ, ഈ സ്വകാര്യതാ നയത്തിലെ നിബന്ധനകളും വ്യവസ്ഥകളും, ഉപയോഗ നിബന്ധനകളും, ബാധകമായ സേവന/ഉൽപ്പന്ന നിബന്ധനകളും വ്യവസ്ഥകളും നിങ്ങൾ അംഗീകരിക്കുന്നു, കൂടാതെ ഡാറ്റാ സംരക്ഷണവും സ്വകാര്യതാ നിയമങ്ങളും ഉൾപ്പെടെയുള്ള ഇന്ത്യൻ നിയമങ്ങളാൽ ഭരിക്കപ്പെടുമെന്ന് സമ്മതിക്കുന്നു. നിങ്ങൾ സമ്മതിക്കുന്നില്ലെങ്കിൽ, ദയവായി ഞങ്ങളുടെ പ്ലാറ്റ്ഫോം ഉപയോഗിക്കുകയോ ആക്സസ് ചെയ്യുകയോ ചെയ്യരുത്."
+    ml: {
+      section1: {
+        title: "സ്വകാര്യതാ നയം",
+        content:
+          "ഈ സ്വകാര്യതാ നയം (കൂട്ടായി 'THE NERDS & CO', 'ഞങ്ങൾ', 'ഞങ്ങളുടെ', 'നമ്മുടെ') ഞങ്ങളുടെ വെബ്സൈറ്റായ https://foxxydrip.com/ ('പ്ലാറ്റ്ഫോം' എന്ന് ഇനിമുതൽ അറിയപ്പെടുന്നു) വഴി നിങ്ങളുടെ വിവരങ്ങൾ/വ്യക്തിഗത ഡാറ്റ എങ്ങനെ ശേഖരിക്കുന്നു, ഉപയോഗിക്കുന്നു, പങ്കിടുന്നു, സംരക്ഷിക്കുന്നു അല്ലെങ്കിൽ പ്രോസസ്സ് ചെയ്യുന്നു എന്ന് വിവരിക്കുന്നു. ഞങ്ങളിൽ രജിസ്റ്റർ ചെയ്യാതെ തന്നെ നിങ്ങൾക്ക് പ്ലാറ്റ്‌ഫോമിന്റെ ചില ഭാഗങ്ങൾ ബ്രൗസ് ചെയ്യാമെന്ന് ദയവായി ശ്രദ്ധിക്കുക. ഈ പ്ലാറ്റ്‌ഫോമിന് കീഴിൽ ഞങ്ങൾ ഇന്ത്യയ്ക്ക് പുറത്ത് ഒരു ഉൽപ്പന്നവും/സേവനവും വാഗ്ദാനം ചെയ്യുന്നില്ല, നിങ്ങളുടെ സ്വകാര്യ ഡാറ്റ പ്രാഥമികമായി ഇന്ത്യയിലായിരിക്കും സംഭരിക്കുകയും പ്രോസസ്സ് ചെയ്യുകയും ചെയ്യുക. ഈ പ്ലാറ്റ്ഫോം സന്ദർശിക്കുന്നതിലൂടെയോ, നിങ്ങളുടെ വിവരങ്ങൾ നൽകുന്നതിലൂടെയോ, അല്ലെങ്കിൽ പ്ലാറ്റ്‌ഫോമിൽ വാഗ്ദാനം ചെയ്യുന്ന ഏതെങ്കിലും ഉൽപ്പന്നം/സേവനം പ്രയോജനപ്പെടുത്തുന്നതിലൂടെയോ, ഈ സ്വകാര്യതാ നയത്തിലെ നിബന്ധനകളും വ്യവസ്ഥകളും, ഉപയോഗ നിബന്ധനകളും, ബാധകമായ സേവന/ഉൽപ്പന്ന നിബന്ധനകളും വ്യവസ്ഥകളും നിങ്ങൾ അംഗീകരിക്കുന്നു, കൂടാതെ ഡാറ്റാ സംരക്ഷണവും സ്വകാര്യതാ നിയമങ്ങളും ഉൾപ്പെടെയുള്ള ഇന്ത്യൻ നിയമങ്ങളാൽ ഭരിക്കപ്പെടുമെന്ന് സമ്മതിക്കുന്നു. നിങ്ങൾ സമ്മതിക്കുന്നില്ലെങ്കിൽ, ദയവായി ഞങ്ങളുടെ പ്ലാറ്റ്ഫോം ഉപയോഗിക്കുകയോ ആക്സസ് ചെയ്യുകയോ ചെയ്യരുത്.",
       },
-      "section2": {
-          "title":"വിവരശേഖരണം",
-          "content":"രജിസ്ട്രേഷൻ സമയത്തും സേവനങ്ങൾ ഉപയോഗിക്കുമ്പോഴും പേര്, ഇമെയിൽ, ഫോൺ, വിലാസം എന്നിവയുൾപ്പെടെയുള്ള വ്യക്തിഗത വിവരങ്ങൾ ഞങ്ങൾ ശേഖരിക്കുന്നു."
+      section2: {
+        title: "വിവരശേഖരണം",
+        content:
+          "നിങ്ങൾ ഞങ്ങളുടെ പ്ലാറ്റ്‌ഫോം, സേവനങ്ങൾ എന്നിവ ഉപയോഗിക്കുമ്പോഴോ അല്ലെങ്കിൽ ഞങ്ങളുടെ ബന്ധത്തിനിടയിൽ ഞങ്ങളുമായി ഇടപഴകുമ്പോഴോ ഞങ്ങൾ നിങ്ങളുടെ വ്യക്തിഗത ഡാറ്റ ശേഖരിക്കുന്നു. കാലാകാലങ്ങളിൽ നൽകുന്ന അനുബന്ധ വിവരങ്ങളും ഇതിൽ ഉൾപ്പെടും. ഞങ്ങൾ ശേഖരിക്കുന്ന ചില വിവരങ്ങളിൽ പേര്, ജനനത്തീയതി, വിലാസം, ടെലിഫോൺ/മൊബൈൽ നമ്പർ, ഇമെയിൽ ഐഡി കൂടാതെ/അല്ലെങ്കിൽ ഐഡന്റിറ്റിയുടെയോ വിലാസത്തിന്റെയോ തെളിവായി പങ്കിടുന്ന അത്തരം വിവരങ്ങൾ എന്നിവ പോലുള്ള പ്ലാറ്റ്‌ഫോമിൽ സൈൻ അപ്പ് ചെയ്യുമ്പോഴോ/രജിസ്റ്റർ ചെയ്യുമ്പോഴോ അല്ലെങ്കിൽ ഉപയോഗിക്കുമ്പോഴോ ഞങ്ങൾക്ക് നൽകുന്ന വ്യക്തിഗത ഡാറ്റ/വിവരങ്ങൾ ഉൾപ്പെടുന്നു, എന്നാൽ ഇവയിൽ മാത്രം പരിമിതപ്പെടുന്നില്ല. നിങ്ങളുടെ ബാങ്ക് അക്കൗണ്ട് അല്ലെങ്കിൽ ക്രെഡിറ്റ് അല്ലെങ്കിൽ ഡെബിറ്റ് കാർഡ് അല്ലെങ്കിൽ മറ്റ് പേയ്‌മെന്റ് ഇൻസ്ട്രുമെന്റ് വിവരങ്ങൾ അല്ലെങ്കിൽ നിങ്ങളുടെ മുഖ സവിശേഷതകൾ അല്ലെങ്കിൽ ഫിസിയോളജിക്കൽ വിവരങ്ങൾ (പ്ലാറ്റ്‌ഫോമിൽ ലഭ്യമായ ചില സവിശേഷതകൾ തിരഞ്ഞെടുക്കുമ്പോൾ അവയുടെ ഉപയോഗം പ്രാപ്തമാക്കുന്നതിന്) പോലുള്ള ചില സെൻസിറ്റീവായ വ്യക്തിഗത ഡാറ്റ നിങ്ങളുടെ സമ്മതത്തോടെ ശേഖരിക്കപ്പെടാം, ഇവയെല്ലാം ബാധകമായ നിയമ(ങ്ങൾ) അനുസരിച്ചായിരിക്കും. പ്ലാറ്റ്‌ഫോമിലെ ഒരു പ്രത്യേക സേവനമോ സവിശേഷതയോ ഉപയോഗിക്കാതിരിക്കാൻ തിരഞ്ഞെടുക്കുന്നതിലൂടെ വിവരങ്ങൾ നൽകാതിരിക്കാൻ നിങ്ങൾക്ക് എപ്പോഴും അവസരമുണ്ട്. നിങ്ങളുടെ പെരുമാറ്റം, മുൻഗണനകൾ, ഞങ്ങളുടെ പ്ലാറ്റ്‌ഫോമിൽ നിങ്ങൾ നൽകാൻ തിരഞ്ഞെടുക്കുന്ന മറ്റ് വിവരങ്ങൾ എന്നിവ ഞങ്ങൾ ട്രാക്ക് ചെയ്‌തേക്കാം. ഈ വിവരങ്ങൾ സമാഹരിച്ച അടിസ്ഥാനത്തിൽ കംപൈൽ ചെയ്യുകയും വിശകലനം ചെയ്യുകയും ചെയ്യുന്നു. പ്ലാറ്റ്‌ഫോമിലെയും അത്തരം മൂന്നാം കക്ഷി ബിസിനസ് പങ്കാളി പ്ലാറ്റ്‌ഫോമുകളിലെയും നിങ്ങളുടെ ഇടപാടുകളുമായി ബന്ധപ്പെട്ട വിവരങ്ങളും ഞങ്ങൾ ശേഖരിക്കും. അത്തരം ഒരു മൂന്നാം കക്ഷി ബിസിനസ് പങ്കാളി നിങ്ങളുടെ സ്വകാര്യ ഡാറ്റ നിങ്ങളിൽ നിന്ന് നേരിട്ട് ശേഖരിക്കുമ്പോൾ, അവരുടെ സ്വകാര്യതാ നയങ്ങൾ നിങ്ങളെ നിയന്ത്രിക്കും. മൂന്നാം കക്ഷി ബിസിനസ് പങ്കാളിയുടെ സ്വകാര്യതാ രീതികൾക്കോ അവരുടെ സ്വകാര്യതാ നയങ്ങളുടെ ഉള്ളടക്കത്തിനോ ഞങ്ങൾ ഉത്തരവാദിയായിരിക്കില്ല, കൂടാതെ ഏതെങ്കിലും വിവരങ്ങൾ വെളിപ്പെടുത്തുന്നതിന് മുമ്പ് അവരുടെ സ്വകാര്യതാ നയങ്ങൾ വായിക്കാൻ ഞങ്ങൾ നിങ്ങളോട് അഭ്യർത്ഥിക്കുന്നു. ഡെബിറ്റ്/ക്രെഡിറ്റ് കാർഡ് പിൻ, നെറ്റ് ബാങ്കിംഗ് അല്ലെങ്കിൽ മൊബൈൽ ബാങ്കിംഗ് പാസ്‌വേഡ് പോലുള്ള ഏതെങ്കിലും വ്യക്തിഗത ഡാറ്റ തേടിക്കൊണ്ട് NEXVED CLINICAL RESEARCH ACADEMY ആണെന്ന് അവകാശപ്പെടുന്ന ഒരു വ്യക്തിയിൽ നിന്നോ/അസോസിയേഷനിൽ നിന്നോ നിങ്ങൾക്ക് ഒരു ഇമെയിൽ, ഒരു കോൾ ലഭിക്കുകയാണെങ്കിൽ, അത്തരം വിവരങ്ങൾ ഒരിക്കലും നൽകാതിരിക്കാൻ ഞങ്ങൾ നിങ്ങളോട് അഭ്യർത്ഥിക്കുന്നു. നിങ്ങൾ അത്തരം വിവരങ്ങൾ ഇതിനകം വെളിപ്പെടുത്തിയിട്ടുണ്ടെങ്കിൽ, ഉചിതമായ നിയമ നിർവ്വഹണ ഏജൻസിയെ ഉടൻ അറിയിക്കുക.",
       },
-      "section3": {
-          "title":"ഉപയോഗം",
-          "content":"സേവനങ്ങൾ നൽകുന്നതിനും, അനുഭവം മെച്ചപ്പെടുത്തുന്നതിനും, വഞ്ചന കണ്ടെത്തുന്നതിനും, മാർക്കറ്റിംഗ് ഗവേഷണത്തിനും ഞങ്ങൾ വ്യക്തിഗത ഡാറ്റ ഉപയോഗിക്കുന്നു."
+      section3: {
+        title: "ഉപയോഗം",
+        content:
+          "നിങ്ങൾ ആവശ്യപ്പെടുന്ന സേവനങ്ങൾ നൽകാൻ ഞങ്ങൾ വ്യക്തിഗത ഡാറ്റ ഉപയോഗിക്കുന്നു. നിങ്ങളെ മാർക്കറ്റ് ചെയ്യാൻ ഞങ്ങൾ നിങ്ങളുടെ വ്യക്തിഗത ഡാറ്റ ഉപയോഗിക്കുന്നുണ്ടെങ്കിൽ, അത്തരം ഉപയോഗങ്ങളിൽ നിന്ന് ഒഴിവാക്കാനുള്ള കഴിവ് ഞങ്ങൾ നിങ്ങൾക്ക് നൽകും. ഓർഡറുകൾ കൈകാര്യം ചെയ്യുന്നതിനും നിറവേറ്റുന്നതിനും; ഉപഭോക്തൃ അനുഭവം മെച്ചപ്പെടുത്തുന്നതിനും; തർക്കങ്ങൾ പരിഹരിക്കുന്നതിനും; പ്രശ്‌നങ്ങൾ പരിഹരിക്കുന്നതിനും; ഓൺലൈൻ, ഓഫ്‌ലൈൻ ഓഫറുകൾ, ഉൽപ്പന്നങ്ങൾ, സേവനങ്ങൾ, അപ്‌ഡേറ്റുകൾ എന്നിവയെക്കുറിച്ച് നിങ്ങളെ അറിയിക്കുന്നതിനും; നിങ്ങളുടെ അനുഭവം ഇഷ്ടാനുസൃതമാക്കുന്നതിനും; പിശക്, വഞ്ചന, മറ്റ് ക്രിമിനൽ പ്രവർത്തനങ്ങൾ എന്നിവയിൽ നിന്ന് ഞങ്ങളെ കണ്ടെത്താനും സംരക്ഷിക്കാനും; ഞങ്ങളുടെ നിബന്ധനകളും വ്യവസ്ഥകളും നടപ്പിലാക്കുന്നതിനും; മാർക്കറ്റിംഗ് ഗവേഷണം, വിശകലനം, സർവേകൾ എന്നിവ നടത്തുന്നതിനും; വിവരങ്ങൾ ശേഖരിക്കുന്ന സമയത്ത് നിങ്ങളോട് വിവരിച്ച മറ്റ് ആവശ്യങ്ങൾക്കും ഞങ്ങൾ നിങ്ങളുടെ വ്യക്തിഗത ഡാറ്റ ഉപയോഗിക്കുന്നു. ഞങ്ങൾക്ക് അനുമതി നൽകിയില്ലെങ്കിൽ ഈ ഉൽപ്പന്നങ്ങളിലേക്കും/സേവനങ്ങളിലേക്കുമുള്ള നിങ്ങളുടെ പ്രവേശനം ബാധിക്കപ്പെട്ടേക്കാം എന്ന് നിങ്ങൾ മനസ്സിലാക്കുന്നു.",
       },
-      "section4": {"title":"വിവരങ്ങൾ പങ്കുവെക്കലും വെളിപ്പെടുത്തലും","content":"അംഗസ്ഥാപനങ്ങളുമായോ, പങ്കാളികളുമായോ, അല്ലെങ്കിൽ നിയമപരമായ ബാധ്യതകൾ നിറവേറ്റുന്നതിനോ ഞങ്ങൾ ഡാറ്റ പങ്കിടാം."},
-      "section5": {"title":"ന്യായമായ സുരക്ഷാ രീതികൾ","content":"നിങ്ങളുടെ ഡാറ്റ പരിരക്ഷിക്കുന്നതിന് ഞങ്ങൾ ന്യായമായ സുരക്ഷാ നടപടികൾ സ്വീകരിക്കുന്നു, എന്നാൽ പൂർണ്ണമായ സുരക്ഷ ഉറപ്പുനൽകാൻ കഴിയില്ല."},
-      "section6": {"title":"ഡാറ്റ ഇല്ലാതാക്കലും നിലനിർത്തലും","content":"ഉപയോക്താക്കൾക്ക് അവരുടെ അക്കൗണ്ടുകൾ ഇല്ലാതാക്കാം. ആവശ്യമായ കാലയളവിലേക്കോ നിയമപരമായി ആവശ്യമുള്ളിടത്തോളമോ ഡാറ്റ നിലനിർത്തുന്നതാണ്."},
-      "section7": {"title":"നിങ്ങളുടെ അവകാശങ്ങൾ","content":"പ്ലാറ്റ്ഫോമിലൂടെ നിങ്ങളുടെ വ്യക്തിഗത ഡാറ്റ ആക്സസ് ചെയ്യാനും, തിരുത്താനും, അപ്ഡേറ്റ് ചെയ്യാനും നിങ്ങൾക്ക് കഴിയും."},
-      "section8": {"title":"സമ്മതം","content":"പ്ലാറ്റ്ഫോം ഉപയോഗിക്കുന്നതിലൂടെ, ഈ സ്വകാര്യതാ നയത്തിന് അനുസൃതമായി ഡാറ്റ ശേഖരിക്കുന്നതിനും പ്രോസസ്സ് ചെയ്യുന്നതിനും നിങ്ങൾ സമ്മതം നൽകുന്നു."},
-      "section9": {"title":"ഈ സ്വകാര്യതാ നയത്തിലെ മാറ്റങ്ങൾ","content":"ഞങ്ങൾ ഈ നയം ഇടയ്ക്കിടെ അപ്ഡേറ്റ് ചെയ്തേക്കാം. ഉപയോക്താക്കൾ ഇത് പതിവായി അവലോകനം ചെയ്യണം."}
+      section4: {
+        title: "വിവരങ്ങൾ പങ്കുവെക്കലും വെളിപ്പെടുത്തലും",
+        content:
+          "ഞങ്ങളുടെ ഗ്രൂപ്പ് സ്ഥാപനങ്ങളിലും, മറ്റ് കോർപ്പറേറ്റ് സ്ഥാപനങ്ങളിലും, അനുബന്ധ സ്ഥാപനങ്ങളിലും ഞങ്ങൾ നിങ്ങളുടെ വ്യക്തിഗത ഡാറ്റ പങ്കുവെച്ചേക്കാം. അവർ വാഗ്ദാനം ചെയ്യുന്ന സേവനങ്ങളിലേക്കും ഉൽപ്പന്നങ്ങളിലേക്കും നിങ്ങൾക്ക് പ്രവേശനം നൽകുന്നതിനാണിത്. നിങ്ങൾ വ്യക്തമായി ഒഴിവാക്കാത്തപക്ഷം ഈ സ്ഥാപനങ്ങളും അനുബന്ധ സ്ഥാപനങ്ങളും അത്തരത്തിലുള്ള പങ്കുവെക്കലിന്റെ ഫലമായി നിങ്ങൾക്ക് മാർക്കറ്റിംഗ് നടത്തിയേക്കാം. വിൽപ്പനക്കാർ, ബിസിനസ് പങ്കാളികൾ, ലോജിസ്റ്റിക് പങ്കാളികൾ, പ്രീപെയ്ഡ് പേയ്‌മെന്റ് ഇൻസ്ട്രുമെന്റ് ഇഷ്യൂ ചെയ്യുന്നവർ, മൂന്നാം കക്ഷി റിവാർഡ് പ്രോഗ്രാമുകൾ, നിങ്ങൾ തിരഞ്ഞെടുത്ത മറ്റ് പേയ്‌മെന്റ് രീതികൾ എന്നിവ ഉൾപ്പെടെയുള്ള മൂന്നാം കക്ഷി സേവന ദാതാക്കൾ പോലുള്ള മൂന്നാം കക്ഷികൾക്ക് ഞങ്ങൾ വ്യക്തിഗത ഡാറ്റ വെളിപ്പെടുത്തിയേക്കാം. ഞങ്ങളുടെ സേവനങ്ങളിലേക്കും നിങ്ങൾക്ക് വാഗ്ദാനം ചെയ്യുന്ന ഉൽപ്പന്നങ്ങളിലേക്കും നിങ്ങൾക്ക് പ്രവേശനം നൽകുന്നതിനും, ഞങ്ങളുടെ നിയമപരമായ ബാധ്യതകൾ പാലിക്കുന്നതിനും, ഞങ്ങളുടെ ഉപയോക്തൃ കരാർ നടപ്പിലാക്കുന്നതിനും, ഞങ്ങളുടെ മാർക്കറ്റിംഗ്, പരസ്യ പ്രവർത്തനങ്ങൾ സുഗമമാക്കുന്നതിനും, ഞങ്ങളുടെ സേവനങ്ങളുമായി ബന്ധപ്പെട്ട വഞ്ചനാപരമായതോ നിയമവിരുദ്ധമായതോ ആയ പ്രവർത്തനങ്ങൾ തടയുന്നതിനും, കണ്ടെത്തുന്നതിനും, ലഘൂകരിക്കുന്നതിനും, അന്വേഷിക്കുന്നതിനും ഈ വെളിപ്പെടുത്തൽ ആവശ്യമായി വന്നേക്കാം. നിയമപ്രകാരം ആവശ്യമുണ്ടെങ്കിൽ അല്ലെങ്കിൽ അത്തരം വെളിപ്പെടുത്തൽ സബ്പോണകൾ, കോടതി ഉത്തരവുകൾ, അല്ലെങ്കിൽ മറ്റ് നിയമപരമായ നടപടികൾ എന്നിവയ്ക്ക് പ്രതികരിക്കുന്നതിന് ന്യായമായും ആവശ്യമാണെന്ന് സദുദ്ദേശത്തോടെ വിശ്വസിക്കുന്നുണ്ടെങ്കിൽ, ഞങ്ങൾ സർക്കാർ ഏജൻസികൾക്കോ മറ്റ് അംഗീകൃത നിയമ നിർവ്വഹണ ഏജൻസികൾക്കോ വ്യക്തിഗതവും സെൻസിറ്റീവുമായ വ്യക്തിഗത ഡാറ്റ വെളിപ്പെടുത്തിയേക്കാം. ഞങ്ങളുടെ ഉപയോഗ നിബന്ധനകൾ അല്ലെങ്കിൽ സ്വകാര്യതാ നയം നടപ്പിലാക്കുന്നതിനും; ഒരു പരസ്യം, പോസ്റ്റിംഗ് അല്ലെങ്കിൽ മറ്റ് ഉള്ളടക്കം ഒരു മൂന്നാം കക്ഷിയുടെ അവകാശങ്ങൾ ലംഘിക്കുന്നുവെന്ന ക്ലെയിമുകളോട് പ്രതികരിക്കുന്നതിനും; അല്ലെങ്കിൽ ഞങ്ങളുടെ ഉപയോക്താക്കളുടെയോ പൊതുജനങ്ങളുടെയോ അവകാശങ്ങൾ, സ്വത്ത് അല്ലെങ്കിൽ വ്യക്തിഗത സുരക്ഷ എന്നിവ സംരക്ഷിക്കുന്നതിനും അത്തരം വെളിപ്പെടുത്തൽ ന്യായമായും ആവശ്യമാണെന്ന് സദുദ്ദേശത്തോടെ വിശ്വസിക്കുന്നുണ്ടെങ്കിൽ ഞങ്ങൾ നിയമ നിർവ്വഹണ ഓഫീസുകൾക്കോ, മൂന്നാം കക്ഷി അവകാശ ഉടമകൾക്കോ, അല്ലെങ്കിൽ മറ്റുള്ളവർക്കോ വ്യക്തിഗത ഡാറ്റ വെളിപ്പെടുത്തിയേക്കാം.",
+      },
+      section5: {
+        title: "ന്യായമായ സുരക്ഷാ രീതികൾ",
+        content:
+          "അനധികൃത പ്രവേശനം അല്ലെങ്കിൽ വെളിപ്പെടുത്തൽ, നഷ്ടം അല്ലെങ്കിൽ ദുരുപയോഗം എന്നിവയിൽ നിന്ന് നിങ്ങളുടെ വ്യക്തിഗത ഡാറ്റ പരിരക്ഷിക്കുന്നതിന് ഞങ്ങൾ ന്യായമായ സുരക്ഷാ രീതികളും നടപടിക്രമങ്ങളും സ്വീകരിക്കുന്നു. നിങ്ങളുടെ വിവരങ്ങൾ ഞങ്ങളുടെ കൈവശമുള്ളപ്പോഴോ അല്ലെങ്കിൽ നിങ്ങൾ നിങ്ങളുടെ അക്കൗണ്ട് വിവരങ്ങൾ ആക്സസ് ചെയ്യുമ്പോഴോ, അനധികൃത പ്രവേശനത്തിൽ നിന്ന് അതിനെ സംരക്ഷിക്കുന്നതിനും സുരക്ഷിതമായ സെർവറിന്റെ ഉപയോഗം വാഗ്ദാനം ചെയ്യുന്നതിനും ഞങ്ങൾ ഞങ്ങളുടെ സുരക്ഷാ മാർഗ്ഗനിർദ്ദേശങ്ങൾ പാലിക്കുന്നു. എന്നിരുന്നാലും, ഞങ്ങളുടെ നിയന്ത്രണത്തിന് അതീതമായ കാരണങ്ങളാൽ വിവരങ്ങളുടെ കൈമാറ്റം പൂർണ്ണമായും സുരക്ഷിതമല്ല. പ്ലാറ്റ്‌ഫോം ഉപയോഗിക്കുന്നതിലൂടെ, ഇന്റർനെറ്റിലൂടെയും വേൾഡ് വൈഡ് വെബിലൂടെയുമുള്ള ഡാറ്റാ കൈമാറ്റത്തിന്റെ സുരക്ഷാ പ്രത്യാഘാതങ്ങൾ ഉപയോക്താക്കൾ അംഗീകരിക്കുന്നു, ഇത് എല്ലായ്പ്പോഴും പൂർണ്ണമായും സുരക്ഷിതമാണെന്ന് ഉറപ്പുനൽകാൻ കഴിയില്ല, അതിനാൽ, പ്ലാറ്റ്‌ഫോമിന്റെ ഉപയോഗവുമായി ബന്ധപ്പെട്ട് എല്ലായ്പ്പോഴും ചില അന്തർലീനമായ അപകടസാധ്യതകൾ നിലനിൽക്കും. ഉപയോക്താക്കൾ അവരുടെ അക്കൗണ്ടിനായുള്ള ലോഗിൻ, പാസ്‌വേഡ് രേഖകളുടെ സംരക്ഷണം ഉറപ്പാക്കാൻ ഉത്തരവാദികളാണ്.",
+      },
+      section6: {
+        title: "ഡാറ്റ ഇല്ലാതാക്കലും നിലനിർത്തലും",
+        content:
+          "ഞങ്ങളുടെ പ്ലാറ്റ്‌ഫോമിലെ നിങ്ങളുടെ പ്രൊഫൈലും ക്രമീകരണങ്ങളും സന്ദർശിച്ച് നിങ്ങളുടെ അക്കൗണ്ട് ഇല്ലാതാക്കാൻ നിങ്ങൾക്ക് ഒരു ഓപ്ഷനുണ്ട്, ഈ പ്രവർത്തനം നിങ്ങളുടെ അക്കൗണ്ടുമായി ബന്ധപ്പെട്ട എല്ലാ വിവരങ്ങളും നഷ്‌ടപ്പെടുന്നതിന് കാരണമാകും. ഈ അഭ്യർത്ഥനകളിൽ നിങ്ങളെ സഹായിക്കുന്നതിന് താഴെ നൽകിയിട്ടുള്ള ബന്ധപ്പെടാനുള്ള വിവരങ്ങളിൽ നിങ്ങൾ ഞങ്ങൾക്ക് എഴുതുകയും ചെയ്യാം. തീർപ്പാക്കാത്ത ഏതെങ്കിലും പരാതി, ക്ലെയിമുകൾ, തീർപ്പാക്കാത്ത ഷിപ്പ്‌മെന്റുകൾ അല്ലെങ്കിൽ മറ്റേതെങ്കിലും സേവനങ്ങൾ എന്നിവയുടെ സാഹചര്യത്തിൽ ഞങ്ങൾ അക്കൗണ്ട് ഇല്ലാതാക്കുന്നത് നിരസിക്കുകയോ കാലതാമസം വരുത്തുകയോ ചെയ്തേക്കാം. അക്കൗണ്ട് ഇല്ലാതാക്കിക്കഴിഞ്ഞാൽ, നിങ്ങൾക്ക് അക്കൗണ്ടിലേക്കുള്ള പ്രവേശനം നഷ്‌ടപ്പെടും. നിങ്ങളുടെ വ്യക്തിഗത ഡാറ്റാ വിവരങ്ങൾ ശേഖരിച്ച ഉദ്ദേശ്യത്തിനായി ആവശ്യമുള്ളതിനേക്കാൾ കൂടുതലോ അല്ലെങ്കിൽ ബാധകമായ ഏതെങ്കിലും നിയമപ്രകാരം ആവശ്യമുള്ളതിനേക്കാൾ കൂടുതലോ കാലയളവിലേക്ക് ഞങ്ങൾ നിലനിർത്തുന്നില്ല. എന്നിരുന്നാലും, വഞ്ചനയോ ഭാവിയിലെ ദുരുപയോഗമോ മറ്റ് നിയമാനുസൃത ആവശ്യങ്ങളോ തടയാൻ ആവശ്യമാണെന്ന് ഞങ്ങൾ വിശ്വസിക്കുന്നുവെങ്കിൽ നിങ്ങളുമായി ബന്ധപ്പെട്ട ഡാറ്റ ഞങ്ങൾ നിലനിർത്തിയേക്കാം. വിശകലന, ഗവേഷണ ആവശ്യങ്ങൾക്കായി ഞങ്ങൾ നിങ്ങളുടെ ഡാറ്റ അജ്ഞാത രൂപത്തിൽ നിലനിർത്തുന്നത് തുടർന്നേക്കാം.",
+      },
+      section7: {
+        title: "നിങ്ങളുടെ അവകാശങ്ങൾ",
+        content:
+          "പ്ലാറ്റ്‌ഫോമിൽ നൽകിയിട്ടുള്ള പ്രവർത്തനക്ഷമതകളിലൂടെ നിങ്ങളുടെ വ്യക്തിഗത ഡാറ്റ നിങ്ങൾക്ക് നേരിട്ട് ആക്സസ് ചെയ്യാനും, തിരുത്താനും, അപ്ഡേറ്റ് ചെയ്യാനും കഴിയും.",
+      },
+      section8: {
+        title: "സമ്മതം",
+        content:
+          'ഞങ്ങളുടെ പ്ലാറ്റ്‌ഫോം സന്ദർശിക്കുന്നതിലൂടെയോ അല്ലെങ്കിൽ നിങ്ങളുടെ വിവരങ്ങൾ നൽകുന്നതിലൂടെയോ, ഈ സ്വകാര്യതാ നയത്തിന് അനുസൃതമായി പ്ലാറ്റ്‌ഫോമിൽ നിങ്ങളുടെ വിവരങ്ങൾ ശേഖരിക്കുന്നതിനും, ഉപയോഗിക്കുന്നതിനും, സംഭരിക്കുന്നതിനും, വെളിപ്പെടുത്തുന്നതിനും അല്ലെങ്കിൽ പ്രോസസ്സ് ചെയ്യുന്നതിനും നിങ്ങൾ സമ്മതം നൽകുന്നു. മറ്റ് ആളുകളുമായി ബന്ധപ്പെട്ട ഏതെങ്കിലും വ്യക്തിഗത ഡാറ്റ നിങ്ങൾ ഞങ്ങൾക്ക് വെളിപ്പെടുത്തുകയാണെങ്കിൽ, അങ്ങനെ ചെയ്യാൻ നിങ്ങൾക്ക് അധികാരമുണ്ടെന്നും ഈ സ്വകാര്യതാ നയത്തിന് അനുസൃതമായി വിവരങ്ങൾ ഉപയോഗിക്കാൻ ഞങ്ങളെ അനുവദിക്കുമെന്നും നിങ്ങൾ പ്രതിനിധീകരിക്കുന്നു. പ്ലാറ്റ്‌ഫോമിലൂടെയോ ഏതെങ്കിലും പങ്കാളി പ്ലാറ്റ്‌ഫോമുകളിലൂടെയോ സ്ഥാപനങ്ങളിലൂടെയോ നിങ്ങളുടെ വ്യക്തിഗത ഡാറ്റ നൽകുമ്പോൾ, ഈ സ്വകാര്യതാ നയത്തിൽ വ്യക്തമാക്കിയിട്ടുള്ള ആവശ്യങ്ങൾക്കായി SMS, തൽക്ഷണ സന്ദേശമയയ്‌ക്കൽ ആപ്പുകൾ, കോൾ കൂടാതെ/അല്ലെങ്കിൽ ഇ-മെയിൽ വഴി നിങ്ങളെ ബന്ധപ്പെടാൻ ഞങ്ങൾക്ക് (ഞങ്ങളുടെ മറ്റ് കോർപ്പറേറ്റ് സ്ഥാപനങ്ങൾ, അനുബന്ധ സ്ഥാപനങ്ങൾ, ലെൻഡിംഗ് പങ്കാളികൾ, സാങ്കേതിക പങ്കാളികൾ, മാർക്കറ്റിംഗ് ചാനലുകൾ, ബിസിനസ് പങ്കാളികൾ, മറ്റ് മൂന്നാം കക്ഷികൾ എന്നിവ ഉൾപ്പെടെ) നിങ്ങൾ സമ്മതം നൽകുന്നു. താഴെ നൽകിയിട്ടുള്ള ബന്ധപ്പെടാനുള്ള വിവരങ്ങളിൽ ഗ്രീവൻസ് ഓഫീസർക്ക് എഴുതി നിങ്ങൾ ഇതിനകം നൽകിയിട്ടുള്ള സമ്മതം പിൻവലിക്കാൻ നിങ്ങൾക്ക് അവസരമുണ്ട്. നിങ്ങളുടെ ആശയവിനിമയത്തിന്റെ വിഷയ വരിയിൽ "വ്യക്തിഗത ഡാറ്റ പ്രോസസ്സ് ചെയ്യുന്നതിനുള്ള സമ്മതം പിൻവലിക്കൽ" എന്ന് ദയവായി സൂചിപ്പിക്കുക. നിങ്ങളുടെ അഭ്യർത്ഥനയിൽ നടപടിയെടുക്കുന്നതിന് മുമ്പ് ഞങ്ങൾ അത്തരം അഭ്യർത്ഥനകൾ പരിശോധിച്ചേക്കാം. എന്നിരുന്നാലും, നിങ്ങളുടെ സമ്മതം പിൻവലിക്കുന്നത് മുൻകാല പ്രാബല്യത്തോടെ ആയിരിക്കില്ലെന്നും ഉപയോഗ നിബന്ധനകൾ, ഈ സ്വകാര്യതാ നയം, ബാധകമായ നിയമങ്ങൾ എന്നിവയ്ക്ക് അനുസൃതമായിരിക്കുമെന്നും ദയവായി ശ്രദ്ധിക്കുക. ഈ സ്വകാര്യതാ നയത്തിന് കീഴിൽ ഞങ്ങൾക്ക് നൽകിയിട്ടുള്ള സമ്മതം നിങ്ങൾ പിൻവലിക്കുകയാണെങ്കിൽ, അത്തരം വിവരങ്ങൾ ആവശ്യമാണെന്ന് ഞങ്ങൾ കരുതുന്ന ഞങ്ങളുടെ സേവനങ്ങൾ നൽകുന്നത് നിയന്ത്രിക്കാനോ നിരസിക്കാനോ ഉള്ള അവകാശം ഞങ്ങളിൽ നിക്ഷിപ്തമാണ്.',
+      },
+      section9: {
+        title: "ഈ സ്വകാര്യതാ നയത്തിലെ മാറ്റങ്ങൾ",
+        content:
+          "മാറ്റങ്ങൾക്കായി ദയവായി ഞങ്ങളുടെ സ്വകാര്യതാ നയം പതിവായി പരിശോധിക്കുക. ഞങ്ങളുടെ വിവര രീതികളിലെ മാറ്റങ്ങൾ പ്രതിഫലിപ്പിക്കുന്നതിനായി ഞങ്ങൾ ഈ സ്വകാര്യതാ നയം അപ്ഡേറ്റ് ചെയ്തേക്കാം. ബാധകമായ നിയമങ്ങൾക്കനുസൃതമായി ആവശ്യമായ രീതിയിൽ, സ്വകാര്യതാ നയത്തിലെ പ്രധാനപ്പെട്ട മാറ്റങ്ങളെക്കുറിച്ച് ഞങ്ങൾ നിങ്ങളെ അറിയിച്ചേക്കാം.",
+      },
     },
-    "bn": {
-      "section1": {
-          "title":"গোপনীয়তা নীতি",
-          "content":"এই গোপনীয়তা নীতি বর্ণনা করে যে কীভাবে (সম্মিলিতভাবে 'THE NERDS & CO', 'আমরা', 'আমাদের') আমাদের ওয়েবসাইট https://foxxydrip.com/ (এরপরে 'প্ল্যাটফর্ম' হিসাবে উল্লেখ করা হয়েছে) এর মাধ্যমে আপনার তথ্য/ব্যক্তিগত ডেটা সংগ্রহ, ব্যবহার, শেয়ার, সুরক্ষিত বা অন্যথায় প্রক্রিয়া করি। অনুগ্রহ করে মনে রাখবেন যে আপনি আমাদের কাছে নিবন্ধন না করেই প্ল্যাটফর্মের কিছু বিভাগ ব্রাউজ করতে পারেন। আমরা এই প্ল্যাটফর্মের অধীনে ভারতের বাইরে কোনও পণ্য/পরিষেবা অফার করি না এবং আপনার ব্যক্তিগত ডেটা প্রাথমিকভাবে ভারতে সংরক্ষণ এবং প্রক্রিয়া করা হবে। এই প্ল্যাটফর্মে গিয়ে, আপনার তথ্য প্রদান করে বা প্ল্যাটফর্মে দেওয়া কোনও পণ্য/পরিষেবা গ্রহণ করে, আপনি স্পষ্টভাবে এই গোপনীয়তা নীতির শর্তাবলী, ব্যবহারের শর্তাবলী এবং প্রযোজ্য পরিষেবা/পণ্যের শর্তাবলী দ্বারা আবদ্ধ হতে সম্মত হন এবং ডেটা সুরক্ষা এবং গোপনীয়তা আইন সহ ভারতের আইন দ্বারা পরিচালিত হতে সম্মত হন। আপনি যদি সম্মত না হন, তবে দয়া করে আমাদের প্ল্যাটফর্ম ব্যবহার বা অ্যাক্সেস করবেন না।"
+    bn: {
+      section1: {
+        title: "গোপনীয়তা নীতি",
+        content:
+          "এই গোপনীয়তা নীতি বর্ণনা করে যে কীভাবে (সম্মিলিতভাবে 'THE NERDS & CO', 'আমরা', 'আমাদের') আমাদের ওয়েবসাইট https://foxxydrip.com/ (এরপরে 'প্ল্যাটফর্ম' হিসাবে উল্লেখ করা হয়েছে) এর মাধ্যমে আপনার তথ্য/ব্যক্তিগত ডেটা সংগ্রহ, ব্যবহার, শেয়ার, সুরক্ষিত বা অন্যথায় প্রক্রিয়া করি। অনুগ্রহ করে মনে রাখবেন যে আপনি আমাদের কাছে নিবন্ধন না করেই প্ল্যাটফর্মের কিছু বিভাগ ব্রাউজ করতে পারেন। আমরা এই প্ল্যাটফর্মের অধীনে ভারতের বাইরে কোনও পণ্য/পরিষেবা অফার করি না এবং আপনার ব্যক্তিগত ডেটা প্রাথমিকভাবে ভারতে সংরক্ষণ এবং প্রক্রিয়া করা হবে। এই প্ল্যাটফর্মে গিয়ে, আপনার তথ্য প্রদান করে বা প্ল্যাটফর্মে দেওয়া কোনও পণ্য/পরিষেবা গ্রহণ করে, আপনি স্পষ্টভাবে এই গোপনীয়তা নীতির শর্তাবলী, ব্যবহারের শর্তাবলী এবং প্রযোজ্য পরিষেবা/পণ্যের শর্তাবলী দ্বারা আবদ্ধ হতে সম্মত হন এবং ডেটা সুরক্ষা এবং গোপনীয়তা আইন সহ ভারতের আইন দ্বারা পরিচালিত হতে সম্মত হন। আপনি যদি সম্মত না হন, তবে দয়া করে আমাদের প্ল্যাটফর্ম ব্যবহার বা অ্যাক্সেস করবেন না।",
       },
-      "section2": {
-          "title":"তথ্য সংগ্রহ",
-          "content":"আমরা নিবন্ধন এবং পরিষেবা ব্যবহারের সময় নাম, ইমেল, ফোন এবং ঠিকানা সহ ব্যক্তিগত তথ্য সংগ্রহ করি।"
+      section2: {
+        title: "তথ্য সংগ্রহ",
+        content:
+          "আপনি যখন আমাদের প্ল্যাটফর্ম, পরিষেবাগুলি ব্যবহার করেন বা আমাদের সম্পর্কের সময় অন্যভাবে আমাদের সাথে যোগাযোগ করেন তখন আমরা আপনার ব্যক্তিগত ডেটা সংগ্রহ করি এবং সময় সময় প্রদত্ত সম্পর্কিত তথ্যও সংগ্রহ করি। আমরা যে তথ্যগুলি সংগ্রহ করতে পারি তার মধ্যে সীমাবদ্ধ না থাকলেও আপনার নাম, জন্মতারিখ, ঠিকানা, টেলিফোন/মোবাইল নম্বর, ইমেল আইডি এবং/অথবা পরিচয় বা ঠিকানার প্রমাণ হিসাবে ভাগ করা অন্য কোনও তথ্যর মতো প্ল্যাটফর্মে সাইন-আপ/নিবন্ধন করার সময় বা এটি ব্যবহার করার সময় আমাদের কাছে সরবরাহ করা ব্যক্তিগত ডেটা/তথ্য অন্তর্ভুক্ত রয়েছে। আপনার সম্মতি নিয়ে কিছু সংবেদনশীল ব্যক্তিগত ডেটা সংগ্রহ করা যেতে পারে, যেমন আপনার ব্যাঙ্ক অ্যাকাউন্ট বা ক্রেডিট বা ডেবিট কার্ড বা অন্যান্য পেমেন্ট ইনস্ট্রুমেন্টের তথ্য বা বায়োমেট্রিক তথ্য যেমন আপনার মুখের বৈশিষ্ট্য বা শারীরিক তথ্য (প্ল্যাটফর্মে উপলব্ধ কিছু বৈশিষ্ট্য বেছে নেওয়ার সময় সেগুলির ব্যবহার সক্ষম করার জন্য) ইত্যাদি, উপরের সবগুলি প্রযোজ্য আইন(গুলি) অনুসারে হবে। প্ল্যাটফর্মে কোনও নির্দিষ্ট পরিষেবা বা বৈশিষ্ট্য ব্যবহার না করার সিদ্ধান্ত নিয়ে আপনি সবসময় তথ্য না দেওয়ার বিকল্প বেছে নিতে পারেন। আমরা আপনার আচরণ, পছন্দ এবং আমাদের প্ল্যাটফর্মে আপনি যে অন্যান্য তথ্য প্রদান করতে চান তা ট্র্যাক করতে পারি। এই তথ্যটি সমষ্টিগত ভিত্তিতে সংকলিত এবং বিশ্লেষণ করা হয়। প্ল্যাটফর্মে এবং এই ধরনের তৃতীয় পক্ষের ব্যবসায়িক অংশীদার প্ল্যাটফর্মগুলিতে আপনার লেনদেন সম্পর্কিত তথ্যও আমরা সংগ্রহ করব। যখন কোনও তৃতীয় পক্ষের ব্যবসায়িক অংশীদার সরাসরি আপনার কাছ থেকে আপনার ব্যক্তিগত ডেটা সংগ্রহ করে, তখন আপনি তাদের গোপনীয়তা নীতি দ্বারা নিয়ন্ত্রিত হবেন। তৃতীয় পক্ষের ব্যবসায়িক অংশীদারের গোপনীয়তা অনুশীলন বা তাদের গোপনীয়তা নীতির বিষয়বস্তুর জন্য আমরা দায়ী থাকব না, এবং কোনও তথ্য প্রকাশ করার আগে আমরা আপনাকে তাদের গোপনীয়তা নীতিগুলি পড়ার জন্য অনুরোধ করি। আপনি যদি ডেবিট/ক্রেডিট কার্ডের পিন, নেট-ব্যাঙ্কিং বা মোবাইল ব্যাঙ্কিং পাসওয়ার্ডের মতো কোনও ব্যক্তিগত ডেটা চেয়ে NEXVED CLINICAL RESEARCH ACADEMY বলে দাবি করা কোনও ব্যক্তি/সংস্থা থেকে একটি ইমেল বা কল পান, তবে আমরা আপনাকে এই ধরনের তথ্য কখনই না দেওয়ার জন্য অনুরোধ করি। আপনি যদি ইতিমধ্যেই এই ধরনের তথ্য প্রকাশ করে থাকেন তবে অবিলম্বে উপযুক্ত আইন প্রয়োগকারী সংস্থাকে তা জানান।",
       },
-      "section3": {
-          "title":"ব্যবহার",
-          "content":"আমরা পরিষেবা প্রদান, অভিজ্ঞতা বৃদ্ধি, জালিয়াতি সনাক্তকরণ এবং বিপণন গবেষণার জন্য ব্যক্তিগত ডেটা ব্যবহার করি।"
+      section3: {
+        title: "ব্যবহার",
+        content:
+          "আপনি যে পরিষেবাগুলি অনুরোধ করেন তা সরবরাহ করার জন্য আমরা ব্যক্তিগত ডেটা ব্যবহার করি। যে পরিমাণে আমরা আপনাকে বাজারজাত করার জন্য আপনার ব্যক্তিগত ডেটা ব্যবহার করি, আমরা আপনাকে এই ধরনের ব্যবহারগুলি থেকে অপ্ট-আউট করার ক্ষমতা সরবরাহ করব। আমরা বিক্রেতা এবং ব্যবসায়িক অংশীদারদের অর্ডার পরিচালনা এবং পূরণ করতে সহায়তা করতে; গ্রাহকের অভিজ্ঞতা বাড়াতে; বিরোধ নিষ্পত্তি করতে; সমস্যা সমাধান করতে; অনলাইন এবং অফলাইন অফার, পণ্য, পরিষেবা এবং আপডেট সম্পর্কে আপনাকে অবহিত করতে; আপনার অভিজ্ঞতা কাস্টমাইজ করতে; ত্রুটি, জালিয়াতি এবং অন্যান্য অপরাধমূলক কার্যকলাপ থেকে আমাদের সনাক্ত করতে এবং রক্ষা করতে; আমাদের শর্তাবলী প্রয়োগ করতে; বিপণন গবেষণা, বিশ্লেষণ এবং সার্ভে পরিচালনা করতে; এবং তথ্য সংগ্রহের সময় আপনাকে অন্যভাবে বর্ণিত হিসাবে আপনার ব্যক্তিগত ডেটা ব্যবহার করি। আপনি বুঝতে পারেন যে আমাদের কাছে অনুমতি না দেওয়া হলে এই পণ্য/পরিষেবাগুলিতে আপনার অ্যাক্সেস প্রভাবিত হতে পারে।",
       },
-      "section4": {"title":"তথ্য শেয়ারিং এবং প্রকাশ","content":"আমরা অনুমোদিত সংস্থা, অংশীদারদের সাথে বা আইনি বাধ্যবাধকতা পূরণের জন্য ডেটা শেয়ার করতে পারি।"},
-      "section5": {"title":"যুক্তিসঙ্গত নিরাপত্তা অনুশীলন","content":"আমরা আপনার ডেটা সুরক্ষিত রাখতে যুক্তিসঙ্গত নিরাপত্তা ব্যবস্থা গ্রহণ করি, কিন্তু সম্পূর্ণ নিরাপত্তার নিশ্চয়তা দিতে পারি না।"},
-      "section6": {"title":"ডেটা মুছে ফেলা এবং ধরে রাখা","content":"ব্যবহারকারীরা তাদের অ্যাকাউন্ট মুছে ফেলতে পারেন। যতক্ষণ প্রয়োজন বা আইনত আবশ্যক ততক্ষণ ডেটা ধরে রাখা হয়।"},
-      "section7": {"title":"আপনার অধিকার","content":"আপনি প্ল্যাটফর্মের মাধ্যমে আপনার ব্যক্তিগত ডেটা অ্যাক্সেস, সংশোধন এবং আপডেট করতে পারেন।"},
-      "section8": {"title":"সম্মতি","content":"প্ল্যাটফর্ম ব্যবহার করে, আপনি এই গোপনীয়তা নীতি অনুসারে ডেটা সংগ্রহ এবং প্রক্রিয়াকরণে সম্মতি দিচ্ছেন।"},
-      "section9": {"title":"এই গোপনীয়તા নীতিতে পরিবর্তন","content":"আমরা পর্যায়ক্রমে এই নীতি আপডেট করতে পারি। ব্যবহারকারীদের এটি নিয়মিত পর্যালোচনা করা উচিত।"}
+      section4: {
+        title: "তথ্য শেয়ারিং এবং প্রকাশ",
+        content:
+          "তাদের দেওয়া পরিষেবা এবং পণ্যগুলিতে আপনাকে অ্যাক্সেস সরবরাহ করার জন্য আমরা আমাদের গ্রুপ সংস্থা, আমাদের অন্যান্য কর্পোরেট সংস্থা এবং সহায়ক সংস্থাগুলির মধ্যে আপনার ব্যক্তিগত ডেটা অভ্যন্তরীণভাবে শেয়ার করতে পারি। আপনি স্পষ্টভাবে অপ্ট-আউট না করা পর্যন্ত এই সংস্থা এবং সহায়ক সংস্থাগুলি এই ধরনের শেয়ারিংয়ের ফলে আপনাকে বাজারজাত করতে পারে। আমরা বিক্রেতা, ব্যবসায়িক অংশীদার, লজিস্টিক অংশীদার, প্রিপেইড পেমেন্ট ইনস্ট্রুমেন্ট প্রদানকারী, তৃতীয় পক্ষের পুরষ্কার প্রোগ্রাম এবং আপনার দ্বারা নির্বাচিত অন্যান্য পেমেন্ট সহ তৃতীয় পক্ষের পরিষেবা প্রদানকারী সহ তৃতীয় পক্ষকে ব্যক্তিগত ডেটা প্রকাশ করতে পারি। এই প্রকাশগুলি আপনার কাছে দেওয়া আমাদের পরিষেবা এবং পণ্যগুলিতে আপনাকে অ্যাক্সেস সরবরাহ করতে, আমাদের আইনি বাধ্যবাধকতাগুলি মেনে চলতে, আমাদের ব্যবহারকারীর চুক্তি প্রয়োগ করতে, আমাদের বিপণন এবং বিজ্ঞাপন কার্যক্রমকে সহজতর করতে, আমাদের পরিষেবাগুলির সাথে সম্পর্কিত জালিয়াতি বা অবৈধ কার্যকলাপগুলি প্রতিরোধ করতে, সনাক্ত করতে, প্রশমিত করতে এবং তদন্ত করতে আমাদের জন্য প্রয়োজনীয় হতে পারে। যদি আইন দ্বারা এটি করার প্রয়োজন হয় বা এই ধরনের প্রকাশ সাবপোনা, আদালতের আদেশ, বা অন্যান্য আইনি প্রক্রিয়ার প্রতিক্রিয়া জানাতে যুক্তিসঙ্গতভাবে প্রয়োজনীয় বলে সদিচ্ছার বিশ্বাস থাকে তবে আমরা সরকারী সংস্থা বা অন্যান্য অনুমোদিত আইন প্রয়োগকারী সংস্থাগুলিতে ব্যক্তিগত এবং সংবেদনশীল ব্যক্তিগত ডেটা প্রকাশ করতে পারি। আমরা আইন প্রয়োগকারী অফিস, তৃতীয় পক্ষের অধিকার মালিক বা অন্যদের কাছে এই সদিচ্ছার বিশ্বাসে ব্যক্তিগত ডেটা প্রকাশ করতে পারি যে এই ধরনের প্রকাশ যুক্তিসঙ্গতভাবে প্রয়োজনীয়: আমাদের ব্যবহারের শর্তাবলী বা গোপনীয়তা নীতি প্রয়োগ করতে; একটি বিজ্ঞাপন, পোস্টিং বা অন্যান্য সামগ্রী একটি তৃতীয় পক্ষের অধিকার লঙ্ঘন করে এমন দাবিগুলির প্রতিক্রিয়া জানাতে; বা আমাদের ব্যবহারকারীদের বা সাধারণ জনগণের অধিকার, সম্পত্তি বা ব্যক্তিগত সুরক্ষা রক্ষা করতে।",
+      },
+      section5: {
+        title: "যুক্তিসঙ্গত নিরাপত্তা অনুশীলন",
+        content:
+          "অননুমোদিত অ্যাক্সেস বা প্রকাশ, ক্ষতি বা অপব্যবহার থেকে আপনার ব্যক্তিগত ডেটা সুরক্ষিত রাখতে আমরা যুক্তিসঙ্গত নিরাপত্তা অনুশীলন এবং পদ্ধতি গ্রহণ করি। একবার আপনার তথ্য আমাদের দখলে এলে বা আপনি যখনই আপনার অ্যাকাউন্ট তথ্য অ্যাক্সেস করেন, আমরা এটিকে অননুমোদিত অ্যাক্সেসের বিরুদ্ধে রক্ষা করার জন্য আমাদের নিরাপত্তা নির্দেশিকা মেনে চলি এবং একটি সুরক্ষিত সার্ভারের ব্যবহার অফার করি। তবে, আমাদের নিয়ন্ত্রণের বাইরে থাকা কারণগুলির জন্য তথ্যের সংক্রমণ সম্পূর্ণ সুরক্ষিত নয়। প্ল্যাটফর্ম ব্যবহার করার মাধ্যমে, ব্যবহারকারীরা ইন্টারনেট এবং ওয়ার্ল্ড ওয়াইড ওয়েবের মাধ্যমে ডেটা প্রেরণের নিরাপত্তা প্রভাবগুলি স্বীকার করে যা সর্বদা সম্পূর্ণ সুরক্ষিত হিসাবে নিশ্চিত করা যায় না, এবং তাই, প্ল্যাটফর্মের ব্যবহার সম্পর্কিত সর্বদা কিছু সহজাত ঝুঁকি থাকবে। ব্যবহারকারীরা তাদের অ্যাকাউন্টের জন্য লগইন এবং পাসওয়ার্ড রেকর্ডের সুরক্ষা নিশ্চিত করার জন্য দায়ী।",
+      },
+      section6: {
+        title: "ডেটা মুছে ফেলা এবং ধরে রাখা",
+        content:
+          "আমাদের প্ল্যাটফর্মে আপনার প্রোফাইল এবং সেটিংস পরিদর্শন করে আপনার অ্যাকাউন্ট মুছে ফেলার একটি বিকল্প আপনার কাছে রয়েছে, এই কাজটি আপনার অ্যাকাউন্টের সাথে সম্পর্কিত সমস্ত তথ্য হারানোর কারণ হবে। এই অনুরোধগুলির সাথে আপনাকে সহায়তা করার জন্য আপনি নীচে দেওয়া যোগাযোগের তথ্যে আমাদের কাছে লিখতে পারেন। কোনও বিচারাধীন অভিযোগ, দাবি, বিচারাধীন চালান বা অন্য কোনও পরিষেবার ক্ষেত্রে আমরা অ্যাকাউন্টের মোছা প্রত্যাখ্যান বা বিলম্ব করতে পারি। একবার অ্যাকাউন্ট মুছে ফেলা হলে, আপনি অ্যাকাউন্টে অ্যাক্সেস হারাবেন। আপনার ব্যক্তিগত ডেটা তথ্য যে উদ্দেশ্যে সংগ্রহ করা হয়েছিল তার জন্য প্রয়োজনীয় সময়ের চেয়ে বেশি সময়ের জন্য বা কোনও প্রযোজ্য আইন অনুসারে প্রয়োজনীয় সময়ের জন্য আমরা ধরে রাখি না। তবে, জালিয়াতি বা ভবিষ্যতের অপব্যবহার প্রতিরোধ করতে বা অন্যান্য বৈধ উদ্দেশ্যে এটি প্রয়োজনীয় হতে পারে বলে আমরা মনে করি তবে আমরা আপনার সাথে সম্পর্কিত ডেটা ধরে রাখতে পারি। বিশ্লেষণাত্মক এবং গবেষণা উদ্দেশ্যে আমরা আপনার ডেটা ছদ্মনামযুক্ত আকারে ধরে রাখা চালিয়ে যেতে পারি।",
+      },
+      section7: {
+        title: "আপনার অধিকার",
+        content:
+          "প্ল্যাটফর্মে দেওয়া কার্যকারিতাগুলির মাধ্যমে আপনি সরাসরি আপনার ব্যক্তিগত ডেটা অ্যাক্সেস করতে, সংশোধন করতে এবং আপডেট করতে পারেন।",
+      },
+      section8: {
+        title: "সম্মতি",
+        content:
+          'আমাদের প্ল্যাটফর্ম পরিদর্শন করে বা আপনার তথ্য সরবরাহ করে, আপনি এই গোপনীয়তা নীতি অনুসারে প্ল্যাটফর্মে আপনার তথ্যের সংগ্রহ, ব্যবহার, সংরক্ষণ, প্রকাশ এবং অন্যভাবে প্রক্রিয়াকরণে সম্মতি দেন। আপনি যদি অন্যান্য লোকেদের সাথে সম্পর্কিত কোনও ব্যক্তিগত ডেটা আমাদের কাছে প্রকাশ করেন, তবে আপনি এটি করার অধিকার রাখেন এবং এই গোপনীয়তা নীতি অনুসারে আমাদের তথ্য ব্যবহার করার অনুমতি দেন বলে আপনি প্রতিনিধিত্ব করেন। প্ল্যাটফর্ম বা কোনও অংশীদার প্ল্যাটফর্ম বা প্রতিষ্ঠানে আপনার ব্যক্তিগত ডেটা সরবরাহ করার সময়, আপনি আমাদেরকে (আমাদের অন্যান্য কর্পোরেট সংস্থা, সহায়ক সংস্থা, ঋণ প্রদানকারী অংশীদার, প্রযুক্তি অংশীদার, বিপণন চ্যানেল, ব্যবসায়িক অংশীদার এবং অন্যান্য তৃতীয় পক্ষ সহ) এই গোপনীয়তা নীতিতে নির্দিষ্ট করা উদ্দেশ্যগুলির জন্য SMS, ইনস্ট্যান্ট মেসেজিং অ্যাপস, কল এবং/অথবা ই-মেইলের মাধ্যমে আপনার সাথে যোগাযোগ করতে সম্মতি দেন। নীচে দেওয়া যোগাযোগের তথ্যে অভিযোগ কর্মকর্তার কাছে লিখে আপনি ইতিমধ্যে যে সম্মতি দিয়েছেন তা প্রত্যাহার করার একটি বিকল্প আপনার কাছে রয়েছে। অনুগ্রহ করে আপনার যোগাযোগের বিষয় লাইনে "ব্যক্তিগত ডেটা প্রক্রিয়াকরণের জন্য সম্মতি প্রত্যাহার" উল্লেখ করুন। আপনার অনুরোধের উপর কাজ করার আগে আমরা এই ধরনের অনুরোধগুলি যাচাই করতে পারি। তবে, দয়া করে মনে রাখবেন যে আপনার সম্মতির প্রত্যাহার পূর্ববর্তী প্রভাব ফেলবে না এবং ব্যবহারের শর্তাবলী, এই গোপনীয়তা নীতি এবং প্রযোজ্য আইন অনুসারে হবে। আপনি এই গোপনীয়তা নীতির অধীনে আমাদের দেওয়া সম্মতি প্রত্যাহার করার ক্ষেত্রে, আমরা আমাদের পরিষেবাগুলির বিধান সীমাবদ্ধ বা অস্বীকার করার অধিকার সংরক্ষণ করি যার জন্য আমরা এই ধরনের তথ্য প্রয়োজনীয় বলে মনে করি।',
+      },
+      section9: {
+        title: "এই গোপনীয়তা নীতিতে পরিবর্তন",
+        content:
+          "পরিবর্তনগুলির জন্য দয়া করে পর্যায়ক্রমে আমাদের গোপনীয়তা নীতি পরীক্ষা করুন। আমরা আমাদের তথ্য অনুশীলনগুলিতে পরিবর্তনগুলি প্রতিফলিত করার জন্য এই গোপনীয়তা নীতি আপডেট করতে পারি। প্রযোজ্য আইন অনুসারে প্রয়োজনীয় পদ্ধতিতে আমরা গোপনীয়তা নীতির গুরুত্বপূর্ণ পরিবর্তনগুলি সম্পর্কে আপনাকে সতর্ক/অবহিত করতে পারি।",
+      },
     },
-    "kn": {
-      "section1": {
-          "title":"ಗೌಪ್ಯತಾ ನೀತಿ",
-          "content":"ಈ ಗೌಪ್ಯತಾ ನೀತಿಯು (ಒಟ್ಟಾರೆಯಾಗಿ 'THE NERDS & CO', 'ನಾವು', 'ನಮ್ಮ', 'ನಮಗೆ') ನಮ್ಮ ವೆಬ್‌ಸೈಟ್ https://foxxydrip.com/ (ಇನ್ನು ಮುಂದೆ 'ಪ್ಲಾಟ್‌ಫಾರ್ಮ್' ಎಂದು ಉಲ್ಲೇಖಿಸಲಾಗಿದೆ) ಮೂಲಕ ನಿಮ್ಮ ಮಾಹಿತಿ/ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಹೇಗೆ ಸಂಗ್ರಹಿಸುತ್ತೇವೆ, ಬಳಸುತ್ತೇವೆ, ಹಂಚಿಕೊಳ್ಳುತ್ತೇವೆ, ರಕ್ಷಿಸುತ್ತೇವೆ ಅಥವಾ ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುತ್ತೇವೆ ಎಂಬುದನ್ನು ವಿವರಿಸುತ್ತದೆ. ದಯವಿಟ್ಟು ಗಮನಿಸಿ, ನೀವು ನಮ್ಮಲ್ಲಿ ನೋಂದಾಯಿಸಿಕೊಳ್ಳದೆ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನ ಕೆಲವು ವಿಭಾಗಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಬಹುದು. ನಾವು ಈ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಅಡಿಯಲ್ಲಿ ಭಾರತದ ಹೊರಗೆ ಯಾವುದೇ ಉತ್ಪನ್ನ/ಸೇವೆಯನ್ನು ನೀಡುವುದಿಲ್ಲ ಮತ್ತು ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಪ್ರಾಥಮಿಕವಾಗಿ ಭಾರತದಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಸಂಸ್ಕರಿಸಲಾಗುತ್ತದೆ. ಈ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ಗೆ ಭೇಟಿ ನೀಡುವ ಮೂಲಕ, ನಿಮ್ಮ ಮಾಹಿತಿಯನ್ನು ಒದಗಿಸುವ ಮೂಲಕ ಅಥವಾ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ನೀಡಲಾಗುವ ಯಾವುದೇ ಉತ್ಪನ್ನ/ಸೇವೆಯನ್ನು ಪಡೆಯುವ ಮೂಲಕ, ಈ ಗೌಪ್ಯತಾ ನೀತಿಯ ನಿಯಮಗಳು ಮತ್ತು ನಿಬಂಧನೆಗಳು, ಬಳಕೆಯ ನಿಯಮಗಳು ಮತ್ತು ಅನ್ವಯವಾಗುವ ಸೇವೆ/ಉತ್ಪನ್ನದ ನಿಯಮಗಳು ಮತ್ತು ನಿಬಂಧನೆಗಳಿಗೆ ಬದ್ಧರಾಗಿರಲು ನೀವು ಸ್ಪಷ್ಟವಾಗಿ ಒಪ್ಪುತ್ತೀರಿ ಮತ್ತು ಡೇಟಾ ಸಂರಕ್ಷಣೆ ಮತ್ತು ಗೌಪ್ಯತೆ ಕಾನೂನುಗಳು ಸೇರಿದಂತೆ ಭಾರತದ ಕಾನೂನುಗಳಿಂದ ನಿಯಂತ್ರಿಸಲ್ಪಡಲು ಒಪ್ಪುತ್ತೀರಿ. ನೀವು ಒಪ್ಪದಿದ್ದರೆ, ದಯವಿಟ್ಟು ನಮ್ಮ ಪ್ಲಾಟ್‌ফর্ম ಅನ್ನು ಬಳಸಬೇಡಿ ಅಥವಾ ಪ್ರವೇಶಿಸಬೇಡಿ."
+    kn: {
+      section1: {
+        title: "ಗೌಪ್ಯತಾ ನೀತಿ",
+        content:
+          "ಈ ಗೌಪ್ಯತಾ ನೀತಿಯು (ಒಟ್ಟಾರೆಯಾಗಿ 'THE NERDS & CO', 'ನಾವು', 'ನಮ್ಮ', 'ನಮಗೆ') ನಮ್ಮ ವೆಬ್‌ಸೈಟ್ https://foxxydrip.com/ (ಇನ್ನು ಮುಂದೆ 'ಪ್ಲಾಟ್‌ಫಾರ್ಮ್' ಎಂದು ಉಲ್ಲೇಖಿಸಲಾಗಿದೆ) ಮೂಲಕ ನಿಮ್ಮ ಮಾಹಿತಿ/ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಹೇಗೆ ಸಂಗ್ರಹಿಸುತ್ತೇವೆ, ಬಳಸುತ್ತೇವೆ, ಹಂಚಿಕೊಳ್ಳುತ್ತೇವೆ, ರಕ್ಷಿಸುತ್ತೇವೆ ಅಥವಾ ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುತ್ತೇವೆ ಎಂಬುದನ್ನು ವಿವರಿಸುತ್ತದೆ. ದಯವಿಟ್ಟು ಗಮನಿಸಿ, ನೀವು ನಮ್ಮಲ್ಲಿ ನೋಂದಾಯಿಸಿಕೊಳ್ಳದೆ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನ ಕೆಲವು ವಿಭಾಗಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಬಹುದು. ನಾವು ಈ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಅಡಿಯಲ್ಲಿ ಭಾರತದ ಹೊರಗೆ ಯಾವುದೇ ಉತ್ಪನ್ನ/ಸೇವೆಯನ್ನು ನೀಡುವುದಿಲ್ಲ ಮತ್ತು ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಪ್ರಾಥಮಿಕವಾಗಿ ಭಾರತದಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಸಂಸ್ಕರಿಸಲಾಗುತ್ತದೆ. ಈ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ಗೆ ಭೇಟಿ ನೀಡುವ ಮೂಲಕ, ನಿಮ್ಮ ಮಾಹಿತಿಯನ್ನು ಒದಗಿಸುವ ಮೂಲಕ ಅಥವಾ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ನೀಡಲಾಗುವ ಯಾವುದೇ ಉತ್ಪನ್ನ/ಸೇವೆಯನ್ನು ಪಡೆಯುವ ಮೂಲಕ, ಈ ಗೌಪ್ಯತಾ ನೀತಿಯ ನಿಯಮಗಳು ಮತ್ತು ನಿಬಂಧನೆಗಳು, ಬಳಕೆಯ ನಿಯಮಗಳು ಮತ್ತು ಅನ್ವಯವಾಗುವ ಸೇವೆ/ಉತ್ಪನ್ನದ ನಿಯಮಗಳು ಮತ್ತು ನಿಬಂಧನೆಗಳಿಗೆ ಬದ್ಧರಾಗಿರಲು ನೀವು ಸ್ಪಷ್ಟವಾಗಿ ಒಪ್ಪುತ್ತೀರಿ ಮತ್ತು ಡೇಟಾ ಸಂರಕ್ಷಣೆ ಮತ್ತು ಗೌಪ್ಯತೆ ಕಾನೂನುಗಳು ಸೇರಿದಂತೆ ಭಾರತದ ಕಾನೂನುಗಳಿಂದ ನಿಯಂತ್ರಿಸಲ್ಪಡಲು ಒಪ್ಪುತ್ತೀರಿ. ನೀವು ಒಪ್ಪದಿದ್ದರೆ, ದಯವಿಟ್ಟು ನಮ್ಮ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಅನ್ನು ಬಳಸಬೇಡಿ ಅಥವಾ ಪ್ರವೇಶಿಸಬೇಡಿ.",
       },
-      "section2": {
-          "title":"ಮಾಹಿತಿ ಸಂಗ್ರಹ",
-          "content":"ನೋಂದಣಿ ಮತ್ತು ಸೇವೆಗಳ ಬಳಕೆಯ ಸಮಯದಲ್ಲಿ ಹೆಸರು, ಇಮೇಲ್, ಫೋನ್ ಮತ್ತು ವಿಳಾಸ ಸೇರಿದಂತೆ ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯನ್ನು ನಾವು ಸಂಗ್ರಹಿಸುತ್ತೇವೆ."
+      section2: {
+        title: "ಮಾಹಿತಿ ಸಂಗ್ರಹ",
+        content:
+          "ನೀವು ನಮ್ಮ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್, ಸೇವೆಗಳನ್ನು ಬಳಸಿದಾಗ ಅಥವಾ ನಮ್ಮ ಸಂಬಂಧದ ಅವಧಿಯಲ್ಲಿ ನಮ್ಮೊಂದಿಗೆ ಸಂವಹನ ನಡೆಸಿದಾಗ ನಾವು ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾ ಮತ್ತು ಕಾಲಕಾಲಕ್ಕೆ ಒದಗಿಸಲಾದ ಸಂಬಂಧಿತ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸುತ್ತೇವೆ. ನಾವು ಸಂಗ್ರಹಿಸಬಹುದಾದ ಕೆಲವು ಮಾಹಿತಿಯು, ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ಸೈನ್-ಅಪ್/ನೋಂದಣಿ ಮಾಡುವಾಗ ಅಥವಾ ಬಳಸುವಾಗ ನಮಗೆ ಒದಗಿಸಿದ ವೈಯಕ್ತಿಕ ಡೇಟಾ/ಮಾಹಿತಿ, ಉದಾಹರಣೆಗೆ ಹೆಸರು, ಜನ್ಮ ದಿನಾಂಕ, ವಿಳಾಸ, ದೂರವಾಣಿ/ಮೊಬೈಲ್ ಸಂಖ್ಯೆ, ಇಮೇಲ್ ಐಡಿ ಮತ್ತು/ಅಥವಾ ಗುರುತು ಅಥವಾ ವಿಳಾಸದ ಪುರಾವೆಯಾಗಿ ಹಂಚಿಕೊಂಡ ಯಾವುದೇ ಮಾಹಿತಿಯನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ ಆದರೆ ಅದಕ್ಕೆ ಸೀಮಿತವಾಗಿಲ್ಲ. ನಿಮ್ಮ ಬ್ಯಾಂಕ್ ಖಾತೆ ಅಥವಾ ಕ್ರೆಡಿಟ್ ಅಥವಾ ಡೆಬಿಟ್ ಕಾರ್ಡ್ ಅಥವಾ ಇತರ ಪಾವತಿ ಸಾಧನದ ಮಾಹಿತಿ ಅಥವಾ ನಿಮ್ಮ ಮುಖದ ವೈಶಿಷ್ಟ್ಯಗಳು ಅಥವಾ ಶಾರೀರಿಕ ಮಾಹಿತಿ (ಆಯ್ದುಕೊಂಡಾಗ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ಲಭ್ಯವಿರುವ ಕೆಲವು ವೈಶಿಷ್ಟ್ಯಗಳ ಬಳಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು) ನಂತಹ ಕೆಲವು ಸೂಕ್ಷ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ನಿಮ್ಮ ಒಪ್ಪಿಗೆಯೊಂದಿಗೆ ಸಂಗ್ರಹಿಸಬಹುದು, ಇವೆಲ್ಲವೂ ಅನ್ವಯವಾಗುವ ಕಾನೂನು(ಗಳು) ಗೆ ಅನುಗುಣವಾಗಿರುತ್ತದೆ. ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ನಿರ್ದಿಷ್ಟ ಸೇವೆ ಅಥವಾ ವೈಶಿಷ್ಟ್ಯವನ್ನು ಬಳಸದಿರಲು ಆಯ್ಕೆ ಮಾಡುವ ಮೂಲಕ ಮಾಹಿತಿಯನ್ನು ಒದಗಿಸದಿರುವ ಆಯ್ಕೆ ನಿಮಗೆ ಯಾವಾಗಲೂ ಇರುತ್ತದೆ. ನಿಮ್ಮ ನಡವಳಿಕೆ, ಆದ್ಯತೆಗಳು ಮತ್ತು ನಮ್ಮ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ನೀವು ಒದಗಿಸಲು ಆಯ್ಕೆ ಮಾಡುವ ಇತರ ಮಾಹಿತಿಯನ್ನು ನಾವು ಟ್ರ್ಯಾಕ್ ಮಾಡಬಹುದು. ಈ ಮಾಹಿತಿಯನ್ನು ಒಟ್ಟುಗೂಡಿಸಿದ ಆಧಾರದ ಮೇಲೆ ಸಂಕಲಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತದೆ. ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ಮತ್ತು ಅಂತಹ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ವ್ಯಾಪಾರ ಪಾಲುದಾರ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ಗಳಲ್ಲಿ ನಿಮ್ಮ ವಹಿವಾಟುಗಳಿಗೆ ಸಂಬಂಧಿಸಿದ ನಿಮ್ಮ ಮಾಹಿತಿಯನ್ನು ಸಹ ನಾವು ಸಂಗ್ರಹಿಸುತ್ತೇವೆ. ಅಂತಹ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ವ್ಯಾಪಾರ ಪಾಲುದಾರರು ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ನೇರವಾಗಿ ನಿಮ್ಮಿಂದ ಸಂಗ್ರಹಿಸಿದಾಗ, ನೀವು ಅವರ ಗೌಪ್ಯತಾ ನೀತಿಗಳಿಂದ ನಿಯಂತ್ರಿಸಲ್ಪಡುತ್ತೀರಿ. ಮೂರನೇ ವ್ಯಕ್ತಿಯ ವ್ಯಾಪಾರ ಪಾಲುದಾರರ ಗೌಪ್ಯತಾ ಅಭ್ಯಾಸಗಳು ಅಥವಾ ಅವರ ಗೌಪ್ಯತಾ ನೀತಿಗಳ ವಿಷಯಕ್ಕೆ ನಾವು ಜವಾಬ್ದಾರರಾಗಿರುವುದಿಲ್ಲ ಮತ್ತು ಯಾವುದೇ ಮಾಹಿತಿಯನ್ನು ಬಹಿರಂಗಪಡಿಸುವ ಮೊದಲು ಅವರ ಗೌಪ್ಯತಾ ನೀತಿಗಳನ್ನು ಓದುವಂತೆ ನಾವು ನಿಮ್ಮನ್ನು ವಿನಂತಿಸುತ್ತೇವೆ. ಡೆಬಿಟ್/ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್ PIN, ನೆಟ್-ಬ್ಯಾಂಕಿಂಗ್ ಅಥವಾ ಮೊಬೈಲ್ ಬ್ಯಾಂಕಿಂಗ್ ಪಾಸ್‌ವರ್ಡ್‌ನಂತಹ ಯಾವುದೇ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಕೇಳಿಕೊಂಡು NEXVED CLINICAL RESEARCH ACADEMY ಎಂದು ಹೇಳಿಕೊಳ್ಳುವ ವ್ಯಕ್ತಿ/ಸಂಘದಿಂದ ನೀವು ಇಮೇಲ್, ಕರೆ ಸ್ವೀಕರಿಸಿದರೆ, ಅಂತಹ ಮಾಹಿತಿಯನ್ನು ಎಂದಿಗೂ ನೀಡದಂತೆ ನಾವು ನಿಮ್ಮನ್ನು ವಿನಂತಿಸುತ್ತೇವೆ. ನೀವು ಈಗಾಗಲೇ ಅಂತಹ ಮಾಹಿತಿಯನ್ನು ಬಹಿರಂಗಪಡಿಸಿದ್ದರೆ, ಅದನ್ನು ತಕ್ಷಣವೇ ಸೂಕ್ತ ಕಾನೂನು ಜಾರಿ ಸಂಸ್ಥೆಗೆ ವರದಿ ಮಾಡಿ.",
       },
-      "section3": {
-          "title":"ಬಳಕೆ",
-          "content":"ಸೇವೆಗಳನ್ನು ಒದಗಿಸಲು, ಅನುಭವವನ್ನು ಹೆಚ್ಚಿಸಲು, ವಂಚನೆಯನ್ನು ಪತ್ತೆಹಚ್ಚಲು ಮತ್ತು ಮಾರ್ಕೆಟಿಂಗ್ ಸಂಶೋಧನೆಗಾಗಿ ನಾವು ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಬಳಸುತ್ತೇವೆ."
+      section3: {
+        title: "ಬಳಕೆ",
+        content:
+          "ನೀವು ವಿನಂತಿಸುವ ಸೇವೆಗಳನ್ನು ಒದಗಿಸಲು ನಾವು ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಬಳಸುತ್ತೇವೆ. ನಿಮಗೆ ಮಾರ್ಕೆಟಿಂಗ್ ಮಾಡಲು ನಾವು ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಬಳಸುವ ಮಟ್ಟಿಗೆ, ಅಂತಹ ಬಳಕೆಗಳಿಂದ ಹೊರಗುಳಿಯುವ ಸಾಮರ್ಥ್ಯವನ್ನು ನಾವು ನಿಮಗೆ ಒದಗಿಸುತ್ತೇವೆ. ಆರ್ಡರ್‌ಗಳನ್ನು ನಿರ್ವಹಿಸಲು ಮತ್ತು ಪೂರೈಸಲು ಮಾರಾಟಗಾರರು ಮತ್ತು ವ್ಯಾಪಾರ ಪಾಲುದಾರರಿಗೆ ಸಹಾಯ ಮಾಡಲು; ಗ್ರಾಹಕರ ಅನುಭವವನ್ನು ಹೆಚ್ಚಿಸಲು; ವಿವಾದಗಳನ್ನು ಪರಿಹರಿಸಲು; ಸಮಸ್ಯೆಗಳನ್ನು ನಿವಾರಿಸಲು; ಆನ್‌ಲೈನ್ ಮತ್ತು ಆಫ್‌ಲೈನ್ ಕೊಡುಗೆಗಳು, ಉತ್ಪನ್ನಗಳು, ಸೇವೆಗಳು ಮತ್ತು ನವೀಕರಣಗಳ ಕುರಿತು ನಿಮಗೆ ತಿಳಿಸಲು; ನಿಮ್ಮ ಅನುಭವವನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಲು; ದೋಷ, ವಂಚನೆ ಮತ್ತು ಇತರ ಕ್ರಿಮಿನಲ್ ಚಟುವಟಿಕೆಯ ವಿರುದ್ಧ ನಮ್ಮನ್ನು ಪತ್ತೆಹಚ್ಚಲು ಮತ್ತು ರಕ್ಷಿಸಲು; ನಮ್ಮ ನಿಯಮಗಳು ಮತ್ತು ಷರತ್ತುಗಳನ್ನು ಜಾರಿಗೊಳಿಸಲು; ಮಾರ್ಕೆಟಿಂಗ್ ಸಂಶೋಧನೆ, ವಿಶ್ಲೇಷಣೆ ಮತ್ತು ಸಮೀಕ್ಷೆಗಳನ್ನು ನಡೆಸಲು; ಮತ್ತು ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸುವ ಸಮಯದಲ್ಲಿ ನಿಮಗೆ ಬೇರೆ ರೀತಿಯಲ್ಲಿ ವಿವರಿಸಿದಂತೆ ನಾವು ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಬಳಸುತ್ತೇವೆ. ನಮಗೆ ಅನುಮತಿ ನೀಡದಿದ್ದಲ್ಲಿ ಈ ಉತ್ಪನ್ನಗಳು/ಸೇವೆಗಳಿಗೆ ನಿಮ್ಮ ಪ್ರವೇಶವು ಪರಿಣಾಮ ಬೀರಬಹುದು ಎಂದು ನೀವು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೀರಿ.",
       },
-      "section4": {"title":"ಮಾಹಿತಿ ಹಂಚಿಕೆ ಮತ್ತು ಬಹಿರಂಗಪಡಿಸುವಿಕೆಗಳು","content":"ನಾವು ಅಂಗಸಂಸ್ಥೆಗಳು, ಪಾಲುದಾರರೊಂದಿಗೆ ಅಥವಾ ಕಾನೂನು ಬಾಧ್ಯತೆಗಳನ್ನು ಅನುಸರಿಸಲು ಡೇಟಾವನ್ನು ಹಂಚಿಕೊಳ್ಳಬಹುದು."},
-      "section5": {"title":"ಸಮಂಜಸವಾದ ಭದ್ರತಾ ಅಭ್ಯಾಸಗಳು","content":"ನಿಮ್ಮ ಡೇಟಾವನ್ನು ರಕ್ಷಿಸಲು ನಾವು ಸಮಂಜಸವಾದ ಭದ್ರತಾ ಕ್ರಮಗಳನ್ನು ಅಳವಡಿಸಿಕೊಳ್ಳುತ್ತೇವೆ, ಆದರೆ ಸಂಪೂರ್ಣ ಭದ್ರತೆಯನ್ನು ಖಾತರಿಪಡಿಸುವುದಿಲ್ಲ."},
-      "section6": {"title":"ಡೇಟಾ ಅಳಿಸುವಿಕೆ ಮತ್ತು ಉಳಿಸಿಕೊಳ್ಳುವಿಕೆ","content":"ಬಳಕೆದಾರರು ತಮ್ಮ ಖಾತೆಗಳನ್ನು ಅಳಿಸಬಹುದು. ಅಗತ್ಯವಿರುವವರೆಗೆ ಅಥವಾ ಕಾನೂನುಬದ್ಧವಾಗಿ ಅಗತ್ಯವಿರುವವರೆಗೆ ಡೇಟಾವನ್ನು ಉಳಿಸಿಕೊಳ್ಳಲಾಗುತ್ತದೆ."},
-      "section7": {"title":"ನಿಮ್ಮ ಹಕ್ಕುಗಳು","content":"ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಮೂಲಕ ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ನೀವು ಪ್ರವೇಶಿಸಬಹುದು, ಸರಿಪಡಿಸಬಹುದು ಮತ್ತು ನವೀಕರಿಸಬಹುದು."},
-      "section8": {"title":"ಒಪ್ಪಿಗೆ","content":"ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಬಳಸುವ ಮೂಲಕ, ಈ ಗೌಪ್ಯತಾ ನೀತಿಗೆ ಅನುಗುಣವಾಗಿ ಡೇಟಾ ಸಂಗ್ರಹಣೆ ಮತ್ತು ಪ್ರಕ್ರಿಯೆಗೆ ನೀವು ಸಮ್ಮತಿಸುತ್ತೀರಿ."},
-      "section9": {"title":"ಈ ಗೌಪ್ಯತಾ ನೀತಿಯಲ್ಲಿ ಬದಲಾವಣೆಗಳು","content":"ನಾವು ಈ ನೀತಿಯನ್ನು ನಿಯತಕಾಲಿಕವಾಗಿ ನವೀಕರಿಸಬಹುದು. ಬಳಕೆದಾರರು ಇದನ್ನು ನಿಯಮಿತವಾಗಿ ಪರಿಶೀಲಿಸಬೇಕು."}
+      section4: {
+        title: "ಮಾಹಿತಿ ಹಂಚಿಕೆ ಮತ್ತು ಬಹಿರಂಗಪಡಿಸುವಿಕೆಗಳು",
+        content:
+          "ನಮ್ಮ ಗುಂಪಿನ ಘಟಕಗಳು, ನಮ್ಮ ಇತರ ಕಾರ್ಪೊರೇಟ್ ಘಟಕಗಳು ಮತ್ತು ಅಂಗಸಂಸ್ಥೆಗಳ ಒಳಗೆ ಅವರ ಮೂಲಕ ನೀಡಲಾಗುವ ಸೇವೆಗಳು ಮತ್ತು ಉತ್ಪನ್ನಗಳಿಗೆ ನಿಮಗೆ ಪ್ರವೇಶವನ್ನು ಒದಗಿಸಲು ನಾವು ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಆಂತರಿಕವಾಗಿ ಹಂಚಿಕೊಳ್ಳಬಹುದು. ನೀವು ಸ್ಪಷ್ಟವಾಗಿ ಹೊರಗುಳಿಯದ ಹೊರತು ಈ ಘಟಕಗಳು ಮತ್ತು ಅಂಗಸಂಸ್ಥೆಗಳು ಅಂತಹ ಹಂಚಿಕೆಯ ಪರಿಣಾಮವಾಗಿ ನಿಮಗೆ ಮಾರ್ಕೆಟಿಂಗ್ ಮಾಡಬಹುದು. ಮಾರಾಟಗಾರರು, ವ್ಯಾಪಾರ ಪಾಲುದಾರರು, ಲಾಜಿಸ್ಟಿಕ್ಸ್ ಪಾಲುದಾರರು, ಪ್ರಿಪೇಯ್ಡ್ ಪಾವತಿ ಸಾಧನ ವಿತರಕರು, ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಬಹುಮಾನ ಕಾರ್ಯಕ್ರಮಗಳು ಮತ್ತು ನೀವು ಆಯ್ಕೆ ಮಾಡಿದ ಇತರ ಪಾವತಿ ಸೇರಿದಂತೆ ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸೇವಾ ಪೂರೈಕೆದಾರರಂತಹ ಮೂರನೇ ವ್ಯಕ್ತಿಗಳಿಗೆ ನಾವು ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಬಹಿರಂಗಪಡಿಸಬಹುದು. ನಮ್ಮ ಸೇವೆಗಳು ಮತ್ತು ನಿಮಗೆ ನೀಡಲಾಗುವ ಉತ್ಪನ್ನಗಳಿಗೆ ನಿಮಗೆ ಪ್ರವೇಶವನ್ನು ಒದಗಿಸಲು, ನಮ್ಮ ಕಾನೂನು ಬಾಧ್ಯತೆಗಳನ್ನು ಅನುಸರಿಸಲು, ನಮ್ಮ ಬಳಕೆದಾರ ಒಪ್ಪಂದವನ್ನು ಜಾರಿಗೊಳಿಸಲು, ನಮ್ಮ ಮಾರ್ಕೆಟಿಂಗ್ ಮತ್ತು ಜಾಹೀರಾತು ಚಟುವಟಿಕೆಗಳನ್ನು ಸುಗಮಗೊಳಿಸಲು, ನಮ್ಮ ಸೇವೆಗಳಿಗೆ ಸಂಬಂಧಿಸಿದ ಮೋಸದ ಅಥವಾ ಕಾನೂನುಬಾಹಿರ ಚಟುವಟಿಕೆಗಳನ್ನು ತಡೆಗಟ್ಟಲು, ಪತ್ತೆಹಚ್ಚಲು, ತಗ್ಗಿಸಲು ಮತ್ತು ತನಿಖೆ ಮಾಡಲು ಈ ಬಹಿರಂಗಪಡಿಸುವಿಕೆಗಳು ನಮಗೆ ಅಗತ್ಯವಾಗಬಹುದು. ಕಾನೂನಿನ ಪ್ರಕಾರ ಹಾಗೆ ಮಾಡಬೇಕಾದರೆ ಅಥವಾ ಅಂತಹ ಬಹಿರಂಗಪಡಿಸುವಿಕೆಯು ಸಬ್‌ಪೋನಾಗಳು, ನ್ಯಾಯಾಲಯದ ಆದೇಶಗಳು ಅಥವಾ ಇತರ ಕಾನೂನು ಪ್ರಕ್ರಿಯೆಗಳಿಗೆ ಪ್ರತಿಕ್ರಿಯಿಸಲು ಸಮಂಜಸವಾಗಿ ಅಗತ್ಯವಿದೆ ಎಂಬ ಸದ್ಭಾವನೆಯ ನಂಬಿಕೆಯಲ್ಲಿ ನಾವು ಸರ್ಕಾರಿ ಏಜೆನ್ಸಿಗಳು ಅಥವಾ ಇತರ ಅಧಿಕೃತ ಕಾನೂನು ಜಾರಿ ಏಜೆನ್ಸಿಗಳಿಗೆ ವೈಯಕ್ತಿಕ ಮತ್ತು ಸೂಕ್ಷ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಬಹಿರಂಗಪಡಿಸಬಹುದು. ನಮ್ಮ ಬಳಕೆಯ ನಿಯಮಗಳು ಅಥವಾ ಗೌಪ್ಯತಾ ನೀತಿಯನ್ನು ಜಾರಿಗೊಳಿಸಲು; ಜಾಹೀರಾತು, ಪೋಸ್ಟಿಂಗ್ ಅಥವಾ ಇತರ ವಿಷಯವು ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಹಕ್ಕುಗಳನ್ನು ಉಲ್ಲಂಘಿಸುತ್ತದೆ ಎಂಬ ಹಕ್ಕುಗಳಿಗೆ ಪ್ರತಿಕ್ರಿಯಿಸಲು; ಅಥವಾ ನಮ್ಮ ಬಳಕೆದಾರರ ಅಥವಾ ಸಾಮಾನ್ಯ ಜನರ ಹಕ್ಕುಗಳು, ಆಸ್ತಿ ಅಥವಾ ವೈಯಕ್ತಿಕ ಸುರಕ್ಷತೆಯನ್ನು ರಕ್ಷಿಸಲು ಅಂತಹ ಬಹಿರಂಗಪಡಿಸುವಿಕೆ ಸಮಂಜಸವಾಗಿ ಅಗತ್ಯವಿದೆ ಎಂಬ ಸದ್ಭಾವನೆಯ ನಂಬಿಕೆಯಲ್ಲಿ ನಾವು ಕಾನೂನು ಜಾರಿ ಕಚೇರಿಗಳು, ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಹಕ್ಕುಗಳ ಮಾಲೀಕರು ಅಥವಾ ಇತರರಿಗೆ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಬಹಿರಂಗಪಡಿಸಬಹುದು.",
+      },
+      section5: {
+        title: "ಸಮಂಜಸವಾದ ಭದ್ರತಾ ಅಭ್ಯಾಸಗಳು",
+        content:
+          "ಅನಧಿಕೃತ ಪ್ರವೇಶ ಅಥವಾ ಬಹಿರಂಗಪಡಿಸುವಿಕೆ, ನಷ್ಟ ಅಥವಾ ದುರುಪಯೋಗದಿಂದ ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ರಕ್ಷಿಸಲು ನಾವು ಸಮಂಜಸವಾದ ಭದ್ರತಾ ಅಭ್ಯಾಸಗಳು ಮತ್ತು ಕಾರ್ಯವಿಧಾನಗಳನ್ನು ಅಳವಡಿಸಿಕೊಳ್ಳುತ್ತೇವೆ. ಒಮ್ಮೆ ನಿಮ್ಮ ಮಾಹಿತಿಯು ನಮ್ಮ ವಶದಲ್ಲಿದ್ದಾಗ ಅಥವಾ ನೀವು ನಿಮ್ಮ ಖಾತೆಯ ಮಾಹಿತಿಯನ್ನು ಪ್ರವೇಶಿಸಿದಾಗ, ಅದನ್ನು ಅನಧಿಕೃತ ಪ್ರವೇಶದ ವಿರುದ್ಧ ರಕ್ಷಿಸಲು ಮತ್ತು ಸುರಕ್ಷಿತ ಸರ್ವರ್‌ನ ಬಳಕೆಯನ್ನು ನೀಡಲು ನಾವು ನಮ್ಮ ಭದ್ರತಾ ಮಾರ್ಗಸೂಚಿಗಳನ್ನು ಅನುಸರಿಸುತ್ತೇವೆ. ಆದಾಗ್ಯೂ, ನಮ್ಮ ನಿಯಂತ್ರಣಕ್ಕೆ ಮೀರಿದ ಕಾರಣಗಳಿಗಾಗಿ ಮಾಹಿತಿಯ ಪ್ರಸರಣವು ಸಂಪೂರ್ಣವಾಗಿ ಸುರಕ್ಷಿತವಾಗಿಲ್ಲ. ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಅನ್ನು ಬಳಸುವ ಮೂಲಕ, ಇಂಟರ್ನೆಟ್ ಮತ್ತು ವರ್ಲ್ಡ್ ವೈಡ್ ವೆಬ್‌ನ ಮೂಲಕ ಡೇಟಾ ಪ್ರಸರಣದ ಭದ್ರತಾ ಪರಿಣಾಮಗಳನ್ನು ಬಳಕೆದಾರರು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತಾರೆ, ಇದನ್ನು ಯಾವಾಗಲೂ ಸಂಪೂರ್ಣವಾಗಿ ಸುರಕ್ಷಿತ ಎಂದು ಖಾತರಿಪಡಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಮತ್ತು ಆದ್ದರಿಂದ, ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನ ಬಳಕೆಗೆ ಸಂಬಂಧಿಸಿದಂತೆ ಯಾವಾಗಲೂ ಕೆಲವು ಅಂತರ್ಗತ ಅಪಾಯಗಳು ಉಳಿದಿರುತ್ತವೆ. ಬಳಕೆದಾರರು ತಮ್ಮ ಖಾತೆಗಾಗಿ ಲಾಗಿನ್ ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್ ದಾಖಲೆಗಳ ರಕ್ಷಣೆಯನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಜವಾಬ್ದಾರರಾಗಿರುತ್ತಾರೆ.",
+      },
+      section6: {
+        title: "ಡೇಟಾ ಅಳಿಸುವಿಕೆ ಮತ್ತು ಉಳಿಸಿಕೊಳ್ಳುವಿಕೆ",
+        content:
+          "ನಮ್ಮ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಮತ್ತು ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಭೇಟಿ ಮಾಡುವ ಮೂಲಕ ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಅಳಿಸುವ ಆಯ್ಕೆಯನ್ನು ನೀವು ಹೊಂದಿದ್ದೀರಿ, ಈ ಕ್ರಿಯೆಯು ನಿಮ್ಮ ಖಾತೆಗೆ ಸಂಬಂಧಿಸಿದ ಎಲ್ಲಾ ಮಾಹಿತಿಯನ್ನು ಕಳೆದುಕೊಳ್ಳಲು ಕಾರಣವಾಗುತ್ತದೆ. ಈ ವಿನಂತಿಗಳೊಂದಿಗೆ ನಿಮಗೆ ಸಹಾಯ ಮಾಡಲು ಕೆಳಗೆ ಒದಗಿಸಲಾದ ಸಂಪರ್ಕ ಮಾಹಿತಿಯಲ್ಲಿ ನೀವು ನಮಗೆ ಬರೆಯಬಹುದು. ಯಾವುದೇ ಬಾಕಿ ಇರುವ ಕುಂದುಕೊರತೆ, ಹಕ್ಕುಗಳು, ಬಾಕಿ ಇರುವ ಸಾಗಣೆಗಳು ಅಥವಾ ಯಾವುದೇ ಇತರ ಸೇವೆಗಳ ಸಂದರ್ಭದಲ್ಲಿ ನಾವು ಖಾತೆಯ ಅಳಿಸುವಿಕೆಯನ್ನು ನಿರಾಕರಿಸಬಹುದು ಅಥವಾ ವಿಳಂಬಗೊಳಿಸಬಹುದು. ಒಮ್ಮೆ ಖಾತೆಯನ್ನು ಅಳಿಸಿದ ನಂತರ, ನೀವು ಖಾತೆಗೆ ಪ್ರವೇಶವನ್ನು ಕಳೆದುಕೊಳ್ಳುತ್ತೀರಿ. ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾ ಮಾಹಿತಿಯನ್ನು ಅದನ್ನು ಸಂಗ್ರಹಿಸಿದ ಉದ್ದೇಶಕ್ಕಾಗಿ ಅಗತ್ಯವಿರುವ ಅವಧಿಗಿಂತ ಹೆಚ್ಚು ಕಾಲ ಅಥವಾ ಯಾವುದೇ ಅನ್ವಯವಾಗುವ ಕಾನೂನಿನ ಅಡಿಯಲ್ಲಿ ಅಗತ್ಯವಿರುವಂತೆ ನಾವು ಉಳಿಸಿಕೊಳ್ಳುವುದಿಲ್ಲ. ಆದಾಗ್ಯೂ, ವಂಚನೆ ಅಥವಾ ಭವಿಷ್ಯದ ದುರುಪಯೋಗವನ್ನು ತಡೆಗಟ್ಟಲು ಅಥವಾ ಇತರ ಕಾನೂನುಬದ್ಧ ಉದ್ದೇಶಗಳಿಗಾಗಿ ಇದು ಅಗತ್ಯವಾಗಬಹುದು ಎಂದು ನಾವು ನಂಬಿದರೆ ನಿಮ್ಮ ಸಂಬಂಧಿತ ಡೇಟಾವನ್ನು ನಾವು ಉಳಿಸಿಕೊಳ್ಳಬಹುದು. ವಿಶ್ಲೇಷಣಾತ್ಮಕ ಮತ್ತು ಸಂಶೋಧನಾ ಉದ್ದೇಶಗಳಿಗಾಗಿ ನಾವು ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಅನಾಮಧೇಯ ರೂಪದಲ್ಲಿ ಉಳಿಸಿಕೊಳ್ಳುವುದನ್ನು ಮುಂದುವರಿಸಬಹುದು.",
+      },
+      section7: {
+        title: "ನಿಮ್ಮ ಹಕ್ಕುಗಳು",
+        content:
+          "ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ಒದಗಿಸಲಾದ ಕಾರ್ಯಚಟುವಟಿಕೆಗಳ ಮೂಲಕ ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ನೀವು ನೇರವಾಗಿ ಪ್ರವೇಶಿಸಬಹುದು, ಸರಿಪಡಿಸಬಹುದು ಮತ್ತು ಅಪ್ಡೇಟ್ ಮಾಡಬಹುದು.",
+      },
+      section8: {
+        title: "ಒಪ್ಪಿಗೆ",
+        content:
+          'ನಮ್ಮ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ಗೆ ಭೇಟಿ ನೀಡುವ ಮೂಲಕ ಅಥವಾ ನಿಮ್ಮ ಮಾಹಿತಿಯನ್ನು ಒದಗಿಸುವ ಮೂಲಕ, ಈ ಗೌಪ್ಯತಾ ನೀತಿಗೆ ಅನುಗುಣವಾಗಿ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ನಿಮ್ಮ ಮಾಹಿತಿಯ ಸಂಗ್ರಹಣೆ, ಬಳಕೆ, ಸಂಗ್ರಹಣೆ, ಬಹಿರಂಗಪಡಿಸುವಿಕೆ ಮತ್ತು ಇತರ ಪ್ರಕ್ರಿಯೆಗೆ ನೀವು ಸಮ್ಮತಿಸುತ್ತೀರಿ. ನೀವು ಇತರ ಜನರಿಗೆ ಸಂಬಂಧಿಸಿದ ಯಾವುದೇ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ನಮಗೆ ಬಹಿರಂಗಪಡಿಸಿದರೆ, ಹಾಗೆ ಮಾಡಲು ನಿಮಗೆ ಅಧಿಕಾರವಿದೆ ಮತ್ತು ಈ ಗೌಪ್ಯತಾ ನೀತಿಯ ಅನುಗುಣವಾಗಿ ಮಾಹಿತಿಯನ್ನು ಬಳಸಲು ನಮಗೆ ಅನುಮತಿ ನೀಡುತ್ತೀರಿ ಎಂದು ನೀವು ಪ್ರತಿನಿಧಿಸುತ್ತೀರಿ. ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಅಥವಾ ಯಾವುದೇ ಪಾಲುದಾರ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ಗಳು ಅಥವಾ ಸಂಸ್ಥೆಗಳ ಮೇಲೆ ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಒದಗಿಸುವಾಗ, ಈ ಗೌಪ್ಯತಾ ನೀತಿಯಲ್ಲಿ ನಿರ್ದಿಷ್ಟಪಡಿಸಿದ ಉದ್ದೇಶಗಳಿಗಾಗಿ SMS, ತತ್‌ಕ್ಷಣದ ಸಂದೇಶ ಕಳುಹಿಸುವ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು, ಕರೆ ಮತ್ತು/ಅಥವಾ ಇ-ಮೇಲ್ ಮೂಲಕ ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಲು ನಮಗೆ (ನಮ್ಮ ಇತರ ಕಾರ್ಪೊರೇಟ್ ಘಟಕಗಳು, ಅಂಗಸಂಸ್ಥೆಗಳು, ಸಾಲ ನೀಡುವ ಪಾಲುದಾರರು, ತಂತ್ರಜ್ಞಾನ ಪಾಲುದಾರರು, ಮಾರ್ಕೆಟಿಂಗ್ ಚಾನಲ್‌ಗಳು, ವ್ಯಾಪಾರ ಪಾಲುದಾರರು ಮತ್ತು ಇತರ ಮೂರನೇ ವ್ಯಕ್ತಿಗಳು ಸೇರಿದಂತೆ) ನೀವು ಸಮ್ಮತಿಸುತ್ತೀರಿ. ಕೆಳಗೆ ಒದಗಿಸಲಾದ ಸಂಪರ್ಕ ಮಾಹಿತಿಯಲ್ಲಿ ಕುಂದುಕೊರತೆ ಅಧಿಕಾರಿಗೆ ಬರೆಯುವ ಮೂಲಕ ನೀವು ಈಗಾಗಲೇ ಒದಗಿಸಿರುವ ನಿಮ್ಮ ಸಮ್ಮತಿಯನ್ನು ಹಿಂತೆಗೆದುಕೊಳ್ಳುವ ಆಯ್ಕೆ ನಿಮಗೆ ಇದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸಂವಹನದ ವಿಷಯದ ಸಾಲಿನಲ್ಲಿ "ವೈಯಕ್ತಿಕ ಡೇಟಾ ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಿಕೆಗೆ ಸಮ್ಮತಿಯನ್ನು ಹಿಂತೆಗೆದುಕೊಳ್ಳುವಿಕೆ" ಎಂದು ನಮೂದಿಸಿ. ನಿಮ್ಮ ವಿನಂತಿಯ ಮೇಲೆ ಕಾರ್ಯನಿರ್ವಹಿಸುವ ಮೊದಲು ನಾವು ಅಂತಹ ವಿನಂತಿಗಳನ್ನು ಪರಿಶೀಲಿಸಬಹುದು. ಆದಾಗ್ಯೂ, ನಿಮ್ಮ ಸಮ್ಮತಿಯ ಹಿಂತೆಗೆದುಕೊಳ್ಳುವಿಕೆಯು ಹಿಂದಿನ ಅವಧಿಯಿಂದ ಜಾರಿಗೆ ಬರುವುದಿಲ್ಲ ಮತ್ತು ಬಳಕೆಯ ನಿಯಮಗಳು, ಈ ಗೌಪ್ಯತಾ ನೀತಿ ಮತ್ತು ಅನ್ವಯವಾಗುವ ಕಾನೂನುಗಳಿಗೆ ಅನುಗುಣವಾಗಿರುತ್ತದೆ ಎಂಬುದನ್ನು ದಯವಿಟ್ಟು ಗಮನಿಸಿ. ಈ ಗೌಪ್ಯತಾ ನೀತಿಯ ಅಡಿಯಲ್ಲಿ ನಮಗೆ ನೀಡಿದ ಸಮ್ಮತಿಯನ್ನು ನೀವು ಹಿಂತೆಗೆದುಕೊಂಡರೆ, ಅಂತಹ ಮಾಹಿತಿ ಅಗತ್ಯವೆಂದು ನಾವು ಪರಿಗಣಿಸುವ ನಮ್ಮ ಸೇವೆಗಳ ನಿಬಂಧನೆಯನ್ನು ನಿರ್ಬಂಧಿಸಲು ಅಥವಾ ನಿರಾಕರಿಸಲು ನಾವು ಹಕ್ಕು ಕಾಯ್ದಿರಿಸಿದ್ದೇವೆ.',
+      },
+      section9: {
+        title: "ಈ ಗೌಪ್ಯತಾ ನೀತಿಗೆ ಬದಲಾವಣೆಗಳು",
+        content:
+          "ಬದಲಾವಣೆಗಳಿಗಾಗಿ ದಯವಿಟ್ಟು ನಮ್ಮ ಗೌಪ್ಯತಾ ನೀತಿಯನ್ನು ನಿಯತಕಾಲಿಕವಾಗಿ ಪರಿಶೀಲಿಸಿ. ನಮ್ಮ ಮಾಹಿತಿ ಅಭ್ಯಾಸಗಳಲ್ಲಿನ ಬದಲಾವಣೆಗಳನ್ನು ಪ್ರತಿಬಿಂಬಿಸಲು ನಾವು ಈ ಗೌಪ್ಯತಾ ನೀತಿಯನ್ನು ನವೀಕರಿಸಬಹುದು. ಅನ್ವಯವಾಗುವ ಕಾನೂನುಗಳ ಅಡಿಯಲ್ಲಿ ಅಗತ್ಯವಿರುವ ರೀತಿಯಲ್ಲಿ, ಗೌಪ್ಯತಾ ನೀತಿಯ ಪ್ರಮುಖ ಬದಲಾವಣೆಗಳ ಬಗ್ಗೆ ನಾವು ನಿಮಗೆ ಎಚ್ಚರಿಕೆ/ಸೂಚನೆ ನೀಡಬಹುದು.",
+      },
     },
-    "hi": {
-      "section1": {
-          "title":"गोपनीयता नीति",
-          "content":"यह गोपनीयता नीति बताती है कि (सामूहिक रूप से 'द नर्ड्स एंड कंपनी', 'हम', 'हमारा', 'हमें') हमारी वेबसाइट https://foxxydrip.com/ ('प्लेटफ़ॉर्म' के रूप में संदर्भित) के माध्यम से आपकी जानकारी/व्यक्तिगत डेटा को कैसे एकत्र, उपयोग, साझा, संरक्षित या अन्यथा संसाधित करते हैं। कृपया ध्यान दें कि आप हमारे साथ पंजीकरण किए बिना प्लेटफ़ॉर्म के कुछ अनुभागों को ब्राउज़ कर सकते हैं। हम इस प्लेटफ़ॉर्म के तहत भारत के बाहर किसी भी उत्पाद/सेवा की पेशकश नहीं करते हैं और आपका व्यक्तिगत डेटा मुख्य रूप से भारत में संग्रहीत और संसाधित किया जाएगा। इस प्लेटफ़ॉर्म पर जाकर, अपनी जानकारी प्रदान करके या प्लेटफ़ॉर्म पर दी जाने वाली किसी भी उत्पाद/सेवा का लाभ उठाकर, आप इस गोपनीयता नीति, उपयोग की शर्तों और लागू सेवा/उत्पाद नियमों और शर्तों से बंधे होने के लिए स्पष्ट रूप से सहमत हैं, और भारत के कानूनों द्वारा शासित होने के लिए सहमत हैं जिसमें डेटा संरक्षण और गोपनीयता कानून शामिल हैं। यदि आप सहमत नहीं हैं, तो कृपया हमारे प्लेटफ़ॉर्म का उपयोग या एक्सेस न करें।"
+    hi: {
+      section1: {
+        title: "गोपनीयता नीति",
+        content:
+          "यह गोपनीयता नीति बताती है कि (सामूहिक रूप से 'द नर्ड्स एंड कंपनी', 'हम', 'हमारा', 'हमें') हमारी वेबसाइट https://foxxydrip.com/ ('प्लेटफ़ॉर्म' के रूप में संदर्भित) के माध्यम से आपकी जानकारी/व्यक्तिगत डेटा को कैसे एकत्र, उपयोग, साझा, संरक्षित या अन्यथा संसाधित करते हैं। कृपया ध्यान दें कि आप हमारे साथ पंजीकरण किए बिना प्लेटफ़ॉर्म के कुछ अनुभागों को ब्राउज़ कर सकते हैं। हम इस प्लेटफ़ॉर्म के तहत भारत के बाहर किसी भी उत्पाद/सेवा की पेशकश नहीं करते हैं और आपका व्यक्तिगत डेटा मुख्य रूप से भारत में संग्रहीत और संसाधित किया जाएगा। इस प्लेटफ़ॉर्म पर जाकर, अपनी जानकारी प्रदान करके या प्लेटफ़ॉर्म पर दी जाने वाली किसी भी उत्पाद/सेवा का लाभ उठाकर, आप इस गोपनीयता नीति, उपयोग की शर्तों और लागू सेवा/उत्पाद नियमों और शर्तों से बंधे होने के लिए स्पष्ट रूप से सहमत हैं, और भारत के कानूनों द्वारा शासित होने के लिए सहमत हैं जिसमें डेटा संरक्षण और गोपनीयता कानून शामिल हैं। यदि आप सहमत नहीं हैं, तो कृपया हमारे प्लेटफ़ॉर्म का उपयोग या एक्सेस न करें।",
       },
-      "section2": {
-          "title":"जानकारी संग्रह",
-          "content":"हम पंजीकरण और सेवाओं के उपयोग के दौरान व्यक्तिगत जानकारी एकत्र करते हैं, जिसमें नाम, ईमेल, फोन और पता शामिल है।"
+      section2: {
+        title: "जानकारी संग्रह",
+        content:
+          "जब आप हमारे प्लेटफ़ॉर्म, सेवाओं का उपयोग करते हैं या हमारे संबंध के दौरान अन्यथा हमारे साथ बातचीत करते हैं तो हम आपका व्यक्तिगत डेटा और समय-समय पर प्रदान की गई संबंधित जानकारी एकत्र करते हैं। हम जो जानकारी एकत्र कर सकते हैं उसमें प्लेटफ़ॉर्म पर साइन-अप/पंजीकरण करने या उसका उपयोग करने के दौरान हमें प्रदान की गई व्यक्तिगत डेटा/जानकारी शामिल है, लेकिन यह नाम, जन्म तिथि, पता, टेलीफोन/मोबाइल नंबर, ईमेल आईडी और/या पहचान या पते के प्रमाण के रूप में साझा की गई ऐसी किसी भी जानकारी तक सीमित नहीं है। कुछ संवेदनशील व्यक्तिगत डेटा आपकी सहमति से एकत्र किया जा सकता है, जैसे कि आपका बैंक खाता या क्रेडिट या डेबिट कार्ड या अन्य भुगतान उपकरण की जानकारी या बायोमेट्रिक जानकारी जैसे कि आपके चेहरे की विशेषताएं या शारीरिक जानकारी (जब प्लेटफ़ॉर्म पर उपलब्ध कुछ सुविधाओं को चुना जाता है तो उनके उपयोग को सक्षम करने के लिए) आदि, उपरोक्त सभी लागू कानून(ओं) के अनुसार होंगे। प्लेटफ़ॉर्म पर किसी विशेष सेवा या सुविधा का उपयोग न करने का चयन करके आपके पास हमेशा जानकारी प्रदान न करने का विकल्प होता है। हम आपके व्यवहार, प्राथमिकताओं और अन्य जानकारी को ट्रैक कर सकते हैं जिसे आप हमारे प्लेटफ़ॉर्म पर प्रदान करना चुनते हैं। यह जानकारी समेकित आधार पर संकलित और विश्लेषित की जाती है। हम प्लेटफ़ॉर्म और ऐसे तीसरे पक्ष के व्यावसायिक भागीदार प्लेटफ़ॉर्म पर आपके लेनदेन से संबंधित आपकी जानकारी भी एकत्र करेंगे। जब ऐसा कोई तीसरा पक्ष व्यावसायिक भागीदार सीधे आपसे आपका व्यक्तिगत डेटा एकत्र करता है, तो आप उनकी गोपनीयता नीतियों द्वारा शासित होंगे। हम तीसरे पक्ष के व्यावसायिक भागीदार की गोपनीयता प्रथाओं या उनकी गोपनीयता नीतियों की सामग्री के लिए जिम्मेदार नहीं होंगे, और हम आपसे कोई भी जानकारी प्रकट करने से पहले उनकी गोपनीयता नीतियों को पढ़ने का अनुरोध करते हैं। यदि आपको NEXVED CLINICAL RESEARCH ACADEMY होने का दावा करने वाले किसी व्यक्ति/एसोसिएशन से डेबिट/क्रेडिट कार्ड पिन, नेट-बैंकिंग या मोबाइल बैंकिंग पासवर्ड जैसी कोई व्यक्तिगत डेटा मांगने वाला कोई ईमेल, कॉल प्राप्त होता है, तो हम आपसे अनुरोध करते हैं कि ऐसी जानकारी कभी भी प्रदान न करें। यदि आपने पहले ही ऐसी जानकारी प्रकट कर दी है, तो तुरंत एक उपयुक्त कानून प्रवर्तन एजेंसी को इसकी सूचना दें।",
       },
-      "section3": {
-          "title":"उपयोग",
-          "content":"हम सेवाएं प्रदान करने, अनुभव बढ़ाने, धोखाधड़ी का पता लगाने और विपणन अनुसंधान के लिए व्यक्तिगत डेटा का उपयोग करते हैं।"
+      section3: {
+        title: "उपयोग",
+        content:
+          "हम आपके अनुरोधित सेवाओं को प्रदान करने के लिए व्यक्तिगत डेटा का उपयोग करते हैं। जिस हद तक हम आपको विपणन (मार्केटिंग) करने के लिए आपके व्यक्तिगत डेटा का उपयोग करते हैं, हम आपको ऐसे उपयोगों से ऑप्ट-आउट करने की क्षमता प्रदान करेंगे। हम आपके व्यक्तिगत डेटा का उपयोग विक्रेताओं और व्यावसायिक भागीदारों को ऑर्डर संभालने और पूरा करने में सहायता करने के लिए; ग्राहक अनुभव बढ़ाने के लिए; विवादों को हल करने के लिए; समस्याओं का निवारण करने के लिए; आपको ऑनलाइन और ऑफलाइन ऑफ़र, उत्पादों, सेवाओं और अपडेट के बारे में सूचित करने के लिए; आपके अनुभव को अनुकूलित करने के लिए; त्रुटि, धोखाधड़ी और अन्य आपराधिक गतिविधि से हमें पता लगाने और बचाने के लिए; हमारे नियमों और शर्तों को लागू करने के लिए; विपणन अनुसंधान, विश्लेषण और सर्वेक्षण आयोजित करने के लिए; और जानकारी एकत्र करने के समय आपको अन्यथा बताए अनुसार करते हैं। आप समझते हैं कि यदि हमें अनुमति प्रदान नहीं की जाती है तो इन उत्पादों/सेवाओं तक आपकी पहुंच प्रभावित हो सकती है।",
       },
-      "section4": {"title":"जानकारी साझा करना और प्रकटीकरण","content":"हम डेटा को सहयोगियों, भागीदारों के साथ या कानूनी दायित्वों का पालन करने के लिए साझा कर सकते हैं।"},
-      "section5": {"title":"उचित सुरक्षा प्रथाएं","content":"हम आपके डेटा की सुरक्षा के लिए उचित सुरक्षा उपाय अपनाते हैं, लेकिन पूर्ण सुरक्षा की गारंटी नहीं दे सकते।"},
-      "section6": {"title":"डेटा हटाना और प्रतिधारण","content":"उपयोगकर्ता अपने खाते हटा सकते हैं। डेटा तब तक रखा जाता है जब तक आवश्यक हो या कानूनी रूप से आवश्यक हो।"},
-      "section7": {"title":"आपके अधिकार","content":"आप प्लेटफ़ॉर्म के माध्यम से अपने व्यक्तिगत डेटा तक पहुंच सकते हैं, उसे सुधार सकते हैं और अपडेट कर सकते हैं।"},
-      "section8": {"title":"सहमति","content":"प्लेटफ़ॉर्म का उपयोग करके, आप इस गोपनीयता नीति के अनुसार डेटा संग्रह और प्रसंस्करण के लिए सहमति देते हैं।"},
-      "section9": {"title":"इस गोपनीयता नीति में परिवर्तन","content":"हम समय-समय पर इस नीति को अपडेट कर सकते हैं। उपयोगकर्ताओं को नियमित रूप से इसकी समीक्षा करनी चाहिए।"}
+      section4: {
+        title: "जानकारी साझा करना और प्रकटीकरण",
+        content:
+          "उनके द्वारा प्रदान की जाने वाली सेवाओं और उत्पादों तक आपको पहुंच प्रदान करने के लिए हम आपके व्यक्तिगत डेटा को आंतरिक रूप से अपनी समूह संस्थाओं, हमारी अन्य कॉर्पोरेट संस्थाओं और सहयोगियों के भीतर साझा कर सकते हैं। जब तक आप स्पष्ट रूप से ऑप्ट-आउट नहीं करते, तब तक ये संस्थाएं और सहयोगी इस तरह के साझाकरण के परिणामस्वरूप आपको विपणन कर सकते हैं। हम विक्रेताओं, व्यावसायिक भागीदारों, लॉजिस्टिक्स भागीदारों, प्रीपेड भुगतान उपकरण जारीकर्ताओं, तीसरे पक्ष के रिवॉर्ड कार्यक्रमों और आपके द्वारा चुने गए अन्य भुगतान सहित तीसरे पक्ष के सेवा प्रदाताओं जैसे तीसरे पक्षों को व्यक्तिगत डेटा प्रकट कर सकते हैं। यह प्रकटीकरण हमारे लिए आपको हमारी सेवाओं और आपको दिए जाने वाले उत्पादों तक पहुंच प्रदान करने, हमारे कानूनी दायित्वों का पालन करने, हमारे उपयोगकर्ता समझौते को लागू करने, हमारी विपणन और विज्ञापन गतिविधियों को सुविधाजनक बनाने, हमारी सेवाओं से संबंधित धोखाधड़ी या अवैध गतिविधियों को रोकने, पता लगाने, कम करने और जांच करने के लिए आवश्यक हो सकता है। यदि कानून द्वारा ऐसा करना आवश्यक हो या इस सद्भाव विश्वास में कि ऐसा प्रकटीकरण सबपोना, अदालत के आदेश, या अन्य कानूनी प्रक्रिया का जवाब देने के लिए यथोचित आवश्यक है, तो हम सरकारी एजेंसियों या अन्य अधिकृत कानून प्रवर्तन एजेंसियों को व्यक्तिगत और संवेदनशील व्यक्तिगत डेटा प्रकट कर सकते हैं। हम कानून प्रवर्तन कार्यालयों, तीसरे पक्ष के अधिकार मालिकों, या अन्य लोगों को इस सद्भाव विश्वास में व्यक्तिगत डेटा प्रकट कर सकते हैं कि ऐसा प्रकटीकरण यथोचित आवश्यक है: हमारे उपयोग की शर्तें या गोपनीयता नीति को लागू करने के लिए; उन दावों का जवाब देने के लिए कि कोई विज्ञापन, पोस्टिंग या अन्य सामग्री किसी तीसरे पक्ष के अधिकारों का उल्लंघन करती है; या हमारे उपयोगकर्ताओं या आम जनता के अधिकारों, संपत्ति या व्यक्तिगत सुरक्षा की रक्षा के लिए।",
+      },
+      section5: {
+        title: "उचित सुरक्षा प्रथाएं",
+        content:
+          "अनधिकृत पहुंच या प्रकटीकरण, हानि या दुरुपयोग से आपके व्यक्तिगत डेटा की सुरक्षा के लिए हम उचित सुरक्षा प्रथाओं और प्रक्रियाओं को अपनाते हैं। एक बार जब आपकी जानकारी हमारे कब्जे में आ जाती है या जब भी आप अपनी खाता जानकारी एक्सेस करते हैं, तो हम इसे अनधिकृत पहुंच से बचाने के लिए अपने सुरक्षा दिशानिर्देशों का पालन करते हैं और एक सुरक्षित सर्वर का उपयोग प्रदान करते हैं। हालाँकि, हमारे नियंत्रण से परे कारणों से जानकारी का संचरण पूरी तरह से सुरक्षित नहीं है। प्लेटफ़ॉर्म का उपयोग करके, उपयोगकर्ता इंटरनेट और वर्ल्ड वाइड वेब पर डेटा संचरण के सुरक्षा निहितार्थों को स्वीकार करते हैं जिसे हमेशा पूरी तरह से सुरक्षित होने की गारंटी नहीं दी जा सकती है, और इसलिए, प्लेटफ़ॉर्म के उपयोग के संबंध में हमेशा कुछ अंतर्निहित जोखिम बने रहेंगे। उपयोगकर्ता अपने खाते के लिए लॉगिन और पासवर्ड रिकॉर्ड की सुरक्षा सुनिश्चित करने के लिए ज़िम्मेदार हैं।",
+      },
+      section6: {
+        title: "डेटा हटाना और प्रतिधारण",
+        content:
+          "आपके पास हमारे प्लेटफ़ॉर्म पर अपनी प्रोफ़ाइल और सेटिंग्स पर जाकर अपना खाता हटाने का विकल्प है, इस कार्रवाई के परिणामस्वरूप आप अपने खाते से संबंधित सभी जानकारी खो देंगे। इन अनुरोधों में आपकी सहायता करने के लिए आप नीचे दिए गए संपर्क जानकारी पर हमें लिख भी सकते हैं। किसी भी लंबित शिकायत, दावों, लंबित शिपमेंट या किसी अन्य सेवाओं की स्थिति में हम खाते को हटाने से इनकार या देरी कर सकते हैं। एक बार खाता हटा दिए जाने के बाद, आप खाते तक पहुंच खो देंगे। हम आपकी व्यक्तिगत डेटा जानकारी को उस उद्देश्य के लिए आवश्यक अवधि से अधिक या किसी भी लागू कानून के तहत आवश्यक अवधि से अधिक समय तक बनाए नहीं रखते हैं। हालाँकि, यदि हम मानते हैं कि धोखाधड़ी या भविष्य के दुरुपयोग को रोकने या अन्य वैध उद्देश्यों के लिए यह आवश्यक हो सकता है तो हम आपसे संबंधित डेटा को बनाए रख सकते हैं। हम विश्लेषणात्मक और अनुसंधान उद्देश्यों के लिए आपके डेटा को गुमनाम रूप में बनाए रखना जारी रख सकते हैं।",
+      },
+      section7: {
+        title: "आपके अधिकार",
+        content:
+          "आप प्लेटफ़ॉर्म पर प्रदान की गई कार्यक्षमताओं के माध्यम से सीधे अपने व्यक्तिगत डेटा तक पहुंच सकते हैं, उसे सुधार सकते हैं और अपडेट कर सकते हैं।",
+      },
+      section8: {
+        title: "सहमति",
+        content:
+          'हमारे प्लेटफ़ॉर्म पर जाकर या अपनी जानकारी प्रदान करके, आप इस गोपनीयता नीति के अनुसार प्लेटफ़ॉर्म पर अपनी जानकारी के संग्रह, उपयोग, भंडारण, प्रकटीकरण और अन्यथा प्रसंस्करण के लिए सहमति देते हैं। यदि आप अन्य लोगों से संबंधित कोई व्यक्तिगत डेटा हमें प्रकट करते हैं, तो आप यह दर्शाते हैं कि आपके पास ऐसा करने का अधिकार है और हमें इस गोपनीयता नीति के अनुसार जानकारी का उपयोग करने की अनुमति देते हैं। प्लेटफ़ॉर्म या किसी भी भागीदार प्लेटफ़ॉर्म या प्रतिष्ठानों पर अपना व्यक्तिगत डेटा प्रदान करते समय, आप हमें (हमारी अन्य कॉर्पोरेट संस्थाओं, सहयोगियों, ऋण देने वाले भागीदारों, प्रौद्योगिकी भागीदारों, विपणन चैनलों, व्यावसायिक भागीदारों और अन्य तीसरे पक्षों सहित) इस गोपनीयता नीति में निर्दिष्ट उद्देश्यों के लिए एसएमएस, त्वरित मैसेजिंग ऐप्स, कॉल और/या ई-मेल के माध्यम से आपसे संपर्क करने के लिए सहमति देते हैं। नीचे दिए गए संपर्क जानकारी पर शिकायत अधिकारी को लिखकर आपके द्वारा पहले से दी गई सहमति वापस लेने का विकल्प आपके पास है। कृपया अपने संचार की विषय पंक्ति में "व्यक्तिगत डेटा के प्रसंस्करण के लिए सहमति वापस लेना" का उल्लेख करें। हम आपके अनुरोध पर कार्रवाई करने से पहले ऐसे अनुरोधों को सत्यापित कर सकते हैं। हालाँकि, कृपया ध्यान दें कि आपकी सहमति की वापसी पूर्वव्यापी नहीं होगी और उपयोग की शर्तों, इस गोपनीयता नीति और लागू कानूनों के अनुसार होगी। यदि आप इस गोपनीयता नीति के तहत हमें दी गई सहमति वापस लेते हैं, तो हम अपनी सेवाओं के प्रावधान को प्रतिबंधित या अस्वीकार करने का अधिकार सुरक्षित रखते हैं जिसके लिए हम ऐसी जानकारी को आवश्यक मानते हैं।',
+      },
+      section9: {
+        title: "गोपनीयता नीति में परिवर्तन",
+        content:
+          "परिवर्तनों के लिए कृपया समय-समय पर हमारी गोपनीयता नीति की जाँच करें। हम अपनी सूचना प्रथाओं में परिवर्तनों को प्रतिबिंबित करने के लिए इस गोपनीयता नीति को अपडेट कर सकते हैं। लागू कानूनों के तहत आवश्यक तरीके से हम गोपनीयता नीति में महत्वपूर्ण परिवर्तनों के बारे में आपको सतर्क/सूचित कर सकते हैं।",
+      },
     },
-    "or": {
-      "section1": {
-          "title":"ଗୋପନୀୟତା ନୀତି",
-          "content":"ଏହି ଗୋପନୀୟତା ନୀତି ବର୍ଣ୍ଣନା କରେ କିପରି (ସମୂହ ଭାବରେ 'THE NERDS & CO', 'ଆମେ', 'ଆମର', 'ଆମକୁ') ଆମର ୱେବସାଇଟ୍ https://foxxydrip.com/ (ଏଠାରେ 'ପ୍ଲାଟଫର୍ମ' ଭାବରେ କୁହାଯାଏ) ମାଧ୍ୟମରେ ଆପଣଙ୍କର ସୂଚନା/ବ୍ୟକ୍ତିଗତ ଡାଟା ସଂଗ୍ରହ, ବ୍ୟବହାର, ଅଂଶୀଦାର, ସୁରକ୍ଷା କିମ୍ବା ଅନ୍ୟଥା ପ୍ରକ୍ରିୟା କରୁ। ଦୟାକରି ଧ୍ୟାନ ଦିଅନ୍ତୁ ଯେ ଆପଣ ଆମ ସହିତ ପଞ୍ଜୀକରଣ ନକରି ପ୍ଲାଟଫର୍ମର କିଛି ବିଭାଗ ବ୍ରାଉଜ୍ କରିପାରିବେ। ଆମେ ଏହି ପ୍ଲାଟଫର୍ମ ଅଧୀନରେ ଭାରତ ବାହାରେ କୌଣସି ଉତ୍ପାଦ/ସେବା ପ୍ରଦାନ କରୁନାହୁଁ ଏବଂ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ମୁଖ୍ୟତଃ ଭାରତରେ ସଂରକ୍ଷିତ ଏବଂ ପ୍ରକ୍ରିୟାକରଣ ହେବ। ଏହି ପ୍ଲାଟଫର୍ମ ପରିଦର୍ଶନ କରି, ଆପଣଙ୍କର ସୂଚନା ପ୍ରଦାନ କରି କିମ୍ବା ପ୍ଲାଟଫର୍ମରେ ଦିଆଯାଇଥିବା କୌଣସି ଉତ୍ପାଦ/ସେବାର ଲାଭ ଉଠାଇ, ଆପଣ ଏହି ଗୋପନୀୟତା ନୀତି, ବ୍ୟବହାରର ସର୍ତ୍ତାବଳୀ ଏବଂ ପ୍ରଯୁଜ୍ୟ ସେବା/ଉତ୍ପାଦ ସର୍ତ୍ତାବଳୀ ଦ୍ୱାରା ବାଧ୍ୟ ହେବାକୁ ସ୍ପଷ୍ଟ ଭାବରେ ସହମତ ଅଟନ୍ତି, ଏବଂ ଡାଟା ସୁରକ୍ଷା ଏବଂ ଗୋପନୀୟତା ଆଇନ ସମେତ ଭାରତର ଆଇନ ଦ୍ୱାରା ଶାସିତ ହେବାକୁ ସହମତ ଅଟନ୍ତି। ଯଦି ଆପଣ ସହମତ ନୁହଁନ୍ତି, ଦୟାକରି ଆମର ପ୍ଲାଟଫର୍ମ ବ୍ୟବହାର କରନ୍ତୁ ନାହିଁ କିମ୍ବା ଆକ୍ସେସ୍ କରନ୍ତୁ ନାହିଁ।"
+    or: {
+      section1: {
+        title: "ଗୋପନୀୟତା ନୀତି",
+        content:
+          "ଏହି ଗୋପନୀୟତା ନୀତି ବର୍ଣ୍ଣନା କରେ କିପରି (ସମୂହ ଭାବରେ 'THE NERDS & CO', 'ଆମେ', 'ଆମର', 'ଆମକୁ') ଆମର ୱେବସାଇଟ୍ https://foxxydrip.com/ (ଏଠାରେ 'ପ୍ଲାଟଫର୍ମ' ଭାବରେ କୁହାଯାଏ) ମାଧ୍ୟମରେ ଆପଣଙ୍କର ସୂଚନା/ବ୍ୟକ୍ତିଗତ ଡାଟା ସଂଗ୍ରହ, ବ୍ୟବହାର, ଅଂଶୀଦାର, ସୁରକ୍ଷା କିମ୍ବା ଅନ୍ୟଥା ପ୍ରକ୍ରିୟା କରୁ। ଦୟାକରି ଧ୍ୟାନ ଦିଅନ୍ତୁ ଯେ ଆପଣ ଆମ ସହିତ ପଞ୍ଜୀକରଣ ନକରି ପ୍ଲାଟଫର୍ମର କିଛି ବିଭାଗ ବ୍ରାଉଜ୍ କରିପାରିବେ। ଆମେ ଏହି ପ୍ଲାଟଫର୍ମ ଅଧୀନରେ ଭାରତ ବାହାରେ କୌଣସି ଉତ୍ପାଦ/ସେବା ପ୍ରଦାନ କରୁନାହୁଁ ଏବଂ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ମୁଖ୍ୟତଃ ଭାରତରେ ସଂରକ୍ଷିତ ଏବଂ ପ୍ରକ୍ରିୟାକରଣ ହେବ। ଏହି ପ୍ଲାଟଫର୍ମ ପରିଦର୍ଶନ କରି, ଆପଣଙ୍କର ସୂଚନା ପ୍ରଦାନ କରି କିମ୍ବା ପ୍ଲାଟଫର୍ମରେ ଦିଆଯାଇଥିବା କୌଣସି ଉତ୍ପାଦ/ସେବାର ଲାଭ ଉଠାଇ, ଆପଣ ଏହି ଗୋପନୀୟତା ନୀତି, ବ୍ୟବହାରର ସର୍ତ୍ତାବଳୀ ଏବଂ ପ୍ରଯୁଜ୍ୟ ସେବା/ଉତ୍ପାଦ ସର୍ତ୍ତାବଳୀ ଦ୍ୱାରା ବାଧ୍ୟ ହେବାକୁ ସ୍ପଷ୍ଟ ଭାବରେ ସହମତ ଅଟନ୍ତି, ଏବଂ ଡାଟା ସୁରକ୍ଷା ଏବଂ ଗୋପନୀୟତା ଆଇନ ସମେତ ଭାରତର ଆଇନ ଦ୍ୱାରା ଶାସିତ ହେବାକୁ ସହମତ ଅଟନ୍ତି। ଯଦି ଆପଣ ସହମତ ନୁହଁନ୍ତି, ଦୟାକରି ଆମର ପ୍ଲାଟଫର୍ମ ବ୍ୟବହାର କରନ୍ତୁ ନାହିଁ କିମ୍ବା ଆକ୍ସେସ୍ କରନ୍ତୁ ନାହିଁ।",
       },
-      "section2": {
-          "title":"ସୂଚନା ସଂଗ୍ରହ",
-          "content":"ଆମେ ପଞ୍ଜୀକରଣ ଏବଂ ସେବା ବ୍ୟବହାର ସମୟରେ ନାମ, ଇମେଲ୍, ଫୋନ୍ ଏବଂ ଠିକଣା ସମେତ ବ୍ୟକ୍ତିଗତ ସୂଚନା ସଂଗ୍ରହ କରୁ।"
+      section2: {
+        title: "ସୂଚନା ସଂଗ୍ରହ",
+        content:
+          "ଆପଣ ଆମର ପ୍ଲାଟଫର୍ମ, ସେବା ବ୍ୟବହାର କଲାବେଳେ କିମ୍ବା ଆମର ସମ୍ପର୍କ ସମୟରେ ଅନ୍ୟଥା ଆମ ସହିତ ଯୋଗାଯୋଗ କଲାବେଳେ ଆମେ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ଏବଂ ସମୟ ସମୟରେ ପ୍ରଦାନ କରାଯାଇଥିବା ସମ୍ବନ୍ଧୀୟ ସୂଚନା ସଂଗ୍ରହ କରୁ। ଆମେ ଯେଉଁ ସୂଚନା ସଂଗ୍ରହ କରିପାରୁ, ସେଥିରେ କେବଳ ପ୍ଲାଟଫର୍ମରେ ସାଇନ୍-ଅପ୍/ପଞ୍ଜୀକରଣ କରିବା ସମୟରେ କିମ୍ବା ବ୍ୟବହାର କରିବା ସମୟରେ ଆମକୁ ପ୍ରଦାନ କରାଯାଇଥିବା ବ୍ୟକ୍ତିଗତ ଡାଟା/ସୂଚନା, ଯେପରିକି ନାମ, ଜନ୍ମ ତାରିଖ, ଠିକଣା, ଟେଲିଫୋନ୍/ମୋବାଇଲ୍ ନମ୍ବର, ଇମେଲ୍ ID ଏବଂ/କିମ୍ବା ପରିଚୟ ବା ଠିକଣାର ପ୍ରମାଣ ଭାବରେ ଅଂଶୀଦାର ହୋଇଥିବା କୌଣସି ସୂଚନା ଅନ୍ତର୍ଭୁକ୍ତ, କିନ୍ତୁ ସେତିକିରେ ସୀମିତ ନୁହେଁ। ଆପଣଙ୍କର ବ୍ୟାଙ୍କ ଆକାଉଣ୍ଟ କିମ୍ବା କ୍ରେଡିଟ୍ ବା ଡେବିଟ୍ କାର୍ଡ କିମ୍ବା ଅନ୍ୟାନ୍ୟ ପେମେଣ୍ଟ ଉପକରଣ ସୂଚନା କିମ୍ବା ଆପଣଙ୍କର ମୁଖର ବୈଶିଷ୍ଟ୍ୟ କିମ୍ବା ଶାରୀରିକ ସୂଚନା (ଯେତେବେଳେ ପ୍ଲାଟଫର୍ମରେ ଉପଲବ୍ଧ କିଛି ବୈଶିଷ୍ଟ୍ୟ ଚୟନ କରାଯାଏ, ସେଗୁଡ଼ିକର ବ୍ୟବହାରକୁ ସକ୍ଷମ କରିବା ପାଇଁ) ଭଳି କିଛି ସମ୍ବେଦନଶୀଳ ବ୍ୟକ୍ତିଗତ ଡାଟା ଆପଣଙ୍କ ସମ୍ମତିରେ ସଂଗ୍ରହ କରାଯାଇପାରେ, ଉପରୋକ୍ତ ସମସ୍ତ ପ୍ରଯୁଜ୍ୟ ଆଇନ(ଗୁଡ଼ିକ) ଅନୁଯାୟୀ ହେବ। ପ୍ଲାଟଫର୍ମରେ ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ ସେବା କିମ୍ବା ବୈଶିଷ୍ଟ୍ୟ ବ୍ୟବହାର ନକରିବାକୁ ଚୟନ କରି, ଆପଣଙ୍କ ପାଖରେ ସୂଚନା ପ୍ରଦାନ ନକରିବାର ବିକଳ୍ପ ସର୍ବଦା ଥାଏ। ଆମେ ଆପଣଙ୍କର ଆଚରଣ, ପସନ୍ଦ ଏବଂ ଅନ୍ୟାନ୍ୟ ସୂଚନାକୁ ଟ୍ରାକ୍ କରିପାରୁ ଯାହାକୁ ଆପଣ ଆମର ପ୍ଲାଟଫର୍ମରେ ପ୍ରଦାନ କରିବାକୁ ଚୟନ କରନ୍ତି। ଏହି ସୂଚନା ସମୁଚ୍ଚ ଆଧାରରେ ସଂକଳିତ ଏବଂ ବିଶ୍ଳେଷଣ କରାଯାଏ। ପ୍ଲାଟଫର୍ମ ଏବଂ ସେହି ତୃତୀୟ ପକ୍ଷ ବ୍ୟବସାୟ ସହଭାଗୀ ପ୍ଲାଟଫର୍ମଗୁଡିକରେ ଆପଣଙ୍କର କାରବାର ସହିତ ଜଡିତ ଆପଣଙ୍କର ସୂଚନା ମଧ୍ୟ ଆମେ ସଂଗ୍ରହ କରିବୁ। ଯେତେବେଳେ ଏହିପରି ଏକ ତୃତୀୟ ପକ୍ଷ ବ୍ୟବସାୟ ସହଭାଗୀ ଆପଣଙ୍କଠାରୁ ସିଧାସଳଖ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ସଂଗ୍ରହ କରନ୍ତି, ଆପଣ ସେମାନଙ୍କର ଗୋପନୀୟତା ନୀତି ଦ୍ୱାରା ଶାସିତ ହେବେ। ତୃତୀୟ ପକ୍ଷ ବ୍ୟବସାୟ ସହଭାଗୀଙ୍କ ଗୋପନୀୟତା ଅଭ୍ୟାସ କିମ୍ବା ସେମାନଙ୍କର ଗୋପନୀୟତା ନୀତିର ବିଷୟବସ୍ତୁ ପାଇଁ ଆମେ ଦାୟୀ ରହିବୁ ନାହିଁ ଏବଂ କୌଣସି ସୂଚନା ପ୍ରକାଶ କରିବା ପୂର୍ବରୁ ସେମାନଙ୍କର ଗୋପନୀୟତା ନୀତି ପଢ଼ିବାକୁ ଆମେ ଆପଣଙ୍କୁ ଅନୁରୋଧ କରୁ। ଯଦି ଆପଣ ଡେବିଟ୍/କ୍ରେଡିଟ୍ କାର୍ଡ PIN, ନେଟ୍-ବ୍ୟାଙ୍କିଙ୍ଗ୍ କିମ୍ବା ମୋବାଇଲ୍ ବ୍ୟାଙ୍କିଙ୍ଗ୍ ପାସୱାର୍ଡ ଭଳି କୌଣସି ବ୍ୟକ୍ତିଗତ ଡାଟା ଖୋଜୁଥିବା NEXVED CLINICAL RESEARCH ACADEMY ବୋଲି ଦାବି କରୁଥିବା ବ୍ୟକ୍ତି/ସଂସ୍ଥାଠାରୁ ଏକ ଇମେଲ୍, କଲ୍ ଗ୍ରହଣ କରନ୍ତି, ତେବେ ଆମେ ଆପଣଙ୍କୁ ଅନୁରୋଧ କରୁଛୁ ଯେ ଆପଣ କେବେବି ସେପରି ସୂଚନା ପ୍ରଦାନ କରନ୍ତୁ ନାହିଁ। ଯଦି ଆପଣ ପୂର୍ବରୁ ସେପରି ସୂଚନା ପ୍ରକାଶ କରିସାରିଛନ୍ତି, ତେବେ ତୁରନ୍ତ ଏକ ଉପଯୁକ୍ତ ଆଇନ ପ୍ରଣୟନକାରୀ ଏଜେନ୍ସିକୁ ଏହା ଜଣାନ୍ତୁ।",
       },
-      "section3": {
-          "title":"ବ୍ୟବହାର",
-          "content":"ଆମେ ସେବା ପ୍ରଦାନ କରିବା, ଅନୁଭୂତି ବଢାଇବା, ଜାଲିଆତି ଚିହ୍ନଟ କରିବା ଏବଂ ମାର୍କେଟିଂ ଅନୁସନ୍ଧାନ ପାଇଁ ବ୍ୟକ୍ତିଗତ ଡାଟା ବ୍ୟବହାର କରୁ।"
+      section3: {
+        title: "ବ୍ୟବହାର",
+        content:
+          "ଆପଣ ଅନୁରୋଧ କରୁଥିବା ସେବାଗୁଡିକ ପ୍ରଦାନ କରିବାକୁ ଆମେ ବ୍ୟକ୍ତିଗତ ଡାଟା ବ୍ୟବହାର କରୁ। ଯେଉଁ ପରିମାଣରେ ଆମେ ଆପଣଙ୍କୁ ମାର୍କେଟିଂ କରିବା ପାଇଁ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ବ୍ୟବହାର କରୁ, ଆମେ ଆପଣଙ୍କୁ ସେହି ବ୍ୟବହାରଗୁଡିକରୁ ଅପ୍ଟ-ଆଉଟ୍ କରିବାର କ୍ଷମତା ପ୍ରଦାନ କରିବୁ। ବିକ୍ରେତା ଏବଂ ବ୍ୟବସାୟ ସହଭାଗୀମାନଙ୍କୁ ଅର୍ଡର ପରିଚାଳନା ଏବଂ ପୂରଣ କରିବାରେ ସାହାଯ୍ୟ କରିବା; ଗ୍ରାହକ ଅଭିଜ୍ଞତା ବୃଦ୍ଧି କରିବା; ବିବାଦର ସମାଧାନ କରିବା; ସମସ୍ୟାର ନିରାକରଣ କରିବା; ଅନଲାଇନ୍ ଏବଂ ଅଫଲାଇନ୍ ଅଫର, ଉତ୍ପାଦ, ସେବା ଏବଂ ଅଦ୍ୟତନ ବିଷୟରେ ଆପଣଙ୍କୁ ଜଣାଇବା; ଆପଣଙ୍କର ଅଭିଜ୍ଞତାକୁ କଷ୍ଟମାଇଜ୍ କରିବା; ତ୍ରୁଟି, ଜାଲିଆତି ଏବଂ ଅନ୍ୟାନ୍ୟ ଅପରାଧିକ କାର୍ଯ୍ୟକଳାପ ବିରୁଦ୍ଧରେ ଆମକୁ ଚିହ୍ନଟ କରିବା ଏବଂ ସୁରକ୍ଷା ଦେବା; ଆମର ନିୟମାବଳୀକୁ ଲାଗୁ କରିବା; ମାର୍କେଟିଂ ଅନୁସନ୍ଧାନ, ବିଶ୍ଳେଷଣ ଏବଂ ସର୍ବେକ୍ଷଣ କରିବା; ଏବଂ ସୂଚନା ସଂଗ୍ରହ ସମୟରେ ଆପଣଙ୍କୁ ଅନ୍ୟଥା ବର୍ଣ୍ଣନା କରାଯାଇଥିବା ଅନୁଯାୟୀ ଆମେ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ବ୍ୟବହାର କରୁ। ଆପଣ ବୁଝିଛନ୍ତି ଯେ ଯଦି ଆମକୁ ଅନୁମତି ପ୍ରଦାନ କରାନଯାଏ ତେବେ ଏହି ଉତ୍ପାଦ/ସେବାଗୁଡିକରେ ଆପଣଙ୍କର ପ୍ରବେଶ ପ୍ରଭାବିତ ହୋଇପାରେ।",
       },
-      "section4": {"title":"ସୂଚନା ଅଂଶୀଦାର ଏବଂ ପ୍ରକାଶନ","content":"ଆମେ ସହଯୋଗୀ, ଅଂଶୀଦାରମାନଙ୍କ ସହିତ କିମ୍ବା ଆଇନଗତ ବାଧ୍ୟତାମୂଳକ ପାଳନ କରିବା ପାଇଁ ଡାଟା ଅଂଶୀଦାର କରିପାରୁ।"},
-      "section5": {"title":"ଯୁକ୍ତିଯୁକ୍ତ ସୁରକ୍ଷା ଅଭ୍ୟାସ","content":"ଆମେ ଆପଣଙ୍କର ଡାଟା ସୁରକ୍ଷା ପାଇଁ ଯୁକ୍ତିଯୁକ୍ତ ସୁରକ୍ଷା ପଦକ୍ଷେପ ଗ୍ରହଣ କରୁ, କିନ୍ତୁ ସମ୍ପୂର୍ଣ୍ଣ ସୁରକ୍ଷାର ଗ୍ୟାରେଣ୍ଟି ଦେଇପାରିବୁ ନାହିଁ।"},
-      "section6": {"title":"ଡାଟା ବିଲୋପ ଏବଂ ଧାରଣ","content":"ବ୍ୟବହାରକାରୀମାନେ ସେମାନଙ୍କର ଆକାଉଣ୍ଟ ବିଲୋପ କରିପାରିବେ। ଯେପର୍ଯ୍ୟନ୍ତ ଆବଶ୍ୟକ କିମ୍ବା ଆଇନଗତ ଭାବରେ ଆବଶ୍ୟକ, ଡାଟା ଧାରଣ କରାଯାଏ।"},
-      "section7": {"title":"ଆପଣଙ୍କର ଅଧିକାର","content":"ଆପଣ ପ୍ଲାଟଫର୍ମ ମାଧ୍ୟମରେ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ଆକ୍ସେସ୍, ସଂଶୋଧନ ଏବଂ ଅଦ୍ୟତନ କରିପାରିବେ।"},
-      "section8": {"title":"ସମ୍ମତି","content":"ପ୍ଲାଟଫର୍ମ ବ୍ୟବହାର କରି, ଆପଣ ଏହି ଗୋପନୀୟତା ନୀତି ଅନୁଯାୟୀ ଡାଟା ସଂଗ୍ରହ ଏବଂ ପ୍ରକ୍ରିୟାକରଣ ପାଇଁ ସମ୍ମତି ଦିଅନ୍ତି।"},
-      "section9": {"title":"ଏହି ଗୋପନୀୟତା ନୀତିରେ ପରିବର୍ତ୍ତନ","content":"ଆମେ ସମୟ ସମୟରେ ଏହି ନୀତିକୁ ଅଦ୍ୟତନ କରିପାରୁ। ବ୍ୟବହାରକାରୀମାନେ ଏହାକୁ ନିୟମିତ ସମୀକ୍ଷା କରିବା ଉଚିତ୍।"}
-    }
+      section4: {
+        title: "ସୂଚନା ଅଂଶୀଦାର ଏବଂ ପ୍ରକାଶନ",
+        content:
+          "ସେମାନଙ୍କ ଦ୍ୱାରା ପ୍ରଦାନ କରାଯାଉଥିବା ସେବା ଏବଂ ଉତ୍ପାଦଗୁଡିକରେ ଆପଣଙ୍କୁ ପ୍ରବେଶ ଦେବା ପାଇଁ ଆମେ ଆମର ଗ୍ରୁପ୍ ଏଣ୍ଟିଟି, ଆମର ଅନ୍ୟାନ୍ୟ କର୍ପୋରେଟ୍ ଏଣ୍ଟିଟି ଏବଂ ସହଯୋଗୀମାନଙ୍କ ମଧ୍ୟରେ ଆଭ୍ୟନ୍ତରୀଣ ଭାବରେ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ଅଂଶୀଦାର କରିପାରୁ। ଆପଣ ସ୍ପଷ୍ଟ ଭାବରେ ଅପ୍ଟ-ଆଉଟ୍ ନହେବା ପର୍ଯ୍ୟନ୍ତ ଏହି ଏଣ୍ଟିଟି ଏବଂ ସହଯୋଗୀମାନେ ଏପରି ଅଂଶୀଦାର ହେତୁ ଆପଣଙ୍କୁ ମାର୍କେଟିଂ କରିପାରନ୍ତି। ଆମେ ବିକ୍ରେତା, ବ୍ୟବସାୟ ସହଭାଗୀ, ଲଜିଷ୍ଟିକ୍ସ ପାର୍ଟନର, ପ୍ରିପେଡ୍ ପେମେଣ୍ଟ ଉପକରଣ ଜାରି କରୁଥିବା, ତୃତୀୟ ପକ୍ଷ ରିୱାର୍ଡ ପ୍ରୋଗ୍ରାମ ଏବଂ ଆପଣଙ୍କ ଦ୍ୱାରା ଚୟନ କରାଯାଇଥିବା ଅନ୍ୟାନ୍ୟ ପେମେଣ୍ଟ ସମେତ ତୃତୀୟ ପକ୍ଷ ସେବା ପ୍ରଦାନକାରୀଙ୍କ ପରି ତୃତୀୟ ପକ୍ଷଙ୍କୁ ବ୍ୟକ୍ତିଗତ ଡାଟା ପ୍ରକାଶ କରିପାରୁ। ଆପଣଙ୍କୁ ପ୍ରଦାନ କରାଯାଉଥିବା ଆମର ସେବା ଏବଂ ଉତ୍ପାଦଗୁଡିକରେ ଆପଣଙ୍କୁ ପ୍ରବେଶ ଦେବା, ଆମର ଆଇନଗତ ବାଧ୍ୟତାମୂଳକ ପାଳନ କରିବା, ଆମର ବ୍ୟବହାରକାରୀ ଚୁକ୍ତିନାମାକୁ ଲାଗୁ କରିବା, ଆମର ମାର୍କେଟିଂ ଏବଂ ବିଜ୍ଞାପନ କାର୍ଯ୍ୟକଳାପକୁ ସହଜ କରିବା, ଆମର ସେବା ସହିତ ଜଡିତ ଠକେଇ କିମ୍ବା ବେଆଇନ କାର୍ଯ୍ୟକଳାପକୁ ରୋକିବା, ଚିହ୍ନଟ କରିବା, ପ୍ରଶମନ କରିବା ଏବଂ ଅନୁସନ୍ଧାନ କରିବା ପାଇଁ ଏହି ପ୍ରକାଶନ ଆମ ପାଇଁ ଆବଶ୍ୟକ ହୋଇପାରେ। ଯଦି ଆଇନ ଅନୁଯାୟୀ ଏହା କରିବା ଆବଶ୍ୟକ ହୁଏ କିମ୍ବା ଏହି ସଦ୍ଭାବ ବିଶ୍ୱାସରେ ଯେ ଏପରି ପ୍ରକାଶନ ସବପୋନା, କୋର୍ଟ ନିର୍ଦ୍ଦେଶ କିମ୍ବା ଅନ୍ୟାନ୍ୟ ଆଇନଗତ ପ୍ରକ୍ରିୟାର ଉତ୍ତର ଦେବା ପାଇଁ ଯୁକ୍ତିଯୁକ୍ତ ଭାବରେ ଆବଶ୍ୟକ, ତେବେ ଆମେ ସରକାରୀ ଏଜେନ୍ସି କିମ୍ବା ଅନ୍ୟାନ୍ୟ ଅନୁମୋଦିତ ଆଇନ ପ୍ରଣୟନକାରୀ ଏଜେନ୍ସିଗୁଡିକୁ ବ୍ୟକ୍ତିଗତ ଏବଂ ସମ୍ବେଦନଶୀଳ ବ୍ୟକ୍ତିଗତ ଡାଟା ପ୍ରକାଶ କରିପାରୁ। ଆମେ ଏହି ସଦ୍ଭାବ ବିଶ୍ୱାସରେ ଆଇନ ପ୍ରଣୟନକାରୀ କାର୍ଯ୍ୟାଳୟ, ତୃତୀୟ ପକ୍ଷ ଅଧିକାର ମାଲିକ କିମ୍ବା ଅନ୍ୟମାନଙ୍କୁ ବ୍ୟକ୍ତିଗତ ଡାଟା ପ୍ରକାଶ କରିପାରୁ ଯେ ଏପରି ପ୍ରକାଶନ ଯୁକ୍ତିଯୁକ୍ତ ଭାବରେ ଆବଶ୍ୟକ: ଆମର ବ୍ୟବହାରର ସର୍ତ୍ତାବଳୀ କିମ୍ବା ଗୋପନୀୟତା ନୀତିକୁ ଲାଗୁ କରିବା; ଏକ ବିଜ୍ଞାପନ, ପୋଷ୍ଟିଂ କିମ୍ବା ଅନ୍ୟାନ୍ୟ ବିଷୟବସ୍ତୁ ତୃତୀୟ ପକ୍ଷର ଅଧିକାର ଉଲ୍ଲଂଘନ କରେ ବୋଲି ଦାବିର ଉତ୍ତର ଦେବା; କିମ୍ବା ଆମର ବ୍ୟବହାରକାରୀ କିମ୍ବା ସାଧାରଣ ଜନତାଙ୍କ ଅଧିକାର, ସମ୍ପତ୍ତି କିମ୍ବା ବ୍ୟକ୍ତିଗତ ସୁରକ୍ଷାକୁ ସୁରକ୍ଷା ଦେବା ପାଇଁ।",
+      },
+      section5: {
+        title: "ଯୁକ୍ତିଯୁକ୍ତ ସୁରକ୍ଷା ଅଭ୍ୟାସ",
+        content:
+          "ଅନଧିକୃତ ପ୍ରବେଶ କିମ୍ବା ପ୍ରକାଶ, କ୍ଷତି କିମ୍ବା ଅପବ୍ୟବହାରରୁ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ସୁରକ୍ଷା ଦେବା ପାଇଁ ଆମେ ଯୁକ୍ତିଯୁକ୍ତ ସୁରକ୍ଷା ଅଭ୍ୟାସ ଏବଂ ପ୍ରଣାଳୀ ଗ୍ରହଣ କରୁ। ଥରେ ଆପଣଙ୍କର ସୂଚନା ଆମର ଅଧୀନକୁ ଆସିବା ପରେ କିମ୍ବା ଯେତେବେଳେ ବି ଆପଣ ଆପଣଙ୍କର ଆକାଉଣ୍ଟ ସୂଚନା ଆକ୍ସେସ୍ କରନ୍ତି, ଆମେ ଏହାକୁ ଅନଧିକୃତ ପ୍ରବେଶ ବିରୁଦ୍ଧରେ ସୁରକ୍ଷା ଦେବାକୁ ଆମର ସୁରକ୍ଷା ମାର୍ଗଦର୍ଶିକାକୁ ଅନୁସରଣ କରୁ ଏବଂ ଏକ ସୁରକ୍ଷିତ ସର୍ଭରର ବ୍ୟବହାର ପ୍ରଦାନ କରୁ। ତେବେ, ଆମର ନିୟନ୍ତ୍ରଣ ବାହାରେ ଥିବା କାରଣଗୁଡିକ ପାଇଁ ସୂଚନାର ସଞ୍ଚାଳନ ସମ୍ପୂର୍ଣ୍ଣ ରୂପେ ସୁରକ୍ଷିତ ନୁହେଁ। ପ୍ଲାଟଫର୍ମ ବ୍ୟବହାର କରି, ଇଣ୍ଟରନେଟ୍ ଏବଂ ୱାର୍ଲ୍ଡ ୱାଇଡ୍ ୱେବ୍ ଉପରେ ଡାଟା ସଞ୍ଚାଳନର ସୁରକ୍ଷା ପ୍ରଭାବକୁ ବ୍ୟବହାରକାରୀମାନେ ଗ୍ରହଣ କରନ୍ତି ଯାହାକୁ ସର୍ବଦା ସମ୍ପୂର୍ଣ୍ଣ ରୂପେ ସୁରକ୍ଷିତ ଭାବରେ ଗ୍ୟାରେଣ୍ଟି ଦିଆଯାଇପାରିବ ନାହିଁ ଏବଂ ତେଣୁ, ପ୍ଲାଟଫର୍ମର ବ୍ୟବହାର ସମ୍ବନ୍ଧରେ ସର୍ବଦା କିଛି ଅନ୍ତର୍ନିହିତ ବିପଦ ରହିବ। ବ୍ୟବହାରକାରୀମାନେ ସେମାନଙ୍କର ଆକାଉଣ୍ଟ୍ ପାଇଁ ଲଗଇନ୍ ଏବଂ ପାସୱାର୍ଡ ରେକର୍ଡଗୁଡିକର ସୁରକ୍ଷା ନିଶ୍ଚିତ କରିବା ପାଇଁ ଦାୟୀ।",
+      },
+      section6: {
+        title: "ଡାଟା ବିଲୋପ ଏବଂ ଧାରଣ",
+        content:
+          "ଆମର ପ୍ଲାଟଫର୍ମରେ ଆପଣଙ୍କର ପ୍ରୋଫାଇଲ୍ ଏବଂ ସେଟିଂସକୁ ଯାଇ ଆପଣଙ୍କର ଆକାଉଣ୍ଟ୍ ବିଲୋପ କରିବା ପାଇଁ ଆପଣଙ୍କର ଏକ ବିକଳ୍ପ ଅଛି, ଏହି କାର୍ଯ୍ୟ ଆପଣଙ୍କ ଆକାଉଣ୍ଟ୍ ସହିତ ଜଡିତ ସମସ୍ତ ସୂଚନା ହରାଇବାରେ ପରିଣତ ହେବ। ଏହି ଅନୁରୋଧଗୁଡିକରେ ଆପଣଙ୍କୁ ସାହାଯ୍ୟ କରିବା ପାଇଁ ଆପଣ ନିମ୍ନରେ ପ୍ରଦାନ କରାଯାଇଥିବା ଯୋଗାଯୋଗ ସୂଚନାରେ ଆମକୁ ଲେଖିପାରିବେ। କୌଣସି ବକେୟା ଅଭିଯୋଗ, ଦାବି, ବକେୟା ପଠାଇବା କିମ୍ବା ଅନ୍ୟ କୌଣସି ସେବା କ୍ଷେତ୍ରରେ ଆମେ ଆକାଉଣ୍ଟ୍ ବିଲୋପ କରିବାକୁ ମନା କରିପାରୁ କିମ୍ବା ବିଳମ୍ବ କରିପାରୁ। ଥରେ ଆକାଉଣ୍ଟ୍ ବିଲୋପ ହୋଇଗଲେ, ଆପଣ ଆକାଉଣ୍ଟ୍ ଆକ୍ସେସ୍ ହରାଇବେ। ଆମେ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ସୂଚନାକୁ ତାହା ସଂଗ୍ରହ କରାଯାଇଥିବା ଉଦ୍ଦେଶ୍ୟ ପାଇଁ ଆବଶ୍ୟକ ସମୟଠାରୁ ଅଧିକ କିମ୍ବା କୌଣସି ପ୍ରଯୁଜ୍ୟ ଆଇନ ଅନୁଯାୟୀ ଆବଶ୍ୟକ ହୋଇଥିବା ସମୟଠାରୁ ଅଧିକ ସମୟ ପାଇଁ ରଖୁନାହୁଁ। ତେବେ, ଯଦି ଆମେ ବିଶ୍ୱାସ କରୁ ଯେ ଏହା ଠକେଇ କିମ୍ବା ଭବିଷ୍ୟତର ଅପବ୍ୟବହାରକୁ ରୋକିବା ପାଇଁ କିମ୍ବା ଅନ୍ୟାନ୍ୟ ଆଇନଗତ ଉଦ୍ଦେଶ୍ୟ ପାଇଁ ଆବଶ୍ୟକ ହୋଇପାରେ, ତେବେ ଆମେ ଆପଣଙ୍କ ସମ୍ବନ୍ଧୀୟ ଡାଟା ରଖିପାରୁ। ଆମେ ବିଶ୍ଳେଷଣାତ୍ମକ ଏବଂ ଅନୁସନ୍ଧାନ ଉଦ୍ଦେଶ୍ୟରେ ଆପଣଙ୍କର ଡାଟାକୁ ଅଜ୍ଞାତ ରୂପରେ ରଖିବା ଜାରି ରଖିପାରୁ।",
+      },
+      section7: {
+        title: "ଆପଣଙ୍କର ଅଧିକାର",
+        content:
+          "ପ୍ଲାଟଫର୍ମରେ ପ୍ରଦାନ କରାଯାଇଥିବା କାର୍ଯ୍ୟକାରିତା ମାଧ୍ୟମରେ ଆପଣ ସିଧାସଳଖ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ଆକ୍ସେସ୍, ସଂଶୋଧନ ଏବଂ ଅଦ୍ୟତନ କରିପାରିବେ।",
+      },
+      section8: {
+        title: "ସମ୍ମତି",
+        content:
+          'ଆମର ପ୍ଲାଟଫର୍ମ ପରିଦର୍ଶନ କରି କିମ୍ବା ଆପଣଙ୍କର ସୂଚନା ପ୍ରଦାନ କରି, ଆପଣ ଏହି ଗୋପନୀୟତା ନୀତି ଅନୁଯାୟୀ ପ୍ଲାଟଫର୍ମରେ ଆପଣଙ୍କର ସୂଚନା ସଂଗ୍ରହ, ବ୍ୟବହାର, ସଂରକ୍ଷଣ, ପ୍ରକାଶ ଏବଂ ଅନ୍ୟଥା ପ୍ରକ୍ରିୟାକରଣ ପାଇଁ ସମ୍ମତି ଦିଅନ୍ତି। ଯଦି ଆପଣ ଅନ୍ୟ ଲୋକଙ୍କ ସହ ଜଡିତ କୌଣସି ବ୍ୟକ୍ତିଗତ ଡାଟା ଆମକୁ ପ୍ରକାଶ କରନ୍ତି, ତେବେ ଆପଣ ପ୍ରତିନିଧିତ୍ୱ କରନ୍ତି ଯେ ଆପଣଙ୍କର ଏହା କରିବାର ଅଧିକାର ଅଛି ଏବଂ ଏହି ଗୋପନୀୟତା ନୀତି ଅନୁଯାୟୀ ସୂଚନା ବ୍ୟବହାର କରିବାକୁ ଆମକୁ ଅନୁମତି ଦିଅନ୍ତି। ପ୍ଲାଟଫର୍ମ କିମ୍ବା କୌଣସି ସହଭାଗୀ ପ୍ଲାଟଫର୍ମ କିମ୍ବା ପ୍ରତିଷ୍ଠାନ ଉପରେ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ପ୍ରଦାନ କରୁଥିବାବେଳେ, ଆପଣ ଏହି ଗୋପନୀୟତା ନୀତିରେ ନିର୍ଦ୍ଦିଷ୍ଟ ଉଦ୍ଦେଶ୍ୟଗୁଡିକ ପାଇଁ SMS, ତତକ୍ଷଣାତ୍ ମେସେଜିଂ ଆପ୍ସ, କଲ୍ ଏବଂ/କିମ୍ବା ଇ-ମେଲ୍ ମାଧ୍ୟମରେ ଆପଣଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରିବାକୁ ଆମକୁ (ଆମର ଅନ୍ୟାନ୍ୟ କର୍ପୋରେଟ୍ ଏଣ୍ଟିଟି, ସହଯୋଗୀ, ଋଣ ଦେଉଥିବା ସହଭାଗୀ, ପ୍ରଯୁକ୍ତିବିଦ୍ୟା ସହଭାଗୀ, ମାର୍କେଟିଂ ଚ୍ୟାନେଲ୍, ବ୍ୟବସାୟ ସହଭାଗୀ ଏବଂ ଅନ୍ୟାନ୍ୟ ତୃତୀୟ ପକ୍ଷ ସମେତ) ସମ୍ମତି ଦିଅନ୍ତି। ନିମ୍ନରେ ପ୍ରଦାନ କରାଯାଇଥିବା ଯୋଗାଯୋଗ ସୂଚନାରେ ଅଭିଯୋଗ ଅଧିକାରୀଙ୍କୁ ଲେଖି ଆପଣ ପୂର୍ବରୁ ପ୍ରଦାନ କରିଥିବା ଆପଣଙ୍କର ସମ୍ମତି ପ୍ରତ୍ୟାହାର କରିବାର ବିକଳ୍ପ ଆପଣଙ୍କ ପାଖରେ ଅଛି। ଦୟାକରି ଆପଣଙ୍କର ଯୋଗାଯୋଗର ବିଷୟ ଧାଡ଼ିରେ "ବ୍ୟକ୍ତିଗତ ଡାଟା ପ୍ରକ୍ରିୟାକରଣ ପାଇଁ ସମ୍ମତି ପ୍ରତ୍ୟାହାର" ଉଲ୍ଲେଖ କରନ୍ତୁ। ଆମେ ଆପଣଙ୍କର ଅନୁରୋଧ ଉପରେ କାର୍ଯ୍ୟ କରିବା ପୂର୍ବରୁ ଏପରି ଅନୁରୋଧଗୁଡିକୁ ଯାଞ୍ଚ କରିପାରୁ। ତେବେ, ଦୟାକରି ଧ୍ୟାନ ଦିଅନ୍ତୁ ଯେ ଆପଣଙ୍କର ସମ୍ମତି ପ୍ରତ୍ୟାହାର ପୂର୍ବବର୍ତ୍ତୀ ହେବ ନାହିଁ ଏବଂ ବ୍ୟବହାରର ସର୍ତ୍ତାବଳୀ, ଏହି ଗୋପନୀୟତା ନୀତି ଏବଂ ପ୍ରଯୁଜ୍ୟ ଆଇନ ଅନୁଯାୟୀ ହେବ। ଯଦି ଆପଣ ଏହି ଗୋପନୀୟତା ନୀତି ଅଧୀନରେ ଆମକୁ ଦିଆଯାଇଥିବା ସମ୍ମତି ପ୍ରତ୍ୟାହାର କରନ୍ତି, ତେବେ ଆମେ ଆମର ସେବାଗୁଡିକର ବ୍ୟବସ୍ଥାକୁ ପ୍ରତିବନ୍ଧିତ କିମ୍ବା ମନା କରିବାର ଅଧିକାର ସଂରକ୍ଷଣ କରୁ ଯେଉଁଥିପାଇଁ ଆମେ ସେପରି ସୂଚନା ଆବଶ୍ୟକ ମନେ କରୁ।',
+      },
+      section9: {
+        title: "ଏହି ଗୋପନୀୟତା ନୀତିରେ ପରିବର୍ତ୍ତନ",
+        content:
+          "ପରିବର୍ତ୍ତନଗୁଡିକ ପାଇଁ ଦୟାକରି ସମୟ ସମୟରେ ଆମର ଗୋପନୀୟତା ନୀତି ଯାଞ୍ଚ କରନ୍ତୁ। ଆମର ସୂଚନା ଅଭ୍ୟାସରେ ପରିବର୍ତ୍ତନଗୁଡିକୁ ପ୍ରତିଫଳିତ କରିବା ପାଇଁ ଆମେ ଏହି ଗୋପନୀୟତା ନୀତିକୁ ଅଦ୍ୟତନ କରିପାରୁ। ପ୍ରଯୁଜ୍ୟ ଆଇନ ଅନୁଯାୟୀ ଆବଶ୍ୟକ ହୋଇପାରୁଥିବା ଢଙ୍ଗରେ ଆମେ ଗୋପନୀୟତା ନୀତିରେ ଥିବା ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ ପରିବର୍ତ୍ତନଗୁଡ଼ିକ ବିଷୟରେ ଆପଣଙ୍କୁ ସତର୍କ/ସୂଚିତ କରିପାରୁ।",
+      },
+    },
   };
 
   // Sidebar headings for all languages
   const sidebarContent = {
-  "en": ["Privacy Policy","Information Collection","Usage","Information Sharing and Disclosures","Reasonable Security Practices","Data Deletion and Retention","Your Rights","Consent","Changes to this Privacy Policy"],
-  "gu": ["પ્રાયવસી પૉલિસી","માહિતી એકત્રિત કરવી","ઉપયોગ","માહિતી શેરિંગ અને જાહેર કરવું","યોગ્ય સુરક્ષા પ્રથા","ડેટા મિટાવવા અને જાળવણી","તમારા અધિકાર","સંમતિ","આ પ્રાયવસી પોલિસીમાં ફેરફારો"],
-  "ta": ["தனியுரிமைக் கொள்கை","தகவல் சேகரிப்பு","பயன்பாடு","தகவல் பகிர்வு மற்றும் வெளிப்படுத்தல்","வழக்கமான பாதுகாப்பு நடைமுறைகள்","தரவு நீக்கம் மற்றும் பாதுகாப்பு","உங்கள் உரிமைகள்","அனுமதி","தனியுரிமைக் கொள்கையில் மாற்றங்கள்"],
-  "te": ["గోప్యతా విధానం","సమాచారం సేకరణ","వినియోగం","సమాచారం భాగస్వామ్యం మరియు వెల్లడించటం","యథార్థ భద్రతా విధానాలు","డేటా తొలగింపు మరియు నిల్వ","మీ హక్కులు","సమ్మతి","గోప్యతా విధానంలో మార్పులు"],
-  "mr": ["गोपनीयता धोरण","माहिती संकलन","वापर","माहिती सामायिकरण आणि प्रकटीकरण","योग्य सुरक्षा पद्धती","डेटा हटवणे आणि राखणे","तुमचे हक्क","संमती","गोपनीयता धोरणातील बदल"],
-  "ml": ["സ്വകാര്യതാ നയം","വിവരം ശേഖരണം","ഉപയോഗം","വിവരം പങ്കിടലും വെളിപ്പെടുത്തലും","സമുചിതമായ സുരക്ഷാ പ്രവർത്തനങ്ങൾ","ഡാറ്റ ഡിലിഷൻ & നിലനിർത്തൽ","നിങ്ങളുടെ അവകാശങ്ങൾ","അനുമതി","സ്വകാര്യതാ നയത്തിലെ മാറ്റങ്ങൾ"],
-  "bn": ["গোপনীয়তা নীতি","তথ্য সংগ্রহ","ব্যবহার","তথ্য ভাগ এবং প্রকাশ","যুক্তিসঙ্গত নিরাপত্তা চর্চা","ডেটা মুছা এবং সংরক্ষণ","আপনার অধিকার","সম্মতি","গোপনীয়তা নীতিতে পরিবর্তন"],
-  "kn": ["ಗೋಪ್ಯತಾ ನೀತಿ","ಮಾಹಿತಿ ಸಂಗ್ರಹಣೆ","ಬಳಕೆ","ಮಾಹಿತಿ ಹಂಚಿಕೆ ಮತ್ತು ಬಹಿರಂಗಪಡಿಸುವುದು","ಯುಕ್ತಿಪೂರ್ಣ ಭದ್ರತಾ ಕ್ರಮಗಳು","ಡೇಟಾ ಅಳಿಸುವಿಕೆ ಮತ್ತು ಸಂಗ್ರಹಣೆ","ನಿಮ್ಮ ಹಕ್ಕುಗಳು","ಅನುಮತಿ","ಗೋಪ್ಯತಾ ನೀತಿಯಲ್ಲಿ ಬದಲಾವಣೆಗಳು"],
-  "hi": ["गोपनीयता नीति","सूचना संग्रहण","उपयोग","सूचना साझा करना और प्रकटीकरण","उचित सुरक्षा प्रथाएं","डेटा हटाना और प्रतिधारण","आपके अधिकार","सहमति","गोपनीयता नीति में परिवर्तन"],
-  "or": ["ଗୋପନୀୟତା ନୀତି","ସୂଚନା ସଂଗ୍ରହ","ବ୍ୟବହାର","ସୂଚନା ଅଂଶୀଦାରୀ ଓ ପ୍ରକାଶ","ଯଥୋଚିତ ସୁରକ୍ଷା ପଦକ୍ଷେପ","ଡାଟା ହଟାଇବା ଏବଂ ରଖିବା","ଆପଣଙ୍କର ଅଧିକାର","ସମ୍ମତି","ଗୋପନୀୟତା ନୀତିରେ ପରିବର୍ତ୍ତନ"]
+    en: [
+      "Privacy Policy",
+      "Information Collection",
+      "Usage",
+      "Information Sharing and Disclosures",
+      "Reasonable Security Practices",
+      "Data Deletion and Retention",
+      "Your Rights",
+      "Consent",
+      "Changes to this Privacy Policy",
+    ],
+    gu: [
+      "પ્રાયવસી પૉલિસી",
+      "માહિતી એકત્રિત કરવી",
+      "ઉપયોગ",
+      "માહિતી શેરિંગ અને જાહેર કરવું",
+      "યોગ્ય સુરક્ષા પ્રથા",
+      "ડેટા મિટાવવા અને જાળવણી",
+      "તમારા અધિકાર",
+      "સંમતિ",
+      "આ પ્રાયવસી પોલિસીમાં ફેરફારો",
+    ],
+    ta: [
+      "தனியுரிமைக் கொள்கை",
+      "தகவல் சேகரிப்பு",
+      "பயன்பாடு",
+      "தகவல் பகிர்வு மற்றும் வெளிப்படுத்தல்",
+      "வழக்கமான பாதுகாப்பு நடைமுறைகள்",
+      "தரவு நீக்கம் மற்றும் பாதுகாப்பு",
+      "உங்கள் உரிமைகள்",
+      "அனுமதி",
+      "தனியுரிமைக் கொள்கையில் மாற்றங்கள்",
+    ],
+    te: [
+      "గోప్యతా విధానం",
+      "సమాచారం సేకరణ",
+      "వినియోగం",
+      "సమాచారం భాగస్వామ్యం మరియు వెల్లడించటం",
+      "యథార్థ భద్రతా విధానాలు",
+      "డేటా తొలగింపు మరియు నిల్వ",
+      "మీ హక్కులు",
+      "సమ్మతి",
+      "గోప్యతా విధానంలో మార్పులు",
+    ],
+    mr: [
+      "गोपनीयता धोरण",
+      "माहिती संकलन",
+      "वापर",
+      "माहिती सामायिकरण आणि प्रकटीकरण",
+      "योग्य सुरक्षा पद्धती",
+      "डेटा हटवणे आणि राखणे",
+      "तुमचे हक्क",
+      "संमती",
+      "गोपनीयता धोरणातील बदल",
+    ],
+    ml: [
+      "സ്വകാര്യതാ നയം",
+      "വിവരം ശേഖരണം",
+      "ഉപയോഗം",
+      "വിവരം പങ്കിടലും വെളിപ്പെടുത്തലും",
+      "സമുചിതമായ സുരക്ഷാ പ്രവർത്തനങ്ങൾ",
+      "ഡാറ്റ ഡിലിഷൻ & നിലനിർത്തൽ",
+      "നിങ്ങളുടെ അവകാശങ്ങൾ",
+      "അനുമതി",
+      "സ്വകാര്യതാ നയത്തിലെ മാറ്റങ്ങൾ",
+    ],
+    bn: [
+      "গোপনীয়তা নীতি",
+      "তথ্য সংগ্রহ",
+      "ব্যবহার",
+      "তথ্য ভাগ এবং প্রকাশ",
+      "যুক্তিসঙ্গত নিরাপত্তা চর্চা",
+      "ডেটা মুছা এবং সংরক্ষণ",
+      "আপনার অধিকার",
+      "সম্মতি",
+      "গোপনীয়তা নীতিতে পরিবর্তন",
+    ],
+    kn: [
+      "ಗೋಪ್ಯತಾ ನೀತಿ",
+      "ಮಾಹಿತಿ ಸಂಗ್ರಹಣೆ",
+      "ಬಳಕೆ",
+      "ಮಾಹಿತಿ ಹಂಚಿಕೆ ಮತ್ತು ಬಹಿರಂಗಪಡಿಸುವುದು",
+      "ಯುಕ್ತಿಪೂರ್ಣ ಭದ್ರತಾ ಕ್ರಮಗಳು",
+      "ಡೇಟಾ ಅಳಿಸುವಿಕೆ ಮತ್ತು ಸಂಗ್ರಹಣೆ",
+      "ನಿಮ್ಮ ಹಕ್ಕುಗಳು",
+      "ಅನುಮತಿ",
+      "ಗೋಪ್ಯತಾ ನೀತಿಯಲ್ಲಿ ಬದಲಾವಣೆಗಳು",
+    ],
+    hi: [
+      "गोपनीयता नीति",
+      "सूचना संग्रहण",
+      "उपयोग",
+      "सूचना साझा करना और प्रकटीकरण",
+      "उचित सुरक्षा प्रथाएं",
+      "डेटा हटाना और प्रतिधारण",
+      "आपके अधिकार",
+      "सहमति",
+      "गोपनीयता नीति में परिवर्तन",
+    ],
+    or: [
+      "ଗୋପନୀୟତା ନୀତି",
+      "ସୂଚନା ସଂଗ୍ରହ",
+      "ବ୍ୟବହାର",
+      "ସୂଚନା ଅଂଶୀଦାରୀ ଓ ପ୍ରକାଶ",
+      "ଯଥୋଚିତ ସୁରକ୍ଷା ପଦକ୍ଷେପ",
+      "ଡାଟା ହଟାଇବା ଏବଂ ରଖିବା",
+      "ଆପଣଙ୍କର ଅଧିକାର",
+      "ସମ୍ମତି",
+      "ଗୋପନୀୟତା ନୀତିରେ ପରିବର୍ତ୍ତନ",
+    ],
   };
   function updateSections(lang) {
-      Object.keys(privacyContent[lang]).forEach(sectionId => {
-          document.getElementById(`${sectionId}_title`).innerText = privacyContent[lang][sectionId].title;
-          document.getElementById(`${sectionId}_content`).innerText = privacyContent[lang][sectionId].content;
-      });
+    Object.keys(privacyContent[lang]).forEach((sectionId) => {
+      document.getElementById(`${sectionId}_title`).innerText =
+        privacyContent[lang][sectionId].title;
+      document.getElementById(`${sectionId}_content`).innerText =
+        privacyContent[lang][sectionId].content;
+    });
 
-      const sidebarLinks = document.querySelectorAll(".sidebar h3");
-      sidebarLinks.forEach((link, index) => {
-          link.innerText = sidebarContent[lang][index];
-          link.dataset.target = `section${index+1}`;
-      });
+    const sidebarLinks = document.querySelectorAll(".sidebar h3");
+    sidebarLinks.forEach((link, index) => {
+      link.innerText = sidebarContent[lang][index];
+      link.dataset.target = `section${index + 1}`;
+    });
   }
 
   // =====================
@@ -448,38 +828,41 @@ FOXXY DRIP{% endblock title %} {% block body %} {% block extracss %}
   const langButtons = document.querySelectorAll(".languages button");
 
   function setActiveLangButton(lang) {
-      langButtons.forEach(btn => btn.classList.remove("active"));
-      document.querySelector(`.languages button[data-lang="${lang}"]`)?.classList.add("active");
+    langButtons.forEach((btn) => btn.classList.remove("active"));
+    document
+      .querySelector(`.languages button[data-lang="${lang}"]`)
+      ?.classList.add("active");
   }
 
   // =====================
   // Detect initial language
   // =====================
-  let initialLang = window.location.pathname.split('/')[2] || 'en';
+  let initialLang = window.location.pathname.split("/")[2] || "en";
   updateSections(initialLang);
   setActiveLangButton(initialLang);
 
   // =====================
   // Button click event
   // =====================
-  langButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-          const lang = btn.dataset.lang;
-          updateSections(lang);
-          setActiveLangButton(lang);
+  langButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const lang = btn.dataset.lang;
+      updateSections(lang);
+      setActiveLangButton(lang);
 
-          const newUrl = lang === 'en' ? '/privacy-policy/' : `/privacy-policy/${lang}/`;
-          window.history.pushState({ lang }, '', newUrl);
-      });
+      const newUrl =
+        lang === "en" ? "/privacy-policy/" : `/privacy-policy/${lang}/`;
+      window.history.pushState({ lang }, "", newUrl);
+    });
   });
 
   // =====================
   // Browser back/forward support
   // =====================
   window.addEventListener("popstate", (event) => {
-      const lang = event.state?.lang || 'en';
-      updateSections(lang);
-      setActiveLangButton(lang);
+    const lang = event.state?.lang || "en";
+    updateSections(lang);
+    setActiveLangButton(lang);
   });
 
   // =====================
@@ -488,23 +871,77 @@ FOXXY DRIP{% endblock title %} {% block body %} {% block extracss %}
   const sidebarLinks = document.querySelectorAll(".sidebar h3");
   const contentSections = document.querySelectorAll(".section");
 
-  sidebarLinks.forEach(link => {
-      link.addEventListener("click", () => {
-          const target = document.getElementById(link.dataset.target);
-          window.scrollTo({ top: target.offsetTop - 10, behavior: 'smooth' });
-      });
+  sidebarLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      const target = document.getElementById(link.dataset.target);
+      window.scrollTo({ top: target.offsetTop - 10, behavior: "smooth" });
+    });
   });
 
   window.addEventListener("scroll", () => {
-      let current = "";
-      contentSections.forEach(section => {
-          if (window.scrollY >= section.offsetTop - 60) current = section.id;
-      });
-      sidebarLinks.forEach(link => link.classList.remove('active'));
-      sidebarLinks.forEach(link => {
-          if (link.dataset.target === current) link.classList.add('active');
-      });
+    let current = "";
+    contentSections.forEach((section) => {
+      if (window.scrollY >= section.offsetTop - 60) current = section.id;
+    });
+    sidebarLinks.forEach((link) => link.classList.remove("active"));
+    sidebarLinks.forEach((link) => {
+      if (link.dataset.target === current) link.classList.add("active");
+    });
   });
 </script>
 
 {% endblock body %}
+<script>
+  // Get the language code from Django context
+  const initialLang = "{{ initial_lang_code }}";
+
+  // Existing content object (from your original code)
+  const privacyContent = {
+    // ... all your content objects (en, gu, ta, te, mr, etc.)
+  };
+
+  // Find the button and activate it
+  const buttons = document.querySelectorAll(".languages button");
+  buttons.forEach((button) => {
+    button.classList.remove("active");
+    if (button.dataset.lang === initialLang) {
+      button.classList.add("active");
+    }
+  });
+
+  // Function to load content (you need to define this)
+  function loadContent(lang) {
+    // Logic to fill sections using privacyContent[lang]
+    if (privacyContent[lang]) {
+      for (let i = 1; i <= 9; i++) {
+        const sectionId = `section${i}`;
+        const sectionData = privacyContent[lang][sectionId];
+        if (sectionData) {
+          document.getElementById(`${sectionId}_title`).innerText =
+            sectionData.title;
+          document.getElementById(`${sectionId}_content`).innerText =
+            sectionData.content;
+        }
+      }
+    }
+  }
+
+  // Load the content for the initial language on page load
+  loadContent(initialLang);
+
+  // Existing click handling for language buttons
+  buttons.forEach((button) => {
+    button.addEventListener("click", function () {
+      // Remove 'active' from all, add to clicked button
+      buttons.forEach((btn) => btn.classList.remove("active"));
+      this.classList.add("active");
+
+      const newLang = this.dataset.lang;
+      loadContent(newLang);
+
+      // Update the URL without reloading
+      const newUrl = `/privacy-policy/${newLang}/`;
+      history.pushState(null, "", newUrl);
+    });
+  });
+</script>

@@ -458,8 +458,11 @@ def complete_profile(request):
 
     return render(request, "complete_profile.html")
 
-def privacy_policy(request):
-    return render(request, 'privacy_policy.html')
+def privacy_policy(request, lang_code=None):
+    context = {
+        'initial_lang_code': lang_code if lang_code in ['en', 'hi', 'gu', 'ta', 'te', 'mr', 'ml', 'bn', 'kn', 'or'] else 'en'
+    }
+    return render(request, 'privacy_policy.html', context)
 
 def terms_conditions(request):
     return render(request, 'terms_conditions.html')
