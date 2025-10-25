@@ -15,5 +15,7 @@ urlpatterns = [
     # path('FAQ',views.FAQ,name='FAQ'),
     path('privacy-policy',views.privacy_policy,name='privacy_policy'),
     path('terms-conditions',views.terms_conditions,name='terms_conditions'),
+    path('returns-and-exchanges-policy',views.returns_and_exchanges_policy,name='returns_and_exchanges_policy'),
+    path('shipping-delivery-policy',views.shipping_delivery_policy,name='shipping_delivery_policy'),
     path('contactus',views.contactus,name='contactus')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Shipping & Delivery Policy | FOXXY DRIP{% endblock title %}
+
+{% block body %}
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/policy.css' %}">
+{% endblock extracss %}
+
+<div class="policy-container">
+  <h1>Shipping & Delivery Policy</h1>
+  <p>Last updated: October 2025</p>
+
+  <section>
+    <h2>Overview</h2>
+    <p>
+      <strong>FOXXY DRIP</strong> delivers across India through trusted logistics partners.  
+      We aim to ensure that your order reaches you in perfect condition, on time, every time.
+    </p>
+  </section>
+
+  <section>
+    <h2>Delivery Timelines</h2>
+    <ul>
+      <li>Orders are processed within <strong>1–2 business days</strong> of placement.</li>
+      <li>Delivery usually takes <strong>3–7 business days</strong> depending on your location.</li>
+      <li>Remote or outstation deliveries may take up to <strong>10–12 days</strong>.</li>
+      <li>Once shipped, you’ll receive an email/SMS with your tracking details.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Shipping Charges</h2>
+    <ul>
+      <li>We offer <strong>free shipping</strong> on all prepaid orders above ₹999.</li>
+      <li>A small standard delivery charge may apply to COD or low-value orders.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Order Tracking</h2>
+    <p>
+      Once your order is dispatched, you can track it using the link sent to your registered email or mobile number.
+      You can also log in to your <strong>FOXXY DRIP</strong> account and view the real-time status of your order.
+    </p>
+  </section>
+
+  <section>
+    <h2>Order Delays</h2>
+    <p>
+      While we strive to deliver on time, certain factors beyond our control (weather, lockdowns, or courier delays)
+      may cause a slight delay. We’ll notify you promptly in such cases.
+    </p>
+  </section>
+
+  <section>
+    <h2>International Shipping</h2>
+    <p>
+      At present, <strong>FOXXY DRIP</strong> ships only within India.  
+      International shipping options will be introduced soon.
+    </p>
+  </section>
+
+  <section>
+    <h2>Contact Us</h2>
+    <p>
+      For any shipping-related queries or assistance:<br>
+      📧 <strong>foxxydrip.contact@gmail.com</strong><br>
+      📞 <strong>+91-7993708247</strong><br>
+      Our support hours are Monday to Saturday, 10 AM - 7 PM.
+    </p>
+  </section>
+</div>
+
+<style>
+.policy-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: "Poppins", sans-serif;
+  line-height: 1.7;
+  color: #333;
+}
+.policy-container h1 {
+  color: #ff007f;
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+.policy-container h2 {
+  color: #222;
+  font-size: 20px;
+  border-bottom: 2px solid #ff007f;
+  padding-bottom: 5px;
+  margin-top: 30px;
+}
+.policy-container ul {
+  margin-left: 20px;
+}
+.policy-container li {
+  margin-bottom: 6px;
+}
+</style>
+
+{% endblock body %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Returns & Exchange Policy | FOXXY DRIP{% endblock title %}
+
+{% block body %}
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/policy.css' %}">
+{% endblock extracss %}
+
+<div class="policy-container">
+  <h1>Returns & Exchange Policy</h1>
+  <p>Last updated: October 2025</p>
+
+  <section>
+    <h2>Overview</h2>
+    <p>
+      At <strong>FOXXY DRIP</strong>, we want you to love what you order. If something isn’t right, we’re here to help.  
+      Our return and exchange policy is designed to be simple, transparent, and customer-friendly.
+    </p>
+  </section>
+
+  <section>
+    <h2>Eligibility for Return</h2>
+    <ul>
+      <li>You can request a return within <strong>7 days</strong> of receiving your order.</li>
+      <li>Items must be <strong>unused, unworn, unwashed, and undamaged</strong>.</li>
+      <li>All original tags, labels, and packaging must be intact.</li>
+      <li>Footwear and accessories must be returned in their original boxes or packaging.</li>
+      <li>Sale or discounted items are <strong>not eligible</strong> for return or exchange unless defective.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Non-Returnable Items</h2>
+    <ul>
+      <li>Innerwear, socks, swimwear, or any hygiene-sensitive products.</li>
+      <li>Customized or personalized items.</li>
+      <li>Gift cards or promotional vouchers.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Return Process</h2>
+    <ol>
+      <li>Go to the <strong>My Orders</strong> section on our website.</li>
+      <li>Select the item you wish to return and click on <strong>Request Return</strong>.</li>
+      <li>Our team will review your request and schedule a pickup within 2–4 working days.</li>
+      <li>Once the product is received and inspected, a replacement or refund will be initiated.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Refunds</h2>
+    <p>
+      After successful inspection, your refund will be processed to the original payment method 
+      within <strong>7–10 business days</strong>. In case of COD orders, refunds will be issued via UPI or bank transfer.
+    </p>
+  </section>
+
+  <section>
+    <h2>Damaged or Wrong Product</h2>
+    <p>
+      If you receive a defective or incorrect product, please contact us within <strong>48 hours</strong> of delivery.  
+      Our support team will assist you with a free replacement or full refund.
+    </p>
+  </section>
+
+  <section>
+    <h2>Contact Us</h2>
+    <p>
+      For any return-related assistance, reach out to our support team at:<br>
+      📧 <strong>foxxydrip.contact@gmail.com</strong><br>
+      📞 <strong>+91-7993708247</strong><br>
+      Our team is available Monday to Saturday, 10 AM – 7 PM.
+    </p>
+  </section>
+</div>
+
+<style>
+.policy-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: "Poppins", sans-serif;
+  line-height: 1.7;
+  color: #333;
+}
+.policy-container h1 {
+  color: #ff007f;
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+.policy-container h2 {
+  color: #222;
+  font-size: 20px;
+  border-bottom: 2px solid #ff007f;
+  padding-bottom: 5px;
+  margin-top: 30px;
+}
+.policy-container ul, .policy-container ol {
+  margin-left: 20px;
+}
+.policy-container li {
+  margin-bottom: 6px;
+}
+</style>
+
+{% endblock body %}
