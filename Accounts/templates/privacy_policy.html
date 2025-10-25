@@ -1,33 +1,20 @@
-{% extends "base.html" %} 
-{% load static %} 
-
-{% block title %}Privacy Policy | FOXXY DRIP{% endblock title %} 
-
-{% block body %} 
-{% block extracss %}
-<link rel="stylesheet" href="{% static 'css/privacy_policy.css' %}">
-{% endblock extracss %} 
+{% extends "base.html" %} {% load static %} {% block title %}Privacy Policy |
+FOXXY DRIP{% endblock title %} {% block body %} {% block extracss %}
+{% comment %} <link rel="stylesheet" href="{% static 'css/privacy_policy.css' %}" /> {% endcomment %}
+{% endblock extracss %}
 
 <style>
-body {
-    font-family: "Poppins", sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #fff;
-    color: #333;
-    scroll-behavior: smooth;
-}
-
-/* Language buttons */
-.languages {
+  /* Language buttons */
+  .languages {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center; /* center horizontally */
     gap: 10px;
     padding: 15px 20px;
     border-bottom: 1px solid #ddd;
     background: #f7f7f7;
-}
-.languages button {
+  }
+  .languages button {
     border: 1px solid #ddd;
     background: #fff;
     padding: 6px 12px;
@@ -35,24 +22,57 @@ body {
     cursor: pointer;
     font-size: 14px;
     transition: all 0.2s;
-}
-.languages button.active {
-    background: #007bff;
+  }
+  .languages button.active {
+    background: #ffc107;
     color: #fff;
-    border-color: #007bff;
-}
+    border-color: #ffc107;
+  }
 
-/* Main container */
-.container {
+  body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #333;
+    scroll-behavior: smooth;
+  }
+
+  /* Language buttons */
+  .languages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+    background: #f7f7f7;
+  }
+  .languages button {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .languages button.active {
+    background: #ffc107;
+    color: #fff;
+    border-color: #ffc107;
+  }
+
+  /* Main container */
+  .container {
     display: flex;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     gap: 40px;
-}
+  }
 
-/* Left sidebar */
-.sidebar {
+  /* Left sidebar */
+  .sidebar {
     flex: 1;
     position: sticky;
     top: 20px;
@@ -60,167 +80,431 @@ body {
     overflow-y: auto;
     border-right: 1px solid #ddd;
     padding-right: 20px;
-}
-.sidebar h3 {
+  }
+  .sidebar h3 {
     margin-bottom: 10px;
     font-size: 14px;
     cursor: pointer;
     padding: 6px 0;
     transition: all 0.2s;
-}
-.sidebar h3.active {
-    color: #007bff;
+  }
+  .sidebar h3.active {
+    color: #ffc107;
     font-weight: bold;
-}
+  }
 
-/* Right content */
-.content {
+  /* Right content */
+  .content {
     flex: 3;
-}
-.section {
+  }
+  .section {
     margin-bottom: 50px;
-}
-.section h2 {
+  }
+  .section h2 {
     margin-top: 0;
     font-size: 20px;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid #ffc107;
     padding-bottom: 6px;
-}
-.section p {
+  }
+  .section p {
     line-height: 1.6;
     font-size: 14px;
-}
+  }
 
-@media (max-width: 900px) {
+  @media (max-width: 900px) {
     .container {
-        flex-direction: column;
+      flex-direction: column;
     }
     .sidebar {
-        position: relative;
-        height: auto;
-        border-right: none;
-        padding-right: 0;
-        margin-bottom: 20px;
+      position: relative;
+      height: auto;
+      border-right: none;
+      padding-right: 0;
+      margin-bottom: 20px;
     }
-}
+  }
 </style>
 
-<body>
-<!-- Language selection -->
 <div class="languages">
-    <button class="active" data-lang="en">English</button>
-    <button data-lang="gu">ગુજરાતી</button>
-    <button data-lang="ta">தமிழ்</button>
-    <button data-lang="te">తెలుగు</button>
-    <button data-lang="mr">मराठी</button>
-    <button data-lang="ml">മലയാളം</button>
-    <button data-lang="bn">বাংলা</button>
-    <button data-lang="kn">ಕನ್ನಡ</button>
-    <button data-lang="hi">हिंदी</button>
-    <button data-lang="or">ଓଡ଼ିଆ</button>
+  <button class="active" data-lang="en">English</button>
+  <button data-lang="gu">ગુજરાતી</button>
+  <button data-lang="ta">தமிழ்</button>
+  <button data-lang="te">తెలుగు</button>
+  <button data-lang="mr">मराठी</button>
+  <button data-lang="ml">മലയാളം</button>
+  <button data-lang="bn">বাংলা</button>
+  <button data-lang="kn">ಕನ್ನಡ</button>
+  <button data-lang="hi">हिंदी</button>
+  <button data-lang="or">ଓଡ଼ିଆ</button>
 </div>
 
 <div class="container">
-    <!-- Left Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <h3 data-target="section1">Privacy Policy</h3>
-        <h3 data-target="section2">Information Collection</h3>
-        <h3 data-target="section3">Usage</h3>
-        <h3 data-target="section4">Information Sharing and Disclosures</h3>
-        <h3 data-target="section5">Reasonable Security Practices</h3>
-        <h3 data-target="section6">Data Deletion and Retention</h3>
-        <h3 data-target="section7">Your Rights</h3>
-        <h3 data-target="section8">Consent</h3>
-        <h3 data-target="section9">Changes to this Privacy Policy</h3>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h3 data-target="section1">Privacy Policy</h3>
+    <h3 data-target="section2">Information Collection</h3>
+    <h3 data-target="section3">Usage</h3>
+    <h3 data-target="section4">Information Sharing and Disclosures</h3>
+    <h3 data-target="section5">Reasonable Security Practices</h3>
+    <h3 data-target="section6">Data Deletion and Retention</h3>
+    <h3 data-target="section7">Your Rights</h3>
+    <h3 data-target="section8">Consent</h3>
+    <h3 data-target="section9">Changes to this Privacy Policy</h3>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="section" id="section1">
+      <h2 id="section1_title"></h2>
+      <p id="section1_content"></p>
     </div>
-
-    <!-- Right Content -->
-    <div class="content">
-        <div class="section" id="section1">
-            <h2>Privacy Policy</h2>
-            <p>Updated: May 2025</p>
-            <p>This Privacy Policy describes how (collectively "NERDS & CO and its affiliates, we, our, us") collect, use, share, protect or otherwise process your information/personal data through our website https://foxxydrip.com/ (hereinafter referred to as Platform). Please note that you may be able to browse certain sections of the Platform without registering with us. We do not offer any product/service under this Platform outside India and your personal data will primarily be stored and processed in India. By visiting this Platform, providing your information or availing any product/service offered on the Platform, you expressly agree to be bound by the terms and conditions of this Privacy Policy, the Terms of Use, and the applicable service/product terms and conditions, and agree to be governed by the laws of India including but not limited to the laws applicable to data protection and privacy. If you do not agree, please do not use or access our Platform.</p>
-        </div>
-
-        <div class="section" id="section2">
-            <h2>Information Collection</h2>
-            <p>We collect your personal data when you use our Platform, services, or otherwise interact with us. This includes information provided during sign-up or use of our services, such as name, date of birth, address, phone number, email ID, and other identity documents. Sensitive personal data like bank details, payment instruments, or biometric data may be collected with your consent according to applicable law. You may choose not to provide information by opting out of certain services.</p>
-        </div>
-
-        <div class="section" id="section3">
-            <h2>Usage</h2>
-            <p>We use personal data to provide the services you request, assist partners in fulfilling orders, enhance customer experience, resolve disputes, detect fraud, and conduct marketing research. You may opt-out from marketing communications. Access to certain services may require providing specific personal data.</p>
-        </div>
-
-        <div class="section" id="section4">
-            <h2>Information Sharing and Disclosures</h2>
-            <p>We may share your data with affiliates, business partners, and third-party service providers to provide products/services. We may disclose information to comply with legal obligations, enforce agreements, prevent fraud, or respond to legal requests from authorities. We are not responsible for third-party privacy practices.</p>
-        </div>
-
-        <div class="section" id="section5">
-            <h2>Reasonable Security Practices</h2>
-            <p>We adopt reasonable security measures to protect personal data from unauthorized access, disclosure, loss, or misuse. While we provide secure servers, transmission of data over the internet cannot be guaranteed as completely secure. Users are responsible for securing their login credentials.</p>
-        </div>
-
-        <div class="section" id="section6">
-            <h2>Data Deletion and Retention</h2>
-            <p>You can delete your account via profile settings or by contacting us. Deletion may be delayed if pending transactions or disputes exist. We retain personal data only as long as necessary for the purpose it was collected or as required by law. Some data may be anonymized for research and analysis.</p>
-        </div>
-
-        <div class="section" id="section7">
-            <h2>Your Rights</h2>
-            <p>You may access, rectify, and update your personal data through the Platform’s functionalities, as permitted by applicable law.</p>
-        </div>
-
-        <div class="section" id="section8">
-            <h2>Consent</h2>
-            <p>By using our Platform and providing information, you consent to the collection, use, and processing of your data in accordance with this Privacy Policy. You may withdraw consent at any time by contacting our Grievance Officer. Withdrawal will not affect lawful processing prior to your request.</p>
-        </div>
-
-        <div class="section" id="section9">
-            <h2>Changes to this Privacy Policy</h2>
-            <p>We may update this Privacy Policy periodically to reflect changes in practices, laws, or services. Users are encouraged to review it regularly. Significant updates may be notified as required under applicable law.</p>
-        </div>
+    <div class="section" id="section2">
+      <h2 id="section2_title"></h2>
+      <p id="section2_content"></p>
     </div>
+    <div class="section" id="section3">
+      <h2 id="section3_title"></h2>
+      <p id="section3_content"></p>
+    </div>
+    <div class="section" id="section4">
+      <h2 id="section4_title"></h2>
+      <p id="section4_content"></p>
+    </div>
+    <div class="section" id="section5">
+      <h2 id="section5_title"></h2>
+      <p id="section5_content"></p>
+    </div>
+    <div class="section" id="section6">
+      <h2 id="section6_title"></h2>
+      <p id="section6_content"></p>
+    </div>
+    <div class="section" id="section7">
+      <h2 id="section7_title"></h2>
+      <p id="section7_content"></p>
+    </div>
+    <div class="section" id="section8">
+      <h2 id="section8_title"></h2>
+      <p id="section8_content"></p>
+    </div>
+    <div class="section" id="section9">
+      <h2 id="section9_title"></h2>
+      <p id="section9_content"></p>
+    </div>
+  </div>
 </div>
 
 <script>
-const sidebarLinks = document.querySelectorAll(".sidebar h3");
-const sections = document.querySelectorAll(".section");
+  // Content for all 10 languages
+  const privacyContent = {
+    "en": {
+      "section1": {
+          "title":"Privacy Policy",
+          "content": "This Privacy Policy describes how (collectively 'THE NERDS & CO', 'we', 'our', 'us') collect, use, share, protect or otherwise process your information/personal data through our website https://foxxydrip.com/ (hereinafter referred to as 'Platform'). Please note that you may browse certain sections of the Platform without registering with us. We do not offer any product/service under this Platform outside India and your personal data will primarily be stored and processed in India. By visiting this Platform, providing your information or availing any product/service offered on the Platform, you expressly agree to be bound by the terms and conditions of this Privacy Policy, the Terms of Use and the applicable service/product terms and conditions, and agree to be governed by the laws of India including data protection and privacy laws. If you do not agree, please do not use or access our Platform."
+      },
+      "section2": {
+          "title":"Information Collection",
+          "content": "We collect your personal data when you use our Platform, services or otherwise interact with us during the course of our relationship. And related information provided from time to time. Some of the information that we may collect includes but is not limited to personal data / information provided to us during sign-up/registering or using our Platform such as name, date of birth, address, telephone/mobile number, email ID and/or any such information shared as proof of identity or address. Some of the sensitive personal data may be collected with your consent, such as your bank account or credit or debit card or other payment instrument information or biometric information such as your facial features or physiological information (in order to enable use of certain features when opted for, available on the Platform) etc all of the above being in accordance with applicable law(s) You always have the option to not provide information, by choosing not to use a particular service or feature on the Platform. We may track your behaviour, preferences, and other information that you choose to provide on our Platform. This information is compiled and analysed on an aggregated basis. We will also collect your information related to your transactions on Platform and such third-party business partner platforms. When such a third-party business partner collects your personal data directly from you, you will be governed by their privacy policies. We shall not be responsible for the third-party business partner's privacy practices or the content of their privacy policies, and we request you to read their privacy policies prior to disclosing any information. If you receive an email, a call from a person/association claiming to be NEXVED CLINICAL RESEARCH ACADEMY seeking any personal data like debit/credit card PIN, net- banking or mobile banking password, we request you to never provide such information. If you have already revealed such information, report it immediately to an appropriate law enforcement agency."
+      },
+      "section3": {
+          "title":"Usage",
+          "content":"We use personal data to provide the services you request. To the extent we use your personal data to market to you, we will provide you the ability to opt-out of such uses. We use  your personal data to assist sellers and business partners in handling and fulfilling orders; enhancing customer experience; to resolve disputes; troubleshoot problems; inform you about online and offline offers, products, services, and updates; customise your experience; detect and protect us against error, fraud and other criminal activity; enforce our terms and conditions; conduct marketing research, analysis and surveys; and as otherwise described to you at the time of collection of information. You understand that your access to these products/services may be affected in the event permission is not provided to us."
+      },
+      "section4": {
+          "title":"Information Sharing and Disclosures",
+          "content":"We may share your personal data internally within our group entities, our other corporat  entities, and affiliates to provide you access to the services and products offered by them. These entities and affiliates may market to you as a result of such sharing unless you explicitly opt-out. We may disclose personal data to third parties such as sellers, business partners, third party service providers including logistics partners, prepaid payment instrument issuers, third-party reward programs and other payment opted by you. These disclosure may be required for us to provide you access to our services and products offered to you, to comply with our legal obligations, to enforce our user agreement, to facilitate our marketing and advertising activities, to prevent, detect, mitigate, and investigate fraudulent or illegal activities related to our services. We may disclose personal and sensitive personal data to government agencies or other authorised law enforcement agencies if required to do so by law or in the good faith belief that such disclosure is reasonably necessary to respond to subpoenas, court orders, or other legal process. We may disclose personal data to law enforcement offices, third party rights owners, or others in the good faith belief that such disclosure is reasonably necessary to: enforce our Terms of Use or Privacy Policy; respond to claims that an advertisement, posting or other content violates the rights of a third party; or protect the rights, property or personal safety of our users or the general public."
+      },
+      "section5": {
+          "title":"Reasonable Security Practices",
+          "content":"To protect your personal data from unauthorised access or disclosure, loss or misuse we adopt reasonable security practices and procedures. Once your information is in our possession or whenever you access your account information, we adhere to our security guidelines to protect it against unauthorised access and offer the use Of a secure server. However, the transmission of information is not completely secure for reasons beyond our control. By using the Platform, the users accept the security implications of data transmission over the internet and the World Wide Web which cannot always be guaranteed as completely secure, and therefore, there would always remain certain inherent risks regarding use of the Platform. Users are responsible for ensuring the protection of login and password records for their account. "
+      },
+      "section6": {
+          "title":"Data Deletion and Retention",
+          "content":"You have an option to delete your account by visiting your profile and settings on our Platform , this action would result in you losing all information related to your account. You may also write to us at the contact information provided below to assist you with these requests. We may in event of any pending grievance, claims, pending shipments or any other services we may refuse or delay deletion of the account. Once the account is deleted, you will lose access to the account. We retain your personal data information for a period no longer than is required for the purpose for which it was collected or as required under any applicable law. However, we may retain data related to you if we believe it may be necessary to prevent fraud or future abuse or for other legitimate purposes. We may continue to retain your data in anonymised form for analytical and research purposes."
+      },
+      "section7": {
+          "title":"Your Rights",
+          "content":"You may access, rectify, and update your personal data directly through the functionalities provided on the Platform. "
+      },
+      "section8": {
+          "title":"Consent",
+          "content":"By visiting our Platform or by providing your information, you consent to the collection, use, storage, disclosure and otherwise processing of your information on the Platform in accordance with this Privacy Policy. If you disclose to us any personal data relating to other people, you represent that you have the authority to do so and permit us to use the information in accordance with this Privacy Policy. You, while providing your personal data over the Platform or any partner platforms or establishments, consent to us (including our other corporate entities, affiliates, lending partners, technology partners, marketing channels, business partners and other third parties) to contact you through SMS, instant messaging apps, call and/or e-mail for the purposes specified in this Privacy Policy. You have an option to withdraw your consent that you have already provided by writing to the Grievance Officer at the contact information provided below. Please mention Withdrawal of consent for processing personal data in your subject line of your communication. We may verify such requests before acting on our request. However, please note that your withdrawal of consent will not be retrospective and will be in accordance with the Terms of Use, this Privacy Policy, and applicable laws. In the event you withdraw consent given to us under this Privacy Policy, we reserve the right to restrict or deny the provision of our services for which we consider such information to be necessary. "
+      },
+      "section9": {
+          "title":"Changes to this Privacy Policy",
+          "content":"Please check our Privacy Policy periodically for changes. We may update this Privacy Policy to reflect changes to our information practices. We may alert / notify you about the significant changes to the Privacy Policy, in the manner as may be required under applicable laws."
+      }
+    },
+    "gu": {
+      "section1": {
+          "title":"ગોપનીયતા નીતિ",
+          "content":"આ ગોપનીયતા નીતિ વર્ણવે છે કે કેવી રીતે (સામૂહિક રીતે 'ધ નર્ડ્સ એન્ડ કંપની', 'અમે', 'અમારું', 'અમને') અમારી વેબસાઇટ https://foxxydrip.com/ (ત્યારબાદ 'પ્લેટફોર્મ' તરીકે ઓળખાય છે) દ્વારા તમારી માહિતી/વ્યક્તિગત ડેટા એકત્રિત, ઉપયોગ, શેર, સુરક્ષિત અથવા અન્યથા પ્રક્રિયા કરીએ છીએ. કૃપા કરીને નોંધો કે તમે અમારી સાથે નોંધણી કરાવ્યા વિના પ્લેટફોર્મના અમુક વિભાગો બ્રાઉઝ કરી શકો છો. અમે આ પ્લેટફોર્મ હેઠળ ભારતની બહાર કોઈપણ ઉત્પાદન/સેવાની ઑફર કરતા નથી અને તમારો વ્યક્તિગત ડેટા મુખ્યત્વે ભારતમાં સંગ્રહિત અને પ્રક્રિયા કરવામાં આવશે. આ પ્લેટફોર્મની મુલાકાત લઈને, તમારી માહિતી પ્રદાન કરીને અથવા પ્લેટફોર્મ પર ઓફર કરાયેલ કોઈપણ ઉત્પાદન/સેવાનો લાભ લઈને, તમે આ ગોપનીયતા નીતિ, ઉપયોગની શરતો અને લાગુ સેવા/ઉત્પાદન નિયમો અને શરતોથી બંધાયેલા રહેવા માટે સ્પષ્ટપણે સંમત થાઓ છો, અને ડેટા સુરક્ષા અને ગોપનીયતા કાયદા સહિત ભારતના કાયદાઓ દ્વારા સંચાલિત થવા માટે સંમત થાઓ છો. જો તમે સંમત ન હોવ, તો કૃપા કરીને અમારા પ્લેટફોર્મનો ઉપયોગ કરશો નહીં અથવા તેને એક્સેસ કરશો નહીં."
+      },
+      "section2": {
+          "title":"માહિતી સંગ્રહ",
+          "content":"અમે નોંધણી અને સેવાઓના ઉપયોગ દરમિયાન વ્યક્તિગત માહિતી એકત્રિત કરીએ છીએ, જેમાં નામ, ઇમેઇલ, ફોન અને સરનામું શામેલ છે."
+      },
+      "section3": {
+          "title":"ઉપયોગ",
+          "content":"અમે સેવાઓ પ્રદાન કરવા, અનુભવ વધારવા, છેતરપિંડી શોધવા અને માર્કેટિંગ સંશોધન માટે વ્યક્તિગત ડેટાનો ઉપયોગ કરીએ છીએ."
+      },
+      "section4": {"title":"માહિતી શેરિંગ અને જાહેરાત","content":"અમે આનુષંગિકો, ભાગીદારો સાથે અથવા કાનૂની જવાબદારીઓનું પાલન કરવા માટે ડેટા શેર કરી શકીએ છીએ."},
+      "section5": {"title":"વાજબી સુરક્ષા પદ્ધતિઓ","content":"અમે તમારા ડેટાને સુરક્ષિત રાખવા માટે વાજબી સુરક્ષા પગલાં અપનાવીએ છીએ, પરંતુ સંપૂર્ણ સુરક્ષાની ખાતરી આપી શકતા નથી."},
+      "section6": {"title":"ડેટા ડિલીટ અને રીટેન્શન","content":"વપરાશકર્તાઓ તેમના એકાઉન્ટ ડિલીટ કરી શકે છે. જ્યાં સુધી જરૂરી હોય અથવા કાયદાકીય રીતે આવશ્યક હોય ત્યાં સુધી ડેટા જાળવી રાખવામાં આવે છે."},
+      "section7": {"title":"તમારા અધિકારો","content":"તમે પ્લેટફોર્મ દ્વારા તમારા વ્યક્તિગત ડેટાને એક્સેસ, સુધારી અને અપડેટ કરી શકો છો."},
+      "section8": {"title":"સંમતિ","content":"પ્લેટફોર્મનો ઉપયોગ કરીને, તમે આ ગોપનીયતા નીતિ અનુસાર ડેટા સંગ્રહ અને પ્રક્રિયા માટે સંમતિ આપો છો."},
+      "section9": {"title":"આ ગોપનીયતા નીતિમાં ફેરફારો","content":"અમે સમયાંતરે આ નીતિને અપડેટ કરી શકીએ છીએ. વપરાશકર્તાઓએ તેની નિયમિત સમીક્ષા કરવી જોઈએ."}
+    },
+    "ta": {
+      "section1": {
+          "title":"தனியுரிமைக் கொள்கை",
+          "content":"இந்த தனியுரிமைக் கொள்கை (ஒட்டுமொத்தமாக 'THE NERDS & CO', 'நாங்கள்', 'எங்கள்', 'எங்களுக்கு') எங்கள் வலைத்தளமான https://foxxydrip.com/ (இனி 'தளம்' என்று குறிப்பிடப்படுகிறது) மூலம் உங்கள் தகவல்/தனிப்பட்ட தரவை எவ்வாறு சேகரிக்கிறோம், பயன்படுத்துகிறோம், பகிர்கிறோம், பாதுகாக்கிறோம் அல்லது செயலாக்குகிறோம் என்பதை விவரிக்கிறது. எங்களிடம் பதிவு செய்யாமலேயே தளத்தின் சில பகுதிகளை நீங்கள் உலாவலாம் என்பதை நினைவில் கொள்ளவும். இந்த தளத்தின் கீழ் நாங்கள் இந்தியாவிற்கு வெளியே எந்தவொரு தயாரிப்பு/சேவையையும் வழங்குவதில்லை, மேலும் உங்கள் தனிப்பட்ட தரவு முதன்மையாக இந்தியாவிலேயே சேமிக்கப்பட்டு செயலாக்கப்படும். இந்த தளத்தைப் பார்வையிடுவதன் மூலமாகவோ, உங்கள் தகவலை வழங்குவதன் மூலமாகவோ அல்லது தளத்தில் வழங்கப்படும் ஏதேனும் தயாரிப்பு/சேவையைப் பெறுவதன் மூலமாகவோ, இந்த தனியுரிமைக் கொள்கையின் விதிமுறைகள் மற்றும் நிபந்தனைகள், பயன்பாட்டு விதிமுறைகள் மற்றும் பொருந்தக்கூடிய சேவை/தயாரிப்பு விதிமுறைகள் மற்றும் நிபந்தனைகளுக்குக் கட்டுப்படுவதை நீங்கள் வெளிப்படையாக ஒப்புக்கொள்கிறீர்கள், மேலும் தரவு பாதுகாப்பு மற்றும் தனியுரிமைச் சட்டங்கள் உட்பட இந்தியச் சட்டங்களால் ஆளப்படுவதை ஒப்புக்கொள்கிறீர்கள். நீங்கள் ஒப்புக்கொள்ளவில்லை என்றால், தயவுசெய்து எங்கள் தளத்தைப் பயன்படுத்த வேண்டாம் அல்லது அணுக வேண்டாம்."
+      },
+      "section2": {
+          "title":"தகவல் சேகரிப்பு",
+          "content":"பதிவு செய்யும் போதும் சேவைகளைப் பயன்படுத்தும் போதும் பெயர், மின்னஞ்சல், தொலைபேசி மற்றும் முகவரி உள்ளிட்ட தனிப்பட்ட தகவல்களைச் சேகரிக்கிறோம்."
+      },
+      "section3": {
+          "title":"பயன்பாடு",
+          "content":"சேவைகளை வழங்க, அனுபவத்தை மேம்படுத்த, மோசடியைக் கண்டறிய மற்றும் சந்தைப்படுத்தல் ஆராய்ச்சிக்காக தனிப்பட்ட தரவைப் பயன்படுத்துகிறோம்."
+      },
+      "section4": {"title":"தகவல் பகிர்வு மற்றும் வெளிப்படுத்தல்கள்","content":"இணை நிறுவனங்கள், கூட்டாளர்களுடன் அல்லது சட்டப்பூர்வ கடமைகளுக்கு இணங்க தரவைப் பகிரலாம்."},
+      "section5": {"title":"நியாயமான பாதுகாப்பு நடைமுறைகள்","content":"உங்கள் தரவைப் பாதுகாக்க நியாயமான பாதுகாப்பு நடவடிக்கைகளை நாங்கள் மேற்கொள்கிறோம், ஆனால் முழுமையான பாதுகாப்பிற்கு உத்தரவாதம் அளிக்க முடியாது."},
+      "section6": {"title":"தரவை நீக்குதல் மற்றும் தக்கவைத்தல்","content":"பயனர்கள் தங்கள் கணக்குகளை நீக்கலாம். தேவைப்படும் வரை அல்லது சட்டப்பூர்வமாக தேவைப்படும் வரை தரவு தக்கவைக்கப்படும்."},
+      "section7": {"title":"உங்கள் உரிமைகள்","content":"தளத்தின் மூலம் உங்கள் தனிப்பட்ட தரவை நீங்கள் அணுகலாம், திருத்தலாம் மற்றும் புதுப்பிக்கலாம்."},
+      "section8": {"title":"சம்மதம்","content":"தளத்தைப் பயன்படுத்துவதன் மூலம், இந்த தனியுரிமைக் கொள்கையின்படி தரவு சேகரிப்பு மற்றும் செயலாக்கத்திற்கு நீங்கள் ஒப்புக்கொள்கிறீர்கள்."},
+      "section9": {"title":"இந்த தனியுரிமைக் கொள்கையில் மாற்றங்கள்","content":"நாங்கள் இந்தக் கொள்கையை அவ்வப்போது புதுப்பிக்கலாம். பயனர்கள் அதைத் தவறாமல் மதிப்பாய்வு செய்ய வேண்டும்."}
+    },
+    "te": {
+      "section1": {
+          "title":"గోప్యతా విధానం",
+          "content":"ఈ గోప్యతా విధానం (సమిష్టిగా 'THE NERDS & CO', 'మేము', 'మా', 'మాకు') మా వెబ్‌సైట్ https://foxxydrip.com/ (ఇకపై 'ప్లాట్‌ఫారమ్'గా సూచించబడుతుంది) ద్వారా మీ సమాచారం/వ్యక్తిగత డేటాను ఎలా సేకరిస్తాము, ఉపయోగిస్తాము, పంచుకుంటాము, రక్షిస్తాము లేదా ప్రాసెస్ చేస్తామో వివరిస్తుంది. దయచేసి మీరు మాతో నమోదు చేసుకోకుండానే ప్లాట్‌ఫారమ్‌లోని కొన్ని విభాగాలను బ్రౌజ్ చేయవచ్చని గమనించండి. మేము ఈ ప్లాట్‌ఫారమ్ కింద భారతదేశం వెలుపల ఏ ఉత్పత్తి/సేవను అందించము మరియు మీ వ్యక్తిగత డేటా ప్రధానంగా భారతదేశంలో నిల్వ చేయబడుతుంది మరియు ప్రాసెస్ చేయబడుతుంది. ఈ ప్లాట్‌ఫారమ్‌ను సందర్శించడం ద్వారా, మీ సమాచారాన్ని అందించడం ద్వారా లేదా ప్లాట్‌ఫారమ్‌లో అందించే ఏదైనా ఉత్పత్తి/సేవను పొందడం ద్వారా, మీరు ఈ గోప్యతా విధానం, వినియోగ నిబంధనలు మరియు వర్తించే సేవ/ఉత్పత్తి నిబంధనలు మరియు షరతులకు కట్టుబడి ఉండటానికి స్పష్టంగా అంగీకరిస్తున్నారు మరియు డేటా రక్షణ మరియు గోప్యతా చట్టాలతో సహా భారతీయ చట్టాలచే పాలించబడటానికి అంగీకరిస్తున్నారు. మీరు అంగీకరించకపోతే, దయచేసి మా ప్లాట్‌ఫారమ్‌ను ఉపయోగించవద్దు లేదా యాక్సెస్ చేయవద్దు."
+      },
+      "section2": {
+          "title":"సమాచార సేకరణ",
+          "content":"మేము రిజిస్ట్రేషన్ మరియు సేవల ఉపయోగం సమయంలో పేరు, ఇమెయిల్, ఫోన్ మరియు చిరునామాతో సహా వ్యక్తిగత సమాచారాన్ని సేకరిస్తాము."
+      },
+      "section3": {
+          "title":"వినియోగం",
+          "content":"మేము సేవలను అందించడానికి, అనుభవాన్ని మెరుగుపరచడానికి, మోసాన్ని గుర్తించడానికి మరియు మార్కెటింగ్ పరిశోధన కోసం వ్యక్తిగత డేటాను ఉపయోగిస్తాము."
+      },
+      "section4": {"title":"సమాచార భాగస్వామ్యం మరియు బహిర్గతం","content":"మేము అనుబంధ సంస్థలు, భాగస్వాములతో లేదా చట్టపరమైన బాధ్యతలకు అనుగుణంగా డేటాను పంచుకోవచ్చు."},
+      "section5": {"title":"సహేతుకమైన భద్రతా పద్ధతులు","content":"మేము మీ డేటాను రక్షించడానికి సహేతుకమైన భద్రతా చర్యలను పాటిస్తాము, కానీ పూర్తి భద్రతకు హామీ ఇవ్వలేము."},
+      "section6": {"title":"డేటా తొలగింపు మరియు నిలుపుదల","content":"వినియోగదారులు వారి ఖాతాలను తొలగించవచ్చు. అవసరమైనంత కాలం లేదా చట్టబద్ధంగా అవసరమైనంత కాలం డేటా నిలుపుకోబడుతుంది."},
+      "section7": {"title":"మీ హక్కులు","content":"మీరు ప్లాట్‌ఫారమ్ ద్వారా మీ వ్యక్తిగత డేటాను యాక్సెస్ చేయవచ్చు, సరిదిద్దుకోవచ్చు మరియు నవీకరించవచ్చు."},
+      "section8": {"title":"సమ్మతి","content":"ప్లాట్‌ఫారమ్‌ను ఉపయోగించడం ద్వారా, మీరు ఈ గోప్యతా విధానానికి అనుగుణంగా డేటా సేకరణ మరియు ప్రాసెసింగ్‌కు సమ్మతిస్తున్నారు."},
+      "section9": {"title":"ఈ గోప్యతా విధానంలో మార్పులు","content":"మేము ఈ విధానాన్ని కాలానుగుణంగా నవీకరించవచ్చు. వినియోగదారులు దీన్ని క్రమం తప్పకుండా సమీక్షించాలి."}
+    },
+    "mr": {
+      "section1": {
+          "title":"गोपनीयता धोरण",
+          "content":"हे गोपनीयता धोरण (एकत्रितपणे 'THE NERDS & CO', 'आम्ही', 'आमचे', 'आम्हाला') आमच्या https://foxxydrip.com/ ('प्लॅटफॉर्म' म्हणून संदर्भित) वेबसाइटद्वारे तुमची माहिती/वैयक्तिक डेटा कसा संकलित, वापर, सामायिक, संरक्षित किंवा अन्यथा प्रक्रिया करतो याचे वर्णन करते. कृपया लक्षात घ्या की तुम्ही आमच्याकडे नोंदणी न करता प्लॅટफॉर्मचे काही विभाग ब्राउझ करू शकता. आम्ही या प्लॅटफॉर्मअंतर्गत भारताबाहेर कोणतेही उत्पादन/सेवा देत नाही आणि तुमचा वैयक्तिक डेटा प्रामुख्याने भारतात संग्रहित आणि प्रक्रिया केला जाईल. या प्लॅटफॉर्मला भेट देऊन, तुमची माहिती प्रदान करून किंवा प्लॅટफॉर्मवर ऑफर केलेल्या कोणत्याही उत्पादन/सेवेचा लाभ घेऊन, तुम्ही या गोपनीयता धोरणाच्या अटी व शर्ती, वापराच्या अटी आणि लागू सेवा/उत्पादन अटी व शर्तींना बांधील असण्यास स्पष्टपणे सहमत आहात आणि डेटा संरक्षण आणि गोपनीयता कायद्यांसह भारतीय कायद्यांद्वारे शासित होण्यास सहमत आहात. तुम्ही सहमत नसल्यास, कृपया आमचा प्लॅटफॉर्म वापरू नका किंवा त्यात प्रवेश करू नका."
+      },
+      "section2": {
+          "title":"माहिती संकलन",
+          "content":"आम्ही नोंदणी आणि सेवांच्या वापरादरम्यान नाव, ईमेल, फोन आणि पत्ता यासह वैयक्तिक माहिती संकलित करतो."
+      },
+      "section3": {
+          "title":"वापर",
+          "content":"आम्ही सेवा प्रदान करण्यासाठी, अनुभव वाढवण्यासाठी, फसवणूक शोधण्यासाठी आणि विपणन संशोधनासाठी वैयक्तिक डेटा वापरतो."
+      },
+      "section4": {"title":"माहिती सामायिकरण आणि प्रकटीकरण","content":"आम्ही संलग्न, भागीदारांसह किंवा कायदेशीर जबाबदाऱ्यांचे पालन करण्यासाठी डेटा सामायिक करू शकतो."},
+      "section5": {"title":"वाजवी सुरक्षा पद्धती","content":"आम्ही तुमचा डेटा संरक्षित करण्यासाठी वाजवी सुरक्षा उपाययोजना करतो, परंतु संपूर्ण सुरक्षिततेची हमी देऊ शकत नाही."},
+      "section6": {"title":"डेटा हटवणे आणि राखून ठेवणे","content":"वापरकर्ते त्यांची खाती हटवू शकतात. जोपर्यंत आवश्यक असेल किंवा कायदेशीररित्या आवश्यक असेल तोपर्यंत डेटा राखून ठेवला जातो."},
+      "section7": {"title":"तुमचे अधिकार","content":"तुम्ही प्लॅटफॉर्मद्वारे तुमचा वैयक्तिक डेटा ઍક્સેસ करू शकता, दुरुस्त करू शकता आणि अद्यतनित करू शकता."},
+      "section8": {"title":"संमती","content":"प्लॅटफॉर्म वापरून, तुम्ही या गोपनीयता धोरणानुसार डेटा संकलन आणि प्रक्रियेसाठी संमती देता."},
+      "section9": {"title":"या गोपनीयता धोरणातील बदल","content":"आम्ही हे धोरण वेळोवेळी अद्यतनित करू शकतो. वापरकर्त्यांनी त्याचे नियमितपणे पुनरावलोकन केले पाहिजे."}
+    },
+    "ml": {
+      "section1": {
+          "title":"സ്വകാര്യതാ നയം",
+          "content":"ഈ സ്വകാര്യതാ നയം (കൂട്ടായി 'THE NERDS & CO', 'ഞങ്ങൾ', 'ഞങ്ങളുടെ', 'നമ്മുടെ') ഞങ്ങളുടെ വെബ്സൈറ്റായ https://foxxydrip.com/ ('പ്ലാറ്റ്ഫോം' എന്ന് ഇനിമുതൽ അറിയപ്പെടുന്നു) വഴി നിങ്ങളുടെ വിവരങ്ങൾ/വ്യക്തിഗത ഡാറ്റ എങ്ങനെ ശേഖരിക്കുന്നു, ഉപയോഗിക്കുന്നു, പങ്കിടുന്നു, സംരക്ഷിക്കുന്നു അല്ലെങ്കിൽ പ്രോസസ്സ് ചെയ്യുന്നു എന്ന് വിവരിക്കുന്നു. ഞങ്ങളിൽ രജിസ്റ്റർ ചെയ്യാതെ തന്നെ നിങ്ങൾക്ക് പ്ലാറ്റ്‌ഫോമിന്റെ ചില ഭാഗങ്ങൾ ബ്രൗസ് ചെയ്യാമെന്ന് ദയവായി ശ്രദ്ധിക്കുക. ഈ പ്ലാറ്റ്‌ഫോമിന് കീഴിൽ ഞങ്ങൾ ഇന്ത്യയ്ക്ക് പുറത്ത് ഒരു ഉൽപ്പന്നവും/സേവനവും വാഗ്ദാനം ചെയ്യുന്നില്ല, നിങ്ങളുടെ സ്വകാര്യ ഡാറ്റ പ്രാഥമികമായി ഇന്ത്യയിലായിരിക്കും സംഭരിക്കുകയും പ്രോസസ്സ് ചെയ്യുകയും ചെയ്യുക. ഈ പ്ലാറ്റ്ഫോം സന്ദർശിക്കുന്നതിലൂടെയോ, നിങ്ങളുടെ വിവരങ്ങൾ നൽകുന്നതിലൂടെയോ, അല്ലെങ്കിൽ പ്ലാറ്റ്‌ഫോമിൽ വാഗ്ദാനം ചെയ്യുന്ന ഏതെങ്കിലും ഉൽപ്പന്നം/സേവനം പ്രയോജനപ്പെടുത്തുന്നതിലൂടെയോ, ഈ സ്വകാര്യതാ നയത്തിലെ നിബന്ധനകളും വ്യവസ്ഥകളും, ഉപയോഗ നിബന്ധനകളും, ബാധകമായ സേവന/ഉൽപ്പന്ന നിബന്ധനകളും വ്യവസ്ഥകളും നിങ്ങൾ അംഗീകരിക്കുന്നു, കൂടാതെ ഡാറ്റാ സംരക്ഷണവും സ്വകാര്യതാ നിയമങ്ങളും ഉൾപ്പെടെയുള്ള ഇന്ത്യൻ നിയമങ്ങളാൽ ഭരിക്കപ്പെടുമെന്ന് സമ്മതിക്കുന്നു. നിങ്ങൾ സമ്മതിക്കുന്നില്ലെങ്കിൽ, ദയവായി ഞങ്ങളുടെ പ്ലാറ്റ്ഫോം ഉപയോഗിക്കുകയോ ആക്സസ് ചെയ്യുകയോ ചെയ്യരുത്."
+      },
+      "section2": {
+          "title":"വിവരശേഖരണം",
+          "content":"രജിസ്ട്രേഷൻ സമയത്തും സേവനങ്ങൾ ഉപയോഗിക്കുമ്പോഴും പേര്, ഇമെയിൽ, ഫോൺ, വിലാസം എന്നിവയുൾപ്പെടെയുള്ള വ്യക്തിഗത വിവരങ്ങൾ ഞങ്ങൾ ശേഖരിക്കുന്നു."
+      },
+      "section3": {
+          "title":"ഉപയോഗം",
+          "content":"സേവനങ്ങൾ നൽകുന്നതിനും, അനുഭവം മെച്ചപ്പെടുത്തുന്നതിനും, വഞ്ചന കണ്ടെത്തുന്നതിനും, മാർക്കറ്റിംഗ് ഗവേഷണത്തിനും ഞങ്ങൾ വ്യക്തിഗത ഡാറ്റ ഉപയോഗിക്കുന്നു."
+      },
+      "section4": {"title":"വിവരങ്ങൾ പങ്കുവെക്കലും വെളിപ്പെടുത്തലും","content":"അംഗസ്ഥാപനങ്ങളുമായോ, പങ്കാളികളുമായോ, അല്ലെങ്കിൽ നിയമപരമായ ബാധ്യതകൾ നിറവേറ്റുന്നതിനോ ഞങ്ങൾ ഡാറ്റ പങ്കിടാം."},
+      "section5": {"title":"ന്യായമായ സുരക്ഷാ രീതികൾ","content":"നിങ്ങളുടെ ഡാറ്റ പരിരക്ഷിക്കുന്നതിന് ഞങ്ങൾ ന്യായമായ സുരക്ഷാ നടപടികൾ സ്വീകരിക്കുന്നു, എന്നാൽ പൂർണ്ണമായ സുരക്ഷ ഉറപ്പുനൽകാൻ കഴിയില്ല."},
+      "section6": {"title":"ഡാറ്റ ഇല്ലാതാക്കലും നിലനിർത്തലും","content":"ഉപയോക്താക്കൾക്ക് അവരുടെ അക്കൗണ്ടുകൾ ഇല്ലാതാക്കാം. ആവശ്യമായ കാലയളവിലേക്കോ നിയമപരമായി ആവശ്യമുള്ളിടത്തോളമോ ഡാറ്റ നിലനിർത്തുന്നതാണ്."},
+      "section7": {"title":"നിങ്ങളുടെ അവകാശങ്ങൾ","content":"പ്ലാറ്റ്ഫോമിലൂടെ നിങ്ങളുടെ വ്യക്തിഗത ഡാറ്റ ആക്സസ് ചെയ്യാനും, തിരുത്താനും, അപ്ഡേറ്റ് ചെയ്യാനും നിങ്ങൾക്ക് കഴിയും."},
+      "section8": {"title":"സമ്മതം","content":"പ്ലാറ്റ്ഫോം ഉപയോഗിക്കുന്നതിലൂടെ, ഈ സ്വകാര്യതാ നയത്തിന് അനുസൃതമായി ഡാറ്റ ശേഖരിക്കുന്നതിനും പ്രോസസ്സ് ചെയ്യുന്നതിനും നിങ്ങൾ സമ്മതം നൽകുന്നു."},
+      "section9": {"title":"ഈ സ്വകാര്യതാ നയത്തിലെ മാറ്റങ്ങൾ","content":"ഞങ്ങൾ ഈ നയം ഇടയ്ക്കിടെ അപ്ഡേറ്റ് ചെയ്തേക്കാം. ഉപയോക്താക്കൾ ഇത് പതിവായി അവലോകനം ചെയ്യണം."}
+    },
+    "bn": {
+      "section1": {
+          "title":"গোপনীয়তা নীতি",
+          "content":"এই গোপনীয়তা নীতি বর্ণনা করে যে কীভাবে (সম্মিলিতভাবে 'THE NERDS & CO', 'আমরা', 'আমাদের') আমাদের ওয়েবসাইট https://foxxydrip.com/ (এরপরে 'প্ল্যাটফর্ম' হিসাবে উল্লেখ করা হয়েছে) এর মাধ্যমে আপনার তথ্য/ব্যক্তিগত ডেটা সংগ্রহ, ব্যবহার, শেয়ার, সুরক্ষিত বা অন্যথায় প্রক্রিয়া করি। অনুগ্রহ করে মনে রাখবেন যে আপনি আমাদের কাছে নিবন্ধন না করেই প্ল্যাটফর্মের কিছু বিভাগ ব্রাউজ করতে পারেন। আমরা এই প্ল্যাটফর্মের অধীনে ভারতের বাইরে কোনও পণ্য/পরিষেবা অফার করি না এবং আপনার ব্যক্তিগত ডেটা প্রাথমিকভাবে ভারতে সংরক্ষণ এবং প্রক্রিয়া করা হবে। এই প্ল্যাটফর্মে গিয়ে, আপনার তথ্য প্রদান করে বা প্ল্যাটফর্মে দেওয়া কোনও পণ্য/পরিষেবা গ্রহণ করে, আপনি স্পষ্টভাবে এই গোপনীয়তা নীতির শর্তাবলী, ব্যবহারের শর্তাবলী এবং প্রযোজ্য পরিষেবা/পণ্যের শর্তাবলী দ্বারা আবদ্ধ হতে সম্মত হন এবং ডেটা সুরক্ষা এবং গোপনীয়তা আইন সহ ভারতের আইন দ্বারা পরিচালিত হতে সম্মত হন। আপনি যদি সম্মত না হন, তবে দয়া করে আমাদের প্ল্যাটফর্ম ব্যবহার বা অ্যাক্সেস করবেন না।"
+      },
+      "section2": {
+          "title":"তথ্য সংগ্রহ",
+          "content":"আমরা নিবন্ধন এবং পরিষেবা ব্যবহারের সময় নাম, ইমেল, ফোন এবং ঠিকানা সহ ব্যক্তিগত তথ্য সংগ্রহ করি।"
+      },
+      "section3": {
+          "title":"ব্যবহার",
+          "content":"আমরা পরিষেবা প্রদান, অভিজ্ঞতা বৃদ্ধি, জালিয়াতি সনাক্তকরণ এবং বিপণন গবেষণার জন্য ব্যক্তিগত ডেটা ব্যবহার করি।"
+      },
+      "section4": {"title":"তথ্য শেয়ারিং এবং প্রকাশ","content":"আমরা অনুমোদিত সংস্থা, অংশীদারদের সাথে বা আইনি বাধ্যবাধকতা পূরণের জন্য ডেটা শেয়ার করতে পারি।"},
+      "section5": {"title":"যুক্তিসঙ্গত নিরাপত্তা অনুশীলন","content":"আমরা আপনার ডেটা সুরক্ষিত রাখতে যুক্তিসঙ্গত নিরাপত্তা ব্যবস্থা গ্রহণ করি, কিন্তু সম্পূর্ণ নিরাপত্তার নিশ্চয়তা দিতে পারি না।"},
+      "section6": {"title":"ডেটা মুছে ফেলা এবং ধরে রাখা","content":"ব্যবহারকারীরা তাদের অ্যাকাউন্ট মুছে ফেলতে পারেন। যতক্ষণ প্রয়োজন বা আইনত আবশ্যক ততক্ষণ ডেটা ধরে রাখা হয়।"},
+      "section7": {"title":"আপনার অধিকার","content":"আপনি প্ল্যাটফর্মের মাধ্যমে আপনার ব্যক্তিগত ডেটা অ্যাক্সেস, সংশোধন এবং আপডেট করতে পারেন।"},
+      "section8": {"title":"সম্মতি","content":"প্ল্যাটফর্ম ব্যবহার করে, আপনি এই গোপনীয়তা নীতি অনুসারে ডেটা সংগ্রহ এবং প্রক্রিয়াকরণে সম্মতি দিচ্ছেন।"},
+      "section9": {"title":"এই গোপনীয়તા নীতিতে পরিবর্তন","content":"আমরা পর্যায়ক্রমে এই নীতি আপডেট করতে পারি। ব্যবহারকারীদের এটি নিয়মিত পর্যালোচনা করা উচিত।"}
+    },
+    "kn": {
+      "section1": {
+          "title":"ಗೌಪ್ಯತಾ ನೀತಿ",
+          "content":"ಈ ಗೌಪ್ಯತಾ ನೀತಿಯು (ಒಟ್ಟಾರೆಯಾಗಿ 'THE NERDS & CO', 'ನಾವು', 'ನಮ್ಮ', 'ನಮಗೆ') ನಮ್ಮ ವೆಬ್‌ಸೈಟ್ https://foxxydrip.com/ (ಇನ್ನು ಮುಂದೆ 'ಪ್ಲಾಟ್‌ಫಾರ್ಮ್' ಎಂದು ಉಲ್ಲೇಖಿಸಲಾಗಿದೆ) ಮೂಲಕ ನಿಮ್ಮ ಮಾಹಿತಿ/ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಹೇಗೆ ಸಂಗ್ರಹಿಸುತ್ತೇವೆ, ಬಳಸುತ್ತೇವೆ, ಹಂಚಿಕೊಳ್ಳುತ್ತೇವೆ, ರಕ್ಷಿಸುತ್ತೇವೆ ಅಥವಾ ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುತ್ತೇವೆ ಎಂಬುದನ್ನು ವಿವರಿಸುತ್ತದೆ. ದಯವಿಟ್ಟು ಗಮನಿಸಿ, ನೀವು ನಮ್ಮಲ್ಲಿ ನೋಂದಾಯಿಸಿಕೊಳ್ಳದೆ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನ ಕೆಲವು ವಿಭಾಗಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಬಹುದು. ನಾವು ಈ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಅಡಿಯಲ್ಲಿ ಭಾರತದ ಹೊರಗೆ ಯಾವುದೇ ಉತ್ಪನ್ನ/ಸೇವೆಯನ್ನು ನೀಡುವುದಿಲ್ಲ ಮತ್ತು ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಪ್ರಾಥಮಿಕವಾಗಿ ಭಾರತದಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಸಂಸ್ಕರಿಸಲಾಗುತ್ತದೆ. ಈ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ಗೆ ಭೇಟಿ ನೀಡುವ ಮೂಲಕ, ನಿಮ್ಮ ಮಾಹಿತಿಯನ್ನು ಒದಗಿಸುವ ಮೂಲಕ ಅಥವಾ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್‌ನಲ್ಲಿ ನೀಡಲಾಗುವ ಯಾವುದೇ ಉತ್ಪನ್ನ/ಸೇವೆಯನ್ನು ಪಡೆಯುವ ಮೂಲಕ, ಈ ಗೌಪ್ಯತಾ ನೀತಿಯ ನಿಯಮಗಳು ಮತ್ತು ನಿಬಂಧನೆಗಳು, ಬಳಕೆಯ ನಿಯಮಗಳು ಮತ್ತು ಅನ್ವಯವಾಗುವ ಸೇವೆ/ಉತ್ಪನ್ನದ ನಿಯಮಗಳು ಮತ್ತು ನಿಬಂಧನೆಗಳಿಗೆ ಬದ್ಧರಾಗಿರಲು ನೀವು ಸ್ಪಷ್ಟವಾಗಿ ಒಪ್ಪುತ್ತೀರಿ ಮತ್ತು ಡೇಟಾ ಸಂರಕ್ಷಣೆ ಮತ್ತು ಗೌಪ್ಯತೆ ಕಾನೂನುಗಳು ಸೇರಿದಂತೆ ಭಾರತದ ಕಾನೂನುಗಳಿಂದ ನಿಯಂತ್ರಿಸಲ್ಪಡಲು ಒಪ್ಪುತ್ತೀರಿ. ನೀವು ಒಪ್ಪದಿದ್ದರೆ, ದಯವಿಟ್ಟು ನಮ್ಮ ಪ್ಲಾಟ್‌ফর্ম ಅನ್ನು ಬಳಸಬೇಡಿ ಅಥವಾ ಪ್ರವೇಶಿಸಬೇಡಿ."
+      },
+      "section2": {
+          "title":"ಮಾಹಿತಿ ಸಂಗ್ರಹ",
+          "content":"ನೋಂದಣಿ ಮತ್ತು ಸೇವೆಗಳ ಬಳಕೆಯ ಸಮಯದಲ್ಲಿ ಹೆಸರು, ಇಮೇಲ್, ಫೋನ್ ಮತ್ತು ವಿಳಾಸ ಸೇರಿದಂತೆ ವೈಯಕ್ತಿಕ ಮಾಹಿತಿಯನ್ನು ನಾವು ಸಂಗ್ರಹಿಸುತ್ತೇವೆ."
+      },
+      "section3": {
+          "title":"ಬಳಕೆ",
+          "content":"ಸೇವೆಗಳನ್ನು ಒದಗಿಸಲು, ಅನುಭವವನ್ನು ಹೆಚ್ಚಿಸಲು, ವಂಚನೆಯನ್ನು ಪತ್ತೆಹಚ್ಚಲು ಮತ್ತು ಮಾರ್ಕೆಟಿಂಗ್ ಸಂಶೋಧನೆಗಾಗಿ ನಾವು ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಬಳಸುತ್ತೇವೆ."
+      },
+      "section4": {"title":"ಮಾಹಿತಿ ಹಂಚಿಕೆ ಮತ್ತು ಬಹಿರಂಗಪಡಿಸುವಿಕೆಗಳು","content":"ನಾವು ಅಂಗಸಂಸ್ಥೆಗಳು, ಪಾಲುದಾರರೊಂದಿಗೆ ಅಥವಾ ಕಾನೂನು ಬಾಧ್ಯತೆಗಳನ್ನು ಅನುಸರಿಸಲು ಡೇಟಾವನ್ನು ಹಂಚಿಕೊಳ್ಳಬಹುದು."},
+      "section5": {"title":"ಸಮಂಜಸವಾದ ಭದ್ರತಾ ಅಭ್ಯಾಸಗಳು","content":"ನಿಮ್ಮ ಡೇಟಾವನ್ನು ರಕ್ಷಿಸಲು ನಾವು ಸಮಂಜಸವಾದ ಭದ್ರತಾ ಕ್ರಮಗಳನ್ನು ಅಳವಡಿಸಿಕೊಳ್ಳುತ್ತೇವೆ, ಆದರೆ ಸಂಪೂರ್ಣ ಭದ್ರತೆಯನ್ನು ಖಾತರಿಪಡಿಸುವುದಿಲ್ಲ."},
+      "section6": {"title":"ಡೇಟಾ ಅಳಿಸುವಿಕೆ ಮತ್ತು ಉಳಿಸಿಕೊಳ್ಳುವಿಕೆ","content":"ಬಳಕೆದಾರರು ತಮ್ಮ ಖಾತೆಗಳನ್ನು ಅಳಿಸಬಹುದು. ಅಗತ್ಯವಿರುವವರೆಗೆ ಅಥವಾ ಕಾನೂನುಬದ್ಧವಾಗಿ ಅಗತ್ಯವಿರುವವರೆಗೆ ಡೇಟಾವನ್ನು ಉಳಿಸಿಕೊಳ್ಳಲಾಗುತ್ತದೆ."},
+      "section7": {"title":"ನಿಮ್ಮ ಹಕ್ಕುಗಳು","content":"ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಮೂಲಕ ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ನೀವು ಪ್ರವೇಶಿಸಬಹುದು, ಸರಿಪಡಿಸಬಹುದು ಮತ್ತು ನವೀಕರಿಸಬಹುದು."},
+      "section8": {"title":"ಒಪ್ಪಿಗೆ","content":"ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಬಳಸುವ ಮೂಲಕ, ಈ ಗೌಪ್ಯತಾ ನೀತಿಗೆ ಅನುಗುಣವಾಗಿ ಡೇಟಾ ಸಂಗ್ರಹಣೆ ಮತ್ತು ಪ್ರಕ್ರಿಯೆಗೆ ನೀವು ಸಮ್ಮತಿಸುತ್ತೀರಿ."},
+      "section9": {"title":"ಈ ಗೌಪ್ಯತಾ ನೀತಿಯಲ್ಲಿ ಬದಲಾವಣೆಗಳು","content":"ನಾವು ಈ ನೀತಿಯನ್ನು ನಿಯತಕಾಲಿಕವಾಗಿ ನವೀಕರಿಸಬಹುದು. ಬಳಕೆದಾರರು ಇದನ್ನು ನಿಯಮಿತವಾಗಿ ಪರಿಶೀಲಿಸಬೇಕು."}
+    },
+    "hi": {
+      "section1": {
+          "title":"गोपनीयता नीति",
+          "content":"यह गोपनीयता नीति बताती है कि (सामूहिक रूप से 'द नर्ड्स एंड कंपनी', 'हम', 'हमारा', 'हमें') हमारी वेबसाइट https://foxxydrip.com/ ('प्लेटफ़ॉर्म' के रूप में संदर्भित) के माध्यम से आपकी जानकारी/व्यक्तिगत डेटा को कैसे एकत्र, उपयोग, साझा, संरक्षित या अन्यथा संसाधित करते हैं। कृपया ध्यान दें कि आप हमारे साथ पंजीकरण किए बिना प्लेटफ़ॉर्म के कुछ अनुभागों को ब्राउज़ कर सकते हैं। हम इस प्लेटफ़ॉर्म के तहत भारत के बाहर किसी भी उत्पाद/सेवा की पेशकश नहीं करते हैं और आपका व्यक्तिगत डेटा मुख्य रूप से भारत में संग्रहीत और संसाधित किया जाएगा। इस प्लेटफ़ॉर्म पर जाकर, अपनी जानकारी प्रदान करके या प्लेटफ़ॉर्म पर दी जाने वाली किसी भी उत्पाद/सेवा का लाभ उठाकर, आप इस गोपनीयता नीति, उपयोग की शर्तों और लागू सेवा/उत्पाद नियमों और शर्तों से बंधे होने के लिए स्पष्ट रूप से सहमत हैं, और भारत के कानूनों द्वारा शासित होने के लिए सहमत हैं जिसमें डेटा संरक्षण और गोपनीयता कानून शामिल हैं। यदि आप सहमत नहीं हैं, तो कृपया हमारे प्लेटफ़ॉर्म का उपयोग या एक्सेस न करें।"
+      },
+      "section2": {
+          "title":"जानकारी संग्रह",
+          "content":"हम पंजीकरण और सेवाओं के उपयोग के दौरान व्यक्तिगत जानकारी एकत्र करते हैं, जिसमें नाम, ईमेल, फोन और पता शामिल है।"
+      },
+      "section3": {
+          "title":"उपयोग",
+          "content":"हम सेवाएं प्रदान करने, अनुभव बढ़ाने, धोखाधड़ी का पता लगाने और विपणन अनुसंधान के लिए व्यक्तिगत डेटा का उपयोग करते हैं।"
+      },
+      "section4": {"title":"जानकारी साझा करना और प्रकटीकरण","content":"हम डेटा को सहयोगियों, भागीदारों के साथ या कानूनी दायित्वों का पालन करने के लिए साझा कर सकते हैं।"},
+      "section5": {"title":"उचित सुरक्षा प्रथाएं","content":"हम आपके डेटा की सुरक्षा के लिए उचित सुरक्षा उपाय अपनाते हैं, लेकिन पूर्ण सुरक्षा की गारंटी नहीं दे सकते।"},
+      "section6": {"title":"डेटा हटाना और प्रतिधारण","content":"उपयोगकर्ता अपने खाते हटा सकते हैं। डेटा तब तक रखा जाता है जब तक आवश्यक हो या कानूनी रूप से आवश्यक हो।"},
+      "section7": {"title":"आपके अधिकार","content":"आप प्लेटफ़ॉर्म के माध्यम से अपने व्यक्तिगत डेटा तक पहुंच सकते हैं, उसे सुधार सकते हैं और अपडेट कर सकते हैं।"},
+      "section8": {"title":"सहमति","content":"प्लेटफ़ॉर्म का उपयोग करके, आप इस गोपनीयता नीति के अनुसार डेटा संग्रह और प्रसंस्करण के लिए सहमति देते हैं।"},
+      "section9": {"title":"इस गोपनीयता नीति में परिवर्तन","content":"हम समय-समय पर इस नीति को अपडेट कर सकते हैं। उपयोगकर्ताओं को नियमित रूप से इसकी समीक्षा करनी चाहिए।"}
+    },
+    "or": {
+      "section1": {
+          "title":"ଗୋପନୀୟତା ନୀତି",
+          "content":"ଏହି ଗୋପନୀୟତା ନୀତି ବର୍ଣ୍ଣନା କରେ କିପରି (ସମୂହ ଭାବରେ 'THE NERDS & CO', 'ଆମେ', 'ଆମର', 'ଆମକୁ') ଆମର ୱେବସାଇଟ୍ https://foxxydrip.com/ (ଏଠାରେ 'ପ୍ଲାଟଫର୍ମ' ଭାବରେ କୁହାଯାଏ) ମାଧ୍ୟମରେ ଆପଣଙ୍କର ସୂଚନା/ବ୍ୟକ୍ତିଗତ ଡାଟା ସଂଗ୍ରହ, ବ୍ୟବହାର, ଅଂଶୀଦାର, ସୁରକ୍ଷା କିମ୍ବା ଅନ୍ୟଥା ପ୍ରକ୍ରିୟା କରୁ। ଦୟାକରି ଧ୍ୟାନ ଦିଅନ୍ତୁ ଯେ ଆପଣ ଆମ ସହିତ ପଞ୍ଜୀକରଣ ନକରି ପ୍ଲାଟଫର୍ମର କିଛି ବିଭାଗ ବ୍ରାଉଜ୍ କରିପାରିବେ। ଆମେ ଏହି ପ୍ଲାଟଫର୍ମ ଅଧୀନରେ ଭାରତ ବାହାରେ କୌଣସି ଉତ୍ପାଦ/ସେବା ପ୍ରଦାନ କରୁନାହୁଁ ଏବଂ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ମୁଖ୍ୟତଃ ଭାରତରେ ସଂରକ୍ଷିତ ଏବଂ ପ୍ରକ୍ରିୟାକରଣ ହେବ। ଏହି ପ୍ଲାଟଫର୍ମ ପରିଦର୍ଶନ କରି, ଆପଣଙ୍କର ସୂଚନା ପ୍ରଦାନ କରି କିମ୍ବା ପ୍ଲାଟଫର୍ମରେ ଦିଆଯାଇଥିବା କୌଣସି ଉତ୍ପାଦ/ସେବାର ଲାଭ ଉଠାଇ, ଆପଣ ଏହି ଗୋପନୀୟତା ନୀତି, ବ୍ୟବହାରର ସର୍ତ୍ତାବଳୀ ଏବଂ ପ୍ରଯୁଜ୍ୟ ସେବା/ଉତ୍ପାଦ ସର୍ତ୍ତାବଳୀ ଦ୍ୱାରା ବାଧ୍ୟ ହେବାକୁ ସ୍ପଷ୍ଟ ଭାବରେ ସହମତ ଅଟନ୍ତି, ଏବଂ ଡାଟା ସୁରକ୍ଷା ଏବଂ ଗୋପନୀୟତା ଆଇନ ସମେତ ଭାରତର ଆଇନ ଦ୍ୱାରା ଶାସିତ ହେବାକୁ ସହମତ ଅଟନ୍ତି। ଯଦି ଆପଣ ସହମତ ନୁହଁନ୍ତି, ଦୟାକରି ଆମର ପ୍ଲାଟଫର୍ମ ବ୍ୟବହାର କରନ୍ତୁ ନାହିଁ କିମ୍ବା ଆକ୍ସେସ୍ କରନ୍ତୁ ନାହିଁ।"
+      },
+      "section2": {
+          "title":"ସୂଚନା ସଂଗ୍ରହ",
+          "content":"ଆମେ ପଞ୍ଜୀକରଣ ଏବଂ ସେବା ବ୍ୟବହାର ସମୟରେ ନାମ, ଇମେଲ୍, ଫୋନ୍ ଏବଂ ଠିକଣା ସମେତ ବ୍ୟକ୍ତିଗତ ସୂଚନା ସଂଗ୍ରହ କରୁ।"
+      },
+      "section3": {
+          "title":"ବ୍ୟବହାର",
+          "content":"ଆମେ ସେବା ପ୍ରଦାନ କରିବା, ଅନୁଭୂତି ବଢାଇବା, ଜାଲିଆତି ଚିହ୍ନଟ କରିବା ଏବଂ ମାର୍କେଟିଂ ଅନୁସନ୍ଧାନ ପାଇଁ ବ୍ୟକ୍ତିଗତ ଡାଟା ବ୍ୟବହାର କରୁ।"
+      },
+      "section4": {"title":"ସୂଚନା ଅଂଶୀଦାର ଏବଂ ପ୍ରକାଶନ","content":"ଆମେ ସହଯୋଗୀ, ଅଂଶୀଦାରମାନଙ୍କ ସହିତ କିମ୍ବା ଆଇନଗତ ବାଧ୍ୟତାମୂଳକ ପାଳନ କରିବା ପାଇଁ ଡାଟା ଅଂଶୀଦାର କରିପାରୁ।"},
+      "section5": {"title":"ଯୁକ୍ତିଯୁକ୍ତ ସୁରକ୍ଷା ଅଭ୍ୟାସ","content":"ଆମେ ଆପଣଙ୍କର ଡାଟା ସୁରକ୍ଷା ପାଇଁ ଯୁକ୍ତିଯୁକ୍ତ ସୁରକ୍ଷା ପଦକ୍ଷେପ ଗ୍ରହଣ କରୁ, କିନ୍ତୁ ସମ୍ପୂର୍ଣ୍ଣ ସୁରକ୍ଷାର ଗ୍ୟାରେଣ୍ଟି ଦେଇପାରିବୁ ନାହିଁ।"},
+      "section6": {"title":"ଡାଟା ବିଲୋପ ଏବଂ ଧାରଣ","content":"ବ୍ୟବହାରକାରୀମାନେ ସେମାନଙ୍କର ଆକାଉଣ୍ଟ ବିଲୋପ କରିପାରିବେ। ଯେପର୍ଯ୍ୟନ୍ତ ଆବଶ୍ୟକ କିମ୍ବା ଆଇନଗତ ଭାବରେ ଆବଶ୍ୟକ, ଡାଟା ଧାରଣ କରାଯାଏ।"},
+      "section7": {"title":"ଆପଣଙ୍କର ଅଧିକାର","content":"ଆପଣ ପ୍ଲାଟଫର୍ମ ମାଧ୍ୟମରେ ଆପଣଙ୍କର ବ୍ୟକ୍ତିଗତ ଡାଟା ଆକ୍ସେସ୍, ସଂଶୋଧନ ଏବଂ ଅଦ୍ୟତନ କରିପାରିବେ।"},
+      "section8": {"title":"ସମ୍ମତି","content":"ପ୍ଲାଟଫର୍ମ ବ୍ୟବହାର କରି, ଆପଣ ଏହି ଗୋପନୀୟତା ନୀତି ଅନୁଯାୟୀ ଡାଟା ସଂଗ୍ରହ ଏବଂ ପ୍ରକ୍ରିୟାକରଣ ପାଇଁ ସମ୍ମତି ଦିଅନ୍ତି।"},
+      "section9": {"title":"ଏହି ଗୋପନୀୟତା ନୀତିରେ ପରିବର୍ତ୍ତନ","content":"ଆମେ ସମୟ ସମୟରେ ଏହି ନୀତିକୁ ଅଦ୍ୟତନ କରିପାରୁ। ବ୍ୟବହାରକାରୀମାନେ ଏହାକୁ ନିୟମିତ ସମୀକ୍ଷା କରିବା ଉଚିତ୍।"}
+    }
+  };
 
-// Click scrolling
-sidebarLinks.forEach(link => {
-    link.addEventListener("click", () => {
-        const target = document.getElementById(link.dataset.target);
-        window.scrollTo({ top: target.offsetTop - 10, behavior: "smooth" });
-    });
-});
+  // Sidebar headings for all languages
+  const sidebarContent = {
+  "en": ["Privacy Policy","Information Collection","Usage","Information Sharing and Disclosures","Reasonable Security Practices","Data Deletion and Retention","Your Rights","Consent","Changes to this Privacy Policy"],
+  "gu": ["પ્રાયવસી પૉલિસી","માહિતી એકત્રિત કરવી","ઉપયોગ","માહિતી શેરિંગ અને જાહેર કરવું","યોગ્ય સુરક્ષા પ્રથા","ડેટા મિટાવવા અને જાળવણી","તમારા અધિકાર","સંમતિ","આ પ્રાયવસી પોલિસીમાં ફેરફારો"],
+  "ta": ["தனியுரிமைக் கொள்கை","தகவல் சேகரிப்பு","பயன்பாடு","தகவல் பகிர்வு மற்றும் வெளிப்படுத்தல்","வழக்கமான பாதுகாப்பு நடைமுறைகள்","தரவு நீக்கம் மற்றும் பாதுகாப்பு","உங்கள் உரிமைகள்","அனுமதி","தனியுரிமைக் கொள்கையில் மாற்றங்கள்"],
+  "te": ["గోప్యతా విధానం","సమాచారం సేకరణ","వినియోగం","సమాచారం భాగస్వామ్యం మరియు వెల్లడించటం","యథార్థ భద్రతా విధానాలు","డేటా తొలగింపు మరియు నిల్వ","మీ హక్కులు","సమ్మతి","గోప్యతా విధానంలో మార్పులు"],
+  "mr": ["गोपनीयता धोरण","माहिती संकलन","वापर","माहिती सामायिकरण आणि प्रकटीकरण","योग्य सुरक्षा पद्धती","डेटा हटवणे आणि राखणे","तुमचे हक्क","संमती","गोपनीयता धोरणातील बदल"],
+  "ml": ["സ്വകാര്യതാ നയം","വിവരം ശേഖരണം","ഉപയോഗം","വിവരം പങ്കിടലും വെളിപ്പെടുത്തലും","സമുചിതമായ സുരക്ഷാ പ്രവർത്തനങ്ങൾ","ഡാറ്റ ഡിലിഷൻ & നിലനിർത്തൽ","നിങ്ങളുടെ അവകാശങ്ങൾ","അനുമതി","സ്വകാര്യതാ നയത്തിലെ മാറ്റങ്ങൾ"],
+  "bn": ["গোপনীয়তা নীতি","তথ্য সংগ্রহ","ব্যবহার","তথ্য ভাগ এবং প্রকাশ","যুক্তিসঙ্গত নিরাপত্তা চর্চা","ডেটা মুছা এবং সংরক্ষণ","আপনার অধিকার","সম্মতি","গোপনীয়তা নীতিতে পরিবর্তন"],
+  "kn": ["ಗೋಪ್ಯತಾ ನೀತಿ","ಮಾಹಿತಿ ಸಂಗ್ರಹಣೆ","ಬಳಕೆ","ಮಾಹಿತಿ ಹಂಚಿಕೆ ಮತ್ತು ಬಹಿರಂಗಪಡಿಸುವುದು","ಯುಕ್ತಿಪೂರ್ಣ ಭದ್ರತಾ ಕ್ರಮಗಳು","ಡೇಟಾ ಅಳಿಸುವಿಕೆ ಮತ್ತು ಸಂಗ್ರಹಣೆ","ನಿಮ್ಮ ಹಕ್ಕುಗಳು","ಅನುಮತಿ","ಗೋಪ್ಯತಾ ನೀತಿಯಲ್ಲಿ ಬದಲಾವಣೆಗಳು"],
+  "hi": ["गोपनीयता नीति","सूचना संग्रहण","उपयोग","सूचना साझा करना और प्रकटीकरण","उचित सुरक्षा प्रथाएं","डेटा हटाना और प्रतिधारण","आपके अधिकार","सहमति","गोपनीयता नीति में परिवर्तन"],
+  "or": ["ଗୋପନୀୟତା ନୀତି","ସୂଚନା ସଂଗ୍ରହ","ବ୍ୟବହାର","ସୂଚନା ଅଂଶୀଦାରୀ ଓ ପ୍ରକାଶ","ଯଥୋଚିତ ସୁରକ୍ଷା ପଦକ୍ଷେପ","ଡାଟା ହଟାଇବା ଏବଂ ରଖିବା","ଆପଣଙ୍କର ଅଧିକାର","ସମ୍ମତି","ଗୋପନୀୟତା ନୀତିରେ ପରିବର୍ତ୍ତନ"]
+  };
+  function updateSections(lang) {
+      Object.keys(privacyContent[lang]).forEach(sectionId => {
+          document.getElementById(`${sectionId}_title`).innerText = privacyContent[lang][sectionId].title;
+          document.getElementById(`${sectionId}_content`).innerText = privacyContent[lang][sectionId].content;
+      });
 
-// Highlight active section on scroll
-window.addEventListener("scroll", () => {
-    let current = "";
-    sections.forEach(section => {
-        if (window.scrollY >= section.offsetTop - 60) {
-            current = section.id;
-        }
-    });
-    sidebarLinks.forEach(link => {
-        link.classList.remove("active");
-        if (link.dataset.target === current) {
-            link.classList.add("active");
-        }
-    });
-});
+      const sidebarLinks = document.querySelectorAll(".sidebar h3");
+      sidebarLinks.forEach((link, index) => {
+          link.innerText = sidebarContent[lang][index];
+          link.dataset.target = `section${index+1}`;
+      });
+  }
 
-// Language buttons
-const langButtons = document.querySelectorAll(".languages button");
-langButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        langButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        // Dynamic content switching can be implemented here
-    });
-});
+  // =====================
+  // Language button click
+  // =====================
+  const langButtons = document.querySelectorAll(".languages button");
+
+  function setActiveLangButton(lang) {
+      langButtons.forEach(btn => btn.classList.remove("active"));
+      document.querySelector(`.languages button[data-lang="${lang}"]`)?.classList.add("active");
+  }
+
+  // =====================
+  // Detect initial language
+  // =====================
+  let initialLang = window.location.pathname.split('/')[2] || 'en';
+  updateSections(initialLang);
+  setActiveLangButton(initialLang);
+
+  // =====================
+  // Button click event
+  // =====================
+  langButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+          const lang = btn.dataset.lang;
+          updateSections(lang);
+          setActiveLangButton(lang);
+
+          const newUrl = lang === 'en' ? '/privacy-policy/' : `/privacy-policy/${lang}/`;
+          window.history.pushState({ lang }, '', newUrl);
+      });
+  });
+
+  // =====================
+  // Browser back/forward support
+  // =====================
+  window.addEventListener("popstate", (event) => {
+      const lang = event.state?.lang || 'en';
+      updateSections(lang);
+      setActiveLangButton(lang);
+  });
+
+  // =====================
+  // Sidebar scroll & click
+  // =====================
+  const sidebarLinks = document.querySelectorAll(".sidebar h3");
+  const contentSections = document.querySelectorAll(".section");
+
+  sidebarLinks.forEach(link => {
+      link.addEventListener("click", () => {
+          const target = document.getElementById(link.dataset.target);
+          window.scrollTo({ top: target.offsetTop - 10, behavior: 'smooth' });
+      });
+  });
+
+  window.addEventListener("scroll", () => {
+      let current = "";
+      contentSections.forEach(section => {
+          if (window.scrollY >= section.offsetTop - 60) current = section.id;
+      });
+      sidebarLinks.forEach(link => link.classList.remove('active'));
+      sidebarLinks.forEach(link => {
+          if (link.dataset.target === current) link.classList.add('active');
+      });
+  });
 </script>
-</body>
+
 {% endblock body %}
