@@ -1,0 +1,226 @@
+{% extends "base.html" %} 
+{% load static %} 
+
+{% block title %}Privacy Policy | FOXXY DRIP{% endblock title %} 
+
+{% block body %} 
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/privacy_policy.css' %}">
+{% endblock extracss %} 
+
+<style>
+body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #333;
+    scroll-behavior: smooth;
+}
+
+/* Language buttons */
+.languages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+    background: #f7f7f7;
+}
+.languages button {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+.languages button.active {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* Main container */
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 40px;
+}
+
+/* Left sidebar */
+.sidebar {
+    flex: 1;
+    position: sticky;
+    top: 20px;
+    height: calc(100vh - 40px);
+    overflow-y: auto;
+    border-right: 1px solid #ddd;
+    padding-right: 20px;
+}
+.sidebar h3 {
+    margin-bottom: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 6px 0;
+    transition: all 0.2s;
+}
+.sidebar h3.active {
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Right content */
+.content {
+    flex: 3;
+}
+.section {
+    margin-bottom: 50px;
+}
+.section h2 {
+    margin-top: 0;
+    font-size: 20px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 6px;
+}
+.section p {
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+    }
+    .sidebar {
+        position: relative;
+        height: auto;
+        border-right: none;
+        padding-right: 0;
+        margin-bottom: 20px;
+    }
+}
+</style>
+
+<body>
+<!-- Language selection -->
+<div class="languages">
+    <button class="active" data-lang="en">English</button>
+    <button data-lang="gu">ગુજરાતી</button>
+    <button data-lang="ta">தமிழ்</button>
+    <button data-lang="te">తెలుగు</button>
+    <button data-lang="mr">मराठी</button>
+    <button data-lang="ml">മലയാളം</button>
+    <button data-lang="bn">বাংলা</button>
+    <button data-lang="kn">ಕನ್ನಡ</button>
+    <button data-lang="hi">हिंदी</button>
+    <button data-lang="or">ଓଡ଼ିଆ</button>
+</div>
+
+<div class="container">
+    <!-- Left Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h3 data-target="section1">Privacy Policy</h3>
+        <h3 data-target="section2">Information Collection</h3>
+        <h3 data-target="section3">Usage</h3>
+        <h3 data-target="section4">Information Sharing and Disclosures</h3>
+        <h3 data-target="section5">Reasonable Security Practices</h3>
+        <h3 data-target="section6">Data Deletion and Retention</h3>
+        <h3 data-target="section7">Your Rights</h3>
+        <h3 data-target="section8">Consent</h3>
+        <h3 data-target="section9">Changes to this Privacy Policy</h3>
+    </div>
+
+    <!-- Right Content -->
+    <div class="content">
+        <div class="section" id="section1">
+            <h2>Privacy Policy</h2>
+            <p>Updated: May 2025</p>
+            <p>This Privacy Policy describes how (collectively "NERDS & CO and its affiliates, we, our, us") collect, use, share, protect or otherwise process your information/personal data through our website https://foxxydrip.com/ (hereinafter referred to as Platform). Please note that you may be able to browse certain sections of the Platform without registering with us. We do not offer any product/service under this Platform outside India and your personal data will primarily be stored and processed in India. By visiting this Platform, providing your information or availing any product/service offered on the Platform, you expressly agree to be bound by the terms and conditions of this Privacy Policy, the Terms of Use, and the applicable service/product terms and conditions, and agree to be governed by the laws of India including but not limited to the laws applicable to data protection and privacy. If you do not agree, please do not use or access our Platform.</p>
+        </div>
+
+        <div class="section" id="section2">
+            <h2>Information Collection</h2>
+            <p>We collect your personal data when you use our Platform, services, or otherwise interact with us. This includes information provided during sign-up or use of our services, such as name, date of birth, address, phone number, email ID, and other identity documents. Sensitive personal data like bank details, payment instruments, or biometric data may be collected with your consent according to applicable law. You may choose not to provide information by opting out of certain services.</p>
+        </div>
+
+        <div class="section" id="section3">
+            <h2>Usage</h2>
+            <p>We use personal data to provide the services you request, assist partners in fulfilling orders, enhance customer experience, resolve disputes, detect fraud, and conduct marketing research. You may opt-out from marketing communications. Access to certain services may require providing specific personal data.</p>
+        </div>
+
+        <div class="section" id="section4">
+            <h2>Information Sharing and Disclosures</h2>
+            <p>We may share your data with affiliates, business partners, and third-party service providers to provide products/services. We may disclose information to comply with legal obligations, enforce agreements, prevent fraud, or respond to legal requests from authorities. We are not responsible for third-party privacy practices.</p>
+        </div>
+
+        <div class="section" id="section5">
+            <h2>Reasonable Security Practices</h2>
+            <p>We adopt reasonable security measures to protect personal data from unauthorized access, disclosure, loss, or misuse. While we provide secure servers, transmission of data over the internet cannot be guaranteed as completely secure. Users are responsible for securing their login credentials.</p>
+        </div>
+
+        <div class="section" id="section6">
+            <h2>Data Deletion and Retention</h2>
+            <p>You can delete your account via profile settings or by contacting us. Deletion may be delayed if pending transactions or disputes exist. We retain personal data only as long as necessary for the purpose it was collected or as required by law. Some data may be anonymized for research and analysis.</p>
+        </div>
+
+        <div class="section" id="section7">
+            <h2>Your Rights</h2>
+            <p>You may access, rectify, and update your personal data through the Platform’s functionalities, as permitted by applicable law.</p>
+        </div>
+
+        <div class="section" id="section8">
+            <h2>Consent</h2>
+            <p>By using our Platform and providing information, you consent to the collection, use, and processing of your data in accordance with this Privacy Policy. You may withdraw consent at any time by contacting our Grievance Officer. Withdrawal will not affect lawful processing prior to your request.</p>
+        </div>
+
+        <div class="section" id="section9">
+            <h2>Changes to this Privacy Policy</h2>
+            <p>We may update this Privacy Policy periodically to reflect changes in practices, laws, or services. Users are encouraged to review it regularly. Significant updates may be notified as required under applicable law.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+const sidebarLinks = document.querySelectorAll(".sidebar h3");
+const sections = document.querySelectorAll(".section");
+
+// Click scrolling
+sidebarLinks.forEach(link => {
+    link.addEventListener("click", () => {
+        const target = document.getElementById(link.dataset.target);
+        window.scrollTo({ top: target.offsetTop - 10, behavior: "smooth" });
+    });
+});
+
+// Highlight active section on scroll
+window.addEventListener("scroll", () => {
+    let current = "";
+    sections.forEach(section => {
+        if (window.scrollY >= section.offsetTop - 60) {
+            current = section.id;
+        }
+    });
+    sidebarLinks.forEach(link => {
+        link.classList.remove("active");
+        if (link.dataset.target === current) {
+            link.classList.add("active");
+        }
+    });
+});
+
+// Language buttons
+const langButtons = document.querySelectorAll(".languages button");
+langButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        langButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        // Dynamic content switching can be implemented here
+    });
+});
+</script>
+</body>
+{% endblock body %}

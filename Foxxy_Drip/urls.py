@@ -12,6 +12,8 @@ urlpatterns = [
     path("accounts/",include("allauth.urls")),
     path('aboutus',views.aboutus,name='aboutus'),
     path('shop',views.shop,name='shop'),
-    path('FAQ',views.FAQ,name='FAQ'),
+    # path('FAQ',views.FAQ,name='FAQ'),
+    path('privacy-policy',views.privacy_policy,name='privacy_policy'),
+    path('terms-conditions',views.terms_conditions,name='terms_conditions'),
     path('contactus',views.contactus,name='contactus')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

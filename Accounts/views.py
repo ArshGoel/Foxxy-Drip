@@ -457,3 +457,9 @@ def complete_profile(request):
         return redirect("manage_address")
 
     return render(request, "complete_profile.html")
+
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
+
+def terms_conditions(request):
+    return render(request, 'terms_conditions.html')
