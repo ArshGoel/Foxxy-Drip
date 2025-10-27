@@ -459,8 +459,11 @@ def privacy_policy(request, lang_code=None):
     }
     return render(request, 'privacy_policy.html', context)
 
-def terms_conditions(request):
-    return render(request, 'terms_conditions.html')
+def terms_conditions(request, lang_code=None): 
+    context = {
+        'initial_lang_code': lang_code if lang_code in ['en', 'hi', 'gu', 'ta', 'te', 'mr', 'ml', 'bn', 'kn', 'or'] else 'en'
+    }
+    return render(request, 'terms_conditions.html', context)
 
 def returns_and_exchanges_policy(request):
     return render(request, 'returns_exchange_policy.html')
