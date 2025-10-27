@@ -95,8 +95,16 @@
 
       <!-- Description -->
       {% if design.description %}
-        <p class="mt-3 text-secondary">{{ design.description }}</p>
+        <div class="mt-4 p-3 rounded-3 bg-light shadow-sm border-start border-4 border-primary">
+          <p class="text-secondary fst-italic description-text" style="white-space: pre-line;">
+            {{ design.description|striptags|linebreaksbr }}
+          </p>
+          <button class="btn btn-link p-0 mt-2 read-more-btn text-primary" style="text-decoration:none;">
+            Read more
+          </button>
+        </div>
       {% endif %}
+
 
       <!-- Add to Cart -->
       <form method="post" action="{% url 'add_to_cart' design.id %}" class="mt-4">
@@ -124,4 +132,35 @@
 
   </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const maxChars = 180; // 👈 limit before "Read more" appears
+  const readMoreButtons = document.querySelectorAll(".read-more-btn");
+
+  readMoreButtons.forEach(btn => {
+    const para = btn.previousElementSibling;
+    const fullText = para.innerHTML.trim().replace(/\s+/g, " "); // trim extra spaces
+    if (fullText.length <= maxChars) {
+      btn.style.display = "none";
+      para.innerHTML = fullText;
+      return;
+    }
+
+    const shortText = fullText.slice(0, maxChars) + "...";
+    para.innerHTML = shortText;
+    btn.textContent = "Read more";
+
+    btn.addEventListener("click", () => {
+      if (btn.textContent === "Read more") {
+        para.innerHTML = fullText;
+        btn.textContent = "Read less";
+      } else {
+        para.innerHTML = shortText;
+        btn.textContent = "Read more";
+      }
+    });
+  });
+});
+</script>
+
 {% endblock body %}
