@@ -154,7 +154,10 @@ def shop(request):
     # Prefetch colors, designs, images in a single query
     products = Product.objects.all().prefetch_related(
         Prefetch('colors', queryset=ProductColor.objects.prefetch_related(
-            Prefetch('designs', queryset=ProductDesign.objects.prefetch_related('images')),
+            Prefetch(
+                'designs',
+                queryset=ProductDesign.objects.filter(show_in_shop=True).prefetch_related('images')  # 👈 only True designs
+            ),
             'sizes',
             'images'
         ))
@@ -163,8 +166,8 @@ def shop(request):
     # Flatten each product per design for easier template rendering
     products_with_designs = []
     for product in products:
-        for color in product.colors.all():#type:ignore
-            # If no designs, still show product+color
+        for color in product.colors.all():  # type: ignore
+            # If no (visible) designs, still show product+color
             if color.designs.exists():
                 for design in color.designs.all():
                     products_with_designs.append({
@@ -173,14 +176,6 @@ def shop(request):
                         "design": design,
                         "image": design.images.first() or color.images.first() or None
                     })
-            else:
-                products_with_designs.append({
-                    "product": product,
-                    "color": color,
-                    "design": None,
-                    "image": color.images.first() or None
-                })
-
     return render(request, "shop.html", {"products_with_designs": products_with_designs})
 
 

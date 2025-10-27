@@ -107,6 +107,7 @@ class ProductDesign(models.Model):
         null=True,
         blank=True
     )
+    show_in_shop = models.BooleanField(default=False)  # 👈 NEW FIELD
 
     @property
     def price(self):
@@ -120,6 +121,7 @@ class ProductDesign(models.Model):
         if self.type:
             return f"{self.color.name} - {self.name} ({self.type.type_name})"
         return f"{self.color.name} - {self.name}"
+
 
 
 # ----------------- ProductImage -----------------
