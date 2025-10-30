@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'user_sessions',
-    'anymail',
+    'cloudinary_storage',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -142,11 +142,12 @@ MEDIAFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #EMAIL CONFIGURATION
-EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
-ANYMAIL = {
-    "SENDINBLUE_API_KEY": config("SENDINBLUE_API_KEY"),
-}
-EMAIL_HOST_USER = "foxxydrip.contact@gmail.com"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'foxxydrip.contact@gmail.com'
+EMAIL_HOST_PASSWORD = 'rohuszrvpgneznab'
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
