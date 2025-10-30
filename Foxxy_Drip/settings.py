@@ -3,11 +3,11 @@ from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = 'x7qba81wr%o2d31pp_m(i*!pah(5&5)o)8h7oaybd&pixn!0ki'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = True
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="").split(",") #type:ignore
+ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://foxxy-drip.onrender.com",
@@ -94,11 +94,11 @@ WSGI_APPLICATION = 'Foxxy_Drip.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config("DB_NAME"),
-        'USER': config("DB_USER"),
-        'PASSWORD': config("DB_PASSWORD"),
-        'HOST': config("DB_HOST"),
-        'PORT': config("DB_PORT"),
+        'NAME': 'FoxxyDrip1',
+        'USER': 'avnadmin',
+        'PASSWORD': 'AVNS_ZBxpNZDSgH38UEicwgp',
+        'HOST': 'url-shortner-arshgoel16-ba75.e.aivencloud.com',
+        'PORT': '12743',
         'OPTIONS': {
             'sslmode': 'require',
             'options': '-c timezone=UTC'
