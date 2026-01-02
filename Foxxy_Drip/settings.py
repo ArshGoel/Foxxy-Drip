@@ -1,5 +1,6 @@
 import os
-# from decouple import config
+from decouple import config
+import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -92,19 +93,13 @@ WSGI_APPLICATION = 'Foxxy_Drip.wsgi.application'
 
 # Aiven Database Configuration
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'FoxxyDrip1',
-        'USER': 'avnadmin',
-        'PASSWORD': 'AVNS_ZBxpNZDSgH38UEicwgp',
-        'HOST': 'url-shortner-arshgoel16-ba75.e.aivencloud.com',
-        'PORT': '12743',
-        'OPTIONS': {
-            'sslmode': 'require',
-            'options': '-c timezone=UTC'
-        },
-    }
+    'default': dj_database_url.parse(
+        config('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -155,4 +150,3 @@ LOGIN_URL = "login"
 LOGOUT_URL = "logout"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "login"
-
