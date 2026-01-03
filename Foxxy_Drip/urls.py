@@ -20,4 +20,4 @@ urlpatterns = [
     path('returns-and-exchanges-policy',views.returns_and_exchanges_policy,name='returns_and_exchanges_policy'),
     path('shipping-delivery-policy',views.shipping_delivery_policy,name='shipping_delivery_policy'),
     path('contactus',views.contactus,name='contactus')
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
