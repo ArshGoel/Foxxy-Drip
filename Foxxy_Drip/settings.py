@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     'Accounts',
     'Services',
 
-    'whitenoise.runserver_nostatic',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -59,7 +58,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'allauth.account.middleware.AccountMiddleware'
 ]
 
