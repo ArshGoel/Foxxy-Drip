@@ -1,0 +1,25 @@
+# Python envs
+venv/
+.venv/
+env/
+
+# Django caches
+__pycache__/
+*.pyc
+
+# Local static builds
+static/
+staticfiles/
+staticfiles_build/
+collectstatic/
+
+# User uploads
+media/
+
+# Node
+node_modules/
+
+# Build artifacts
+build/
+dist/
+*.log
