@@ -8,9 +8,7 @@ __pycache__/
 *.pyc
 
 # Local static builds
-staticfiles/
-staticfiles_build/
-collectstatic/
+
 
 # User uploads
 media/
