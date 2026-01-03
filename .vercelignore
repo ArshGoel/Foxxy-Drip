@@ -8,8 +8,8 @@ __pycache__/
 *.pyc
 
 # Local static builds
-static/
 staticfiles/
+staticfiles_build/
 collectstatic/
 
 # User uploads
