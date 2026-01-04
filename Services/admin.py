@@ -21,6 +21,7 @@ def compress_image(image_file, max_size=5242880):
     """
     Compress image to reduce file size while maintaining quality.
     Target: Under 5MB
+    Optimized for Cloudinary storage (no local filesystem writes)
     """
     try:
         img = Image.open(image_file)
@@ -59,7 +60,9 @@ def compress_image(image_file, max_size=5242880):
         if not filename.lower().endswith('.jpg') and not filename.lower().endswith('.jpeg'):
             filename = filename.rsplit('.', 1)[0] + '.jpg'
         
-        return ContentFile(output.getvalue(), name=filename)
+        # Create ContentFile for Cloudinary upload
+        compressed = ContentFile(output.getvalue(), name=filename)
+        return compressed
     
     except Exception as e:
         print(f"Image compression error: {e}")
@@ -100,16 +103,15 @@ class ProductImageInline(admin.TabularInline):
     max_num = 1  # Only 1 image per inline to stay under 6MB
     
     def save_formset(self, request, form, formset, change):
-        """Compress and validate image before saving"""
+        """Compress and validate image before saving to Cloudinary"""
         for form in formset.forms:
             if form.cleaned_data.get('image'):
                 image = form.cleaned_data['image']
                 
                 # Compress if too large
-                if image.size > 5242880:  # 5MB limit
-                    image = compress_image(image)
-                    form.cleaned_data['image'] = image
-                    form.instance.image = image
+                if hasattr(image, 'size') and image.size > 5242880:  # 5MB limit
+                    compressed = compress_image(image)
+                    form.instance.image = compressed
         
         super().save_formset(request, form, formset, change)
 
@@ -122,16 +124,15 @@ class ProductImageDesignInline(admin.TabularInline):
     max_num = 1  # Only 1 image per inline to stay under 6MB
     
     def save_formset(self, request, form, formset, change):
-        """Compress and validate image before saving"""
+        """Compress and validate image before saving to Cloudinary"""
         for form in formset.forms:
             if form.cleaned_data.get('image'):
                 image = form.cleaned_data['image']
                 
                 # Compress if too large
-                if image.size > 5242880:  # 5MB limit
-                    image = compress_image(image)
-                    form.cleaned_data['image'] = image
-                    form.instance.image = image
+                if hasattr(image, 'size') and image.size > 5242880:  # 5MB limit
+                    compressed = compress_image(image)
+                    form.instance.image = compressed
         
         super().save_formset(request, form, formset, change)
 
