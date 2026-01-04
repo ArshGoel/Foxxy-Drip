@@ -21,15 +21,26 @@ def compress_image(image_file, max_size=5242880):
     """
     Compress image to reduce file size while maintaining quality.
     Target: Under 5MB
-    Optimized for Cloudinary storage (no local filesystem writes)
+    Optimized for Cloudinary storage - all operations in memory
     """
     try:
-        img = Image.open(image_file)
+        # Read image file into memory buffer
+        img_buffer = BytesIO()
+        for chunk in image_file.chunks():
+            img_buffer.write(chunk)
+        img_buffer.seek(0)
+        
+        # Open image from memory buffer
+        img = Image.open(img_buffer)
+        img.load()  # Force load to avoid lazy loading issues
         
         # Convert RGBA to RGB if necessary
         if img.mode in ('RGBA', 'LA', 'P'):
             rgb_img = Image.new('RGB', img.size, (255, 255, 255))
-            rgb_img.paste(img, mask=img.split()[-1] if img.mode == 'RGBA' else None)
+            if img.mode == 'RGBA':
+                rgb_img.paste(img, mask=img.split()[-1])
+            else:
+                rgb_img.paste(img)
             img = rgb_img
         
         # Resize if too large (max 2000px width)
@@ -39,7 +50,7 @@ def compress_image(image_file, max_size=5242880):
             new_height = int(img.height * ratio)
             img = img.resize((max_width, new_height), Image.Resampling.LANCZOS)
         
-        # Compress with quality reduction
+        # Compress with quality reduction - all in memory
         output = BytesIO()
         quality = 85
         
@@ -60,12 +71,14 @@ def compress_image(image_file, max_size=5242880):
         if not filename.lower().endswith('.jpg') and not filename.lower().endswith('.jpeg'):
             filename = filename.rsplit('.', 1)[0] + '.jpg'
         
-        # Create ContentFile for Cloudinary upload
+        # Create ContentFile from memory buffer
         compressed = ContentFile(output.getvalue(), name=filename)
         return compressed
     
     except Exception as e:
         print(f"Image compression error: {e}")
+        # Return original if compression fails
+        image_file.seek(0)
         return image_file
 
 
