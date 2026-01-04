@@ -2,7 +2,7 @@
     "builds": [{
         "src": "Foxxy_Drip/wsgi.py",
         "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb" }
+        "config": { "maxLambdaSize": "50mb" }
     },
         {
             "src": "build_files.sh",
@@ -17,7 +17,18 @@
         },
         {
             "src": "/(.*)",
-            "dest": "Foxxy_Drip/wsgi.py"
+            "dest": "Foxxy_Drip/wsgi.py",
+            "methods": ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+            "continue": true
         }
-    ]
+    ],
+    "env": {
+        "DATA_UPLOAD_MAX_MEMORY_SIZE": "52428800",
+        "FILE_UPLOAD_MAX_MEMORY_SIZE": "52428800"
+    },
+    "functions": {
+        "Foxxy_Drip/wsgi.py": {
+            "maxDuration": 60
+        }
+    }
 }
