@@ -19,5 +19,16 @@
             "src": "/(.*)",
             "dest": "Foxxy_Drip/wsgi.py"
         }
+    ],
+    "headers": [
+        {
+            "source": "/api/(.*)",
+            "headers": [
+                {
+                    "key": "Access-Control-Allow-Credentials",
+                    "value": "true"
+                }
+            ]
+        }
     ]
 }

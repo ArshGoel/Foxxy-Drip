@@ -186,50 +186,86 @@ def wishlist(request):
 @login_required
 def upload_product(request):
     if request.method == "POST":
-        # 1️⃣ Create product
-        product = Product.objects.create(
-            name=request.POST.get("name"),
-            price=request.POST.get("price", 0.0)
-        )
-
-        # 2️⃣ Create colors + sizes
-        color_names = request.POST.getlist("color_name[]")
-        color_objs = []
-        for idx, color_name in enumerate(color_names):
-            if color_name.strip():
-                color_obj = ProductColor.objects.create(product=product, name=color_name.strip())
-                color_objs.append(color_obj)
-                # Sizes
-                for size in ["S","M","L","XL"]:
-                    qty = request.POST.get(f"qty_{idx}_{size}", 0)
-                    ProductColorSize.objects.create(color=color_obj, size=size, quantity=int(qty))
-
-        # 3️⃣ Create designs and upload images
-        design_names = request.POST.getlist("design_name[]")
-        design_descs = request.POST.getlist("design_desc[]")
-        design_color_indices = request.POST.getlist("design_color_index[]")  # index of color in color_objs
-
-        for idx, name in enumerate(design_names):
-            if name.strip():
-                color_idx = int(design_color_indices[idx])
-                color_obj = color_objs[color_idx]
-                design_obj = ProductDesign.objects.create(
-                    color=color_obj,
-                    name=name.strip(),
-                    description=design_descs[idx].strip()
+        # Check if this is a product creation or image upload
+        action = request.POST.get("action", "create_product")
+        
+        if action == "upload_images":
+            # Handle image upload separately to avoid payload limits
+            product_id = request.POST.get("product_id")
+            design_id = request.POST.get("design_id")
+            
+            if not product_id or not design_id:
+                messages.error(request, "Invalid product or design ID")
+                return redirect("upload_product")
+            
+            product = get_object_or_404(Product, product_id=product_id)
+            design = get_object_or_404(ProductDesign, id=design_id)
+            
+            images = request.FILES.getlist("images")
+            uploaded_count = 0
+            
+            for img in images:
+                # Compress/validate image size before upload (optional)
+                if img.size > 10485760:  # 10MB limit per image
+                    messages.warning(request, f"Image {img.name} exceeds 10MB, skipping")
+                    continue
+                
+                ProductImage.objects.create(
+                    product=product,
+                    color=design.color,
+                    design=design,
+                    image=img
                 )
-                # Upload images for this design
-                images = request.FILES.getlist(f"design_images_{idx}")
-                for img in images:
-                    ProductImage.objects.create(
-                        product=product,
+                uploaded_count += 1
+            
+            if uploaded_count > 0:
+                messages.success(request, f"Successfully uploaded {uploaded_count} images!")
+            return redirect("edit_product", product_id=product_id)
+        
+        else:
+            # Create product, colors, sizes (no images in this request)
+            product_name = request.POST.get("name")
+            product_price = request.POST.get("price", 0.0)
+            
+            if not product_name:
+                messages.error(request, "Product name is required")
+                return redirect("upload_product")
+            
+            # 1️⃣ Create product
+            product = Product.objects.create(
+                name=product_name,
+                price=product_price
+            )
+
+            # 2️⃣ Create colors + sizes
+            color_names = request.POST.getlist("color_name[]")
+            color_objs = []
+            for idx, color_name in enumerate(color_names):
+                if color_name.strip():
+                    color_obj = ProductColor.objects.create(product=product, name=color_name.strip())
+                    color_objs.append(color_obj)
+                    # Sizes
+                    for size in ["S","M","L","XL"]:
+                        qty = request.POST.get(f"qty_{idx}_{size}", 0)
+                        ProductColorSize.objects.create(color=color_obj, size=size, quantity=int(qty))
+
+            # 3️⃣ Create designs (without images)
+            design_names = request.POST.getlist("design_name[]")
+            design_descs = request.POST.getlist("design_desc[]")
+            design_color_indices = request.POST.getlist("design_color_index[]")
+
+            for idx, name in enumerate(design_names):
+                if name.strip():
+                    color_idx = int(design_color_indices[idx])
+                    color_obj = color_objs[color_idx]
+                    ProductDesign.objects.create(
                         color=color_obj,
-                        design=design_obj,
-                        image=img
+                        name=name.strip(),
+                        description=design_descs[idx].strip()
                     )
 
-        messages.success(request, "Product uploaded successfully!")
-        return redirect("view_products")
+            messages.success(request, "Product created successfully! You can now upload images in the next step.")
+            return redirect("edit_product", product_id=product.product_id)
 
     return render(request, "upload_product.html")
 
