@@ -1,0 +1,15 @@
+{% extends "admin_d/base.html" %}
+{% block content %}
+<h3>Product Types</h3>
+
+<a href="{% url 'type_add' %}">➕ Add Product Type</a>
+
+<ul>
+{% for t in types %}
+    <li>
+        {{ t.product.name }} – {{ t.type_name }} – ₹{{ t.final_price }}
+        <a href="{% url 'type_edit' t.id %}">Edit</a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

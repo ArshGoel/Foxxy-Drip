@@ -1,0 +1,12 @@
+{% extends "admin_d/base.html" %}
+{% block content %}
+<a href="{% url 'product_add' %}">➕ Add Product</a>
+<ul>
+{% for p in products %}
+    <li>
+        {{ p.name }} ({{ p.category.name }})
+        <a href="{% url 'product_edit' p.product_id %}">Edit</a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

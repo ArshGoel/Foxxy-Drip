@@ -1,0 +1,10 @@
+{% extends "admin_d/base.html" %}
+{% block content %}
+<h3>Add / Edit Product Image</h3>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "admin_d/base.html" %}
+{% block content %}
+<h3>Product Colors</h3>
+
+<a href="{% url 'color_add' %}">➕ Add Color</a>
+
+<ul>
+{% for c in colors %}
+    <li>
+        {{ c.product.name }} – {{ c.name }}
+        <a href="{% url 'color_edit' c.id %}">Edit</a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

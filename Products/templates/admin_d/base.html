@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products Admin</title>
+</head>
+<body>
+<h2>Products Management</h2>
+
+<nav>
+    <a href="{% url "category_list" %}">Categories</a> |
+    <a href="{% url "product_list" %}">Products</a> |
+    <a href="{% url "type_list" %}">Types</a> |
+    <a href="{% url "color_list" %}">Colors</a> |
+    <a href="{% url "size_list" %}">Stock</a> |
+    <a href="{% url "image_list" %}">Images</a>
+</nav>
+<hr>
+
+{% block content %}{% endblock %}
+</body>
+</html>

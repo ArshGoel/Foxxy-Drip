@@ -1,0 +1,27 @@
+{% extends "admin_d/base.html" %}
+{% block content %}
+<h3>Stock (Color + Size)</h3>
+
+<a href="{% url 'size_add' %}">➕ Add Size Stock</a>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Product</th>
+        <th>Color</th>
+        <th>Size</th>
+        <th>Quantity</th>
+        <th>Action</th>
+    </tr>
+{% for s in sizes %}
+    <tr>
+        <td>{{ s.color.product.name }}</td>
+        <td>{{ s.color.name }}</td>
+        <td>{{ s.size }}</td>
+        <td>{{ s.quantity }}</td>
+        <td>
+            <a href="{% url 'size_edit' s.id %}">Edit</a>
+        </td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}

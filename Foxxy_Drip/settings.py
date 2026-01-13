@@ -1,6 +1,6 @@
 import os
 from decouple import config
-import dj_database_url
+import dj_database_url #type: ignore
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -34,7 +34,8 @@ INSTALLED_APPS = [
 
     'Accounts',
     'Services',
-
+    'Products',
+    
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -100,7 +101,7 @@ WSGI_APPLICATION = 'Foxxy_Drip.wsgi.application'
 # Aiven Database Configuration
 DATABASES = {
     'default': dj_database_url.parse(
-        config('DATABASE_URL'),
+        config('DATABASE_URL'),  #type:ignore
         conn_max_age=600,
         ssl_require=True
     )

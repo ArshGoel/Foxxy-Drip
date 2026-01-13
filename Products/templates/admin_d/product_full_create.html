@@ -1,0 +1,145 @@
+{% extends "admin_d/base.html" %}
+{% block content %}
+
+<h2>Add Product (Full)</h2>
+
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+
+<!-- ================= PRODUCT ================= -->
+<h3>Product</h3>
+
+<label>
+<input type="radio" name="product_mode" value="existing" checked onclick="toggle('product_existing','product_new')">
+Use Existing
+</label>
+
+<select name="product_existing" id="product_existing">
+{% for p in products %}
+    <option value="{{ p.product_id }}">{{ p.name }}</option>
+{% endfor %}
+</select>
+
+<label>
+<input type="radio" name="product_mode" value="new" onclick="toggle('product_new','product_existing')">
+Create New
+</label>
+
+<div id="product_new" style="display:none">
+<input name="product_id" placeholder="Product ID"><br>
+<input name="product_name" placeholder="Product Name"><br>
+
+<select name="category">
+{% for c in categories %}
+    <option value="{{ c.id }}">{{ c.name }}</option>
+{% endfor %}
+</select>
+</div>
+
+<hr>
+
+<!-- ================= TYPE ================= -->
+<h3>Product Type</h3>
+
+<label>
+<input type="radio" name="type_mode" value="existing" checked onclick="toggle('type_existing','type_new')">
+Use Existing
+</label>
+
+<select name="type_existing" id="type_existing">
+{% for t in types %}
+    <option value="{{ t.id }}">{{ t.product.name }} - {{ t.type_name }}</option>
+{% endfor %}
+</select>
+
+<label>
+<input type="radio" name="type_mode" value="new" onclick="toggle('type_new','type_existing')">
+Create New
+</label>
+
+<div id="type_new" style="display:none">
+<select name="type_name">
+<option>plain</option><option>printed</option><option>embroidery</option>
+</select>
+<input name="price" placeholder="Price" type="number">
+<input name="discount_price" placeholder="Discount Price" type="number">
+</div>
+
+<hr>
+
+<!-- ================= COLOR ================= -->
+<h3>Color</h3>
+
+<label>
+<input type="radio" name="color_mode" value="existing" checked onclick="toggle('color_existing','color_new')">
+Use Existing
+</label>
+
+<select name="color_existing" id="color_existing">
+{% for c in colors %}
+    <option value="{{ c.id }}">{{ c.product.name }} - {{ c.name }}</option>
+{% endfor %}
+</select>
+
+<label>
+<input type="radio" name="color_mode" value="new" onclick="toggle('color_new','color_existing')">
+Create New
+</label>
+
+<div id="color_new" style="display:none">
+<input name="color_name" placeholder="Color Name">
+</div>
+
+<hr>
+
+<!-- ================= SIZES ================= -->
+<h3>Sizes & Stock</h3>
+
+<table id="sizes">
+<tr><th>Size</th><th>Qty</th></tr>
+<tr>
+<td>
+<select name="size[]">
+<option>S</option><option>M</option><option>L</option><option>XL</option>
+</select>
+</td>
+<td><input name="quantity[]" type="number" value="0"></td>
+</tr>
+</table>
+
+<button type="button" onclick="addRow()">➕ Add Size</button>
+
+<hr>
+
+<!-- ================= IMAGES ================= -->
+<h3>Images</h3>
+<input type="file" name="images" multiple>
+
+<hr>
+
+<button type="submit">✅ Save Product</button>
+</form>
+
+<script>
+function toggle(show, hide) {
+    document.getElementById(show).style.display = "block";
+    document.getElementById(hide).style.display = "none";
+}
+function addRow() {
+    document.getElementById("sizes").insertAdjacentHTML("beforeend", `
+    <tr>
+        <td>
+            <select name="size[]">
+                <option>S</option><option>M</option><option>L</option><option>XL</option>
+            </select>
+        </td>
+        <td><input name="quantity[]" type="number" value="0"></td>
+    </tr>`);
+}
+</script>
+
+{% endblock %}
