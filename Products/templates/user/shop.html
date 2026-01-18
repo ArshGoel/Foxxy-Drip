@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Shop - FOXXY DRIP{% endblock title %}
+{% block shopactive %}active{% endblock shopactive %}
+{% block body %}
+
+{% block extracss %}
+<style>
+body {
+    background-color: #000;
+    color: #fff;
+}
+.container {
+    background-color: #000;
+}
+.card-img-top {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+    transition: transform 0.3s ease;
+}
+.card-img-top:hover {
+    transform: scale(1.05);
+}
+.product-card {
+    border: none;
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    background: #111;
+    color: #fff;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(255, 255, 255, 0.1);
+}
+.price {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+.text-strike {
+    text-decoration: line-through;
+    color: #888;
+}
+.badge {
+    font-size: 0.8rem;
+    border-radius: 6px;
+    background-color: #d63384;
+}
+.btn-view {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+.btn-view:hover {
+    background-color: #d63384;
+}
+</style>
+{% endblock extracss %}
+
+<div class="container mt-4 mb-4">
+  <h2 class="mb-4 fw-bold text-center">Our Collection</h2>
+
+  <div class="row g-4 justify-content-center">
+
+    {% for item in designs %}
+    <div class="col-6 col-md-4 d-flex justify-content-center">
+
+      <div class="card h-100 shadow-sm product-card" style="max-width: 350px;">
+
+        <!-- PRIMARY IMAGE (DESIGN BASED) -->
+        <img
+          src="{{ item.image.url }}"
+          class="card-img-top"
+          alt="{{ item.product.name }} {{ item.product_type.type_name }} {{ item.color.name }}"
+        >
+
+        <div class="card-body d-flex flex-column text-center">
+
+          <!-- PRODUCT NAME -->
+          <h5 class="card-title fw-bold">
+            {{ item.product.name }}
+          </h5>
+
+          <!-- DESIGN META -->
+          <p class="text-muted mb-1">
+            {{ item.product_type.type_name|title }} • {{ item.color.name }}
+          </p>
+
+          <!-- PRICE -->
+          <p class="price mb-2">
+            {% if item.product_type.discount_price %}
+              <span class="text-strike">₹{{ item.product_type.price }}</span>
+              <span class="text-danger ms-2">₹{{ item.product_type.discount_price }}</span>
+              <span class="badge ms-2">
+                -{{ item.product_type.discount_percent }}%
+              </span>
+            {% else %}
+              ₹{{ item.product_type.price }}
+            {% endif %}
+          </p>
+
+          <!-- VIEW BUTTON -->
+          <a
+            href="{% url 'design_detail' item.id %}"
+            class="btn btn-view mt-auto w-100"
+          >
+            View
+          </a>
+
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock body %}

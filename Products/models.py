@@ -110,16 +110,28 @@ class ProductImage(models.Model):
     )
 
     is_primary = models.BooleanField(default=False)
+
+    def clean(self):
+        if not self.product:
+            raise ValidationError("Image must belong to a product")
+
+        # Optional: enforce logical consistency
+        if self.product_type and self.product_type.product != self.product:
+            raise ValidationError("ProductType does not belong to this product")
+
+        if self.color and self.color.product != self.product:
+            raise ValidationError("Color does not belong to this product")
+
     def save(self, *args, **kwargs):
         if self.is_primary:
             ProductImage.objects.filter(
                 product=self.product,
+                product_type=self.product_type,
+                color=self.color,
                 is_primary=True
-            ).update(is_primary=False)
+            ).exclude(pk=self.pk).update(is_primary=False)
+
         super().save(*args, **kwargs)
-    def clean(self):
-        if not self.product:
-            raise ValidationError("Image must belong to a product")
 
     def __str__(self):
         parts = [self.product.name]

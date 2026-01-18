@@ -158,3 +158,14 @@ def product_full_create(request):
             context["error"] = str(e)
 
     return render(request, "admin_d/product_full_create.html", context)
+
+def shop(request):
+    designs = (
+        ProductImage.objects
+        .filter(is_primary=True)
+        .select_related("product", "product_type", "color")
+    )
+
+    return render(request, "user/shop.html", {
+        "designs": designs
+    })
