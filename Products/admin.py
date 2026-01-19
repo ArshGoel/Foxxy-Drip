@@ -5,6 +5,7 @@ from .models import (
     ProductType,
     ProductColor,
     ProductColorSize,
+    Design,          # ✅ NEW
     ProductImage,
 )
 
@@ -20,13 +21,20 @@ class ProductColorInline(admin.TabularInline):
     extra = 1
 
 
-class ProductImageInline(admin.TabularInline):
-    model = ProductImage
+class ProductColorSizeInline(admin.TabularInline):
+    model = ProductColorSize
     extra = 1
 
 
-class ProductColorSizeInline(admin.TabularInline):
-    model = ProductColorSize
+# ✅ NEW: Design Inline
+class DesignInline(admin.TabularInline):
+    model = Design
+    extra = 1
+
+
+# ✅ UPDATED: ProductImage Inline (now based on design)
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
     extra = 1
 
 
@@ -43,10 +51,12 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ("product_id", "name", "category")
     list_filter = ("category",)
     search_fields = ("product_id", "name")
+
+    # ❌ ProductImageInline removed because ProductImage no longer has product FK directly
     inlines = [
         ProductTypeInline,
         ProductColorInline,
-        ProductImageInline,
+        DesignInline,   # ✅ added
     ]
 
 
@@ -71,13 +81,21 @@ class ProductColorSizeAdmin(admin.ModelAdmin):
     search_fields = ("color__product__name", "color__name")
 
 
+# ✅ NEW: Design Admin
+@admin.register(Design)
+class DesignAdmin(admin.ModelAdmin):
+    list_display = ("name", "product", "product_type", "color", "show_in_shop")
+    list_filter = ("show_in_shop", "product_type")
+    search_fields = ("name", "product__name", "color__name")
+    inlines = [ProductImageInline]  # ✅ images inside design
+
+
+# ✅ UPDATED: ProductImage Admin
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
     list_display = (
-        "product",
-        "product_type",
-        "color",
+        "design",
         "is_primary",
     )
     list_filter = ("is_primary",)
-    search_fields = ("product__name",)
+    search_fields = ("design__name", "design__product__name")

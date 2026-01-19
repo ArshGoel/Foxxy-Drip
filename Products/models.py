@@ -117,25 +117,33 @@ class ProductColorSize(models.Model):
 
     def __str__(self):
         return f"{self.color.name} - {self.size} ({self.quantity})"
+class Design(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="designs")
+    product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE, related_name="designs")
+    color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="designs")
+
+    # ✅ moved here
+    name = models.CharField(max_length=150,default="Default Design Name")
+    description = models.TextField(blank=True, null=True)
+    show_in_shop = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ("product", "product_type", "color")
+
+    def clean(self):
+        if self.product_type.product != self.product:
+            raise ValidationError("ProductType does not belong to this product")
+        if self.color.product != self.product:
+            raise ValidationError("Color does not belong to this product")
+
+    def __str__(self):
+        return f"{self.name} ({self.product.name} - {self.product_type.type_name} - {self.color.name})"
+
+
+# ✅ UPDATED: ProductImage becomes DesignImage (images belong to a design)
 class ProductImage(models.Model):
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="images"
-    )
-
-    product_type = models.ForeignKey(
-        ProductType,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="images"
-    )
-
-    color = models.ForeignKey(
-        ProductColor,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="images"
+    design = models.ForeignKey(
+        Design, on_delete=models.CASCADE, related_name="images"
     )
 
     image = CloudinaryField(
@@ -146,31 +154,21 @@ class ProductImage(models.Model):
         ],
     )
 
+    # ✅ primary now per design (not product/type/color)
     is_primary = models.BooleanField(default=False)
-    show_in_shop = models.BooleanField(default=True)
-
-    # ✅ NEW: design-level description
-    description = models.TextField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if self.is_primary:
             ProductImage.objects.filter(
-                product=self.product,
-                product_type=self.product_type,
-                color=self.color,
+                design=self.design,
                 is_primary=True
             ).exclude(pk=self.pk).update(is_primary=False)
 
         super().save(*args, **kwargs)
 
     def __str__(self):
-        parts = [self.product.name]
-        if self.product_type:
-            parts.append(self.product_type.type_name)
-        if self.color:
-            parts.append(self.color.name)
-        return " - ".join(parts)
-
+        return f"{self.design.name} - {'Primary' if self.is_primary else 'Image'}"
+    
 @transaction.atomic
 def reduce_stock(color, size, qty):
     if qty <= 0:

@@ -75,12 +75,17 @@ def image_list(request):
 
 def image_form(request, pk=None):
     obj = ProductImage.objects.get(pk=pk) if pk else None
-    form = ProductImageForm(request.POST or None, request.FILES or None, instance=obj)
-    if form.is_valid():
-        form.save()
-        return redirect("image_list")
-    return render(request, "admin_d/image_form.html", {"form": form})
 
+    if request.method == "POST":
+        form = ProductImageForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            return redirect("image_list")
+    else:
+        form = ProductImageForm(instance=obj)
+
+    return render(request, "admin_d/image_form.html", {"form": form})
+ 
 from django.db import transaction
 from django.shortcuts import render, redirect
 from .models import *
@@ -143,14 +148,22 @@ def product_full_create(request):
                     quantity=int(q)
                 )
 
-            # ---------------- IMAGES ----------------
-            for img in request.FILES.getlist("images"):
+            show_in_shop = True if request.POST.get("show_in_shop") else False
+            description = request.POST.get("description")
+
+            images = request.FILES.getlist("images")
+
+            for i, img in enumerate(images):
                 ProductImage.objects.create(
                     product=product,
                     product_type=product_type,
                     color=color,
                     image=img,
+                    is_primary=(i == 0),   # ✅ first image primary
+                    show_in_shop=show_in_shop,
+                    description=description
                 )
+
 
             return redirect("product_list")
 
@@ -220,3 +233,20 @@ def product_detail(request, product_id):
         "images": images,
         "primary_image": primary_image,
     })
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Design
+from .forms import DesignForm
+
+def design_list(request):
+    designs = Design.objects.select_related("product", "product_type", "color")
+    return render(request, "admin_d/design_list.html", {"designs": designs})
+
+def design_form(request, pk=None):
+    obj = Design.objects.get(pk=pk) if pk else None
+    form = DesignForm(request.POST or None, instance=obj)
+
+    if form.is_valid():
+        form.save()
+        return redirect("design_list")
+
+    return render(request, "admin_d/design_form.html", {"form": form})

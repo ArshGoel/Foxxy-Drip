@@ -72,3 +72,14 @@ class FullProductCreateForm(forms.Form):
         from .models import Category
         super().__init__(*args, **kwargs)
         self.fields["category"].queryset = Category.objects.all() #type: ignore
+from django import forms
+from .models import Design
+
+class DesignForm(forms.ModelForm):
+    class Meta:
+        model = Design
+        fields = ["product", "product_type", "color", "name", "description", "show_in_shop"]
+
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 4}),
+        }
