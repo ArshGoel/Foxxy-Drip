@@ -9,11 +9,90 @@
   </div>
 {% endif %}
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
   {% csrf_token %}
   {{ form.as_p }}
 
+  <hr>
+  <h3>Upload Images</h3>
+
+  <!-- ✅ IMPORTANT: name must be images for request.FILES.getlist("images") -->
+  <input type="file" id="imagesInput" name="images" multiple accept="image/*">
+
+  <p style="color:gray; font-size:14px;">
+    ✅ Images above 2MB will be auto-compressed before upload.<br>
+    ✅ First image becomes <b>Primary</b> automatically (if no primary exists).
+  </p>
+
   <button type="submit">✅ Save Design</button>
 </form>
+
+<script>
+async function compressImage(file, quality = 0.7, maxWidth = 1400) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = (e) => { img.src = e.target.result; };
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      let width = img.width;
+      let height = img.height;
+
+      // resize keeping aspect ratio
+      if (width > maxWidth) {
+        height = Math.round((height * maxWidth) / width);
+        width = maxWidth;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => {
+          const newName = file.name.replace(/\.\w+$/, ".jpg");
+          const compressedFile = new File([blob], newName, {
+            type: "image/jpeg"
+          });
+          resolve(compressedFile);
+        },
+        "image/jpeg",
+        quality
+      );
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById("imagesInput").addEventListener("change", async function () {
+  const files = Array.from(this.files);
+  if (!files.length) return;
+
+  const compressedFiles = [];
+
+  for (const f of files) {
+    // compress only if > 2MB
+    if (f.size > 2 * 1024 * 1024) {
+      const cf = await compressImage(f, 0.7, 1400);
+      compressedFiles.push(cf);
+    } else {
+      compressedFiles.push(f);
+    }
+  }
+
+  // replace input files with compressed files
+  const dt = new DataTransfer();
+  compressedFiles.forEach(file => dt.items.add(file));
+  this.files = dt.files;
+
+  alert("Images compressed ✅ Ready to upload");
+});
+</script>
 
 {% endblock %}

@@ -172,56 +172,70 @@ def product_full_create(request):
 
     return render(request, "admin_d/product_full_create.html", context)
 
+from django.shortcuts import render
+from .models import Design, ProductImage
+
 def shop(request):
     designs = (
-        ProductImage.objects
-        .filter(is_primary=True, show_in_shop=True)
+        Design.objects
+        .filter(show_in_shop=True)
         .select_related("product", "product_type", "color")
+        .prefetch_related("images")
     )
 
+    # attach primary image to each design
+    for d in designs:
+        d.primary_image = d.images.filter(is_primary=True).first() or d.images.first()
+
     return render(request, "user/shop.html", {"designs": designs})
+
  
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Prefetch
 from .models import Product, ProductType, ProductColor, ProductColorSize, ProductImage
 
+from django.shortcuts import render, get_object_or_404
+from .models import Product, ProductType, ProductColor, ProductColorSize, Design, ProductImage
+
 def product_detail(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
 
-    # all types + colors for this product
     types = ProductType.objects.filter(product=product)
     colors = ProductColor.objects.filter(product=product)
 
-    # default selection (first available)
     selected_type_id = request.GET.get("type")
     selected_color_id = request.GET.get("color")
 
-    selected_type = None
-    selected_color = None
+    selected_type = ProductType.objects.filter(id=selected_type_id, product=product).first() if selected_type_id else None
+    selected_color = ProductColor.objects.filter(id=selected_color_id, product=product).first() if selected_color_id else None
 
-    if selected_type_id:
-        selected_type = ProductType.objects.filter(id=selected_type_id, product=product).first()
     if not selected_type:
         selected_type = types.first()
 
-    if selected_color_id:
-        selected_color = ProductColor.objects.filter(id=selected_color_id, product=product).first()
     if not selected_color:
         selected_color = colors.first()
 
-    # sizes stock for selected color
+    # ✅ Sizes stock stays same (color based)
     sizes = []
     if selected_color:
         sizes = ProductColorSize.objects.filter(color=selected_color).order_by("size")
 
-    # images for selected design (product + type + color)
-    images = ProductImage.objects.filter(
-        product=product,
-        product_type=selected_type,
-        color=selected_color,
-    ).order_by("-is_primary", "id")
+    # ✅ Find design (based on product + type + color)
+    design = None
+    if selected_type and selected_color:
+        design = Design.objects.filter(
+            product=product,
+            product_type=selected_type,
+            color=selected_color
+        ).first()
 
-    primary_image = images.first()
+    # ✅ Images from design
+    images = ProductImage.objects.none()
+    primary_image = None
+
+    if design:
+        images = ProductImage.objects.filter(design=design).order_by("-is_primary", "id")
+        primary_image = images.first()
 
     return render(request, "user/product_detail.html", {
         "product": product,
@@ -232,21 +246,45 @@ def product_detail(request, product_id):
         "sizes": sizes,
         "images": images,
         "primary_image": primary_image,
+
+        # optional (if you want to show design name/desc later)
+        "design": design,
     })
+
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Design
 from .forms import DesignForm
 
 def design_list(request):
-    designs = Design.objects.select_related("product", "product_type", "color")
+    designs = Design.objects.select_related("product", "product_type", "color").prefetch_related("images")
     return render(request, "admin_d/design_list.html", {"designs": designs})
+
+
+from django.shortcuts import render, redirect
+from .models import Design, ProductImage
+from .forms import DesignForm
 
 def design_form(request, pk=None):
     obj = Design.objects.get(pk=pk) if pk else None
     form = DesignForm(request.POST or None, instance=obj)
 
-    if form.is_valid():
-        form.save()
-        return redirect("design_list")
+    if request.method == "POST":
+        if form.is_valid():
+            design = form.save()
+
+            # ✅ handle images upload
+            images = request.FILES.getlist("images")
+
+            # if design has no primary yet, first upload becomes primary
+            has_primary = ProductImage.objects.filter(design=design, is_primary=True).exists()
+
+            for i, img in enumerate(images):
+                ProductImage.objects.create(
+                    design=design,
+                    image=img,
+                    is_primary=(not has_primary and i == 0)
+                )
+
+            return redirect("design_list")
 
     return render(request, "admin_d/design_form.html", {"form": form})
