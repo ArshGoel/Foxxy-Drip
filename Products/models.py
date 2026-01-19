@@ -17,6 +17,10 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.category.name})"
+from decimal import Decimal
+from django.db import models
+from django.core.exceptions import ValidationError
+
 class ProductType(models.Model):
     TYPE_CHOICES = [
         ("plain", "Plain"),
@@ -25,28 +29,61 @@ class ProductType(models.Model):
     ]
 
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="types"
+        "Product", on_delete=models.CASCADE, related_name="types"
     )
     type_name = models.CharField(max_length=20, choices=TYPE_CHOICES)
 
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    discount_price = models.DecimalField(
-        max_digits=8, decimal_places=2, null=True, blank=True
+    # Marked Price (MRP)
+    price = models.DecimalField(
+        max_digits=8, decimal_places=2, default=Decimal("0.00")
     )
+
+    # Selling Price
+    discount_price = models.DecimalField(
+        max_digits=8, decimal_places=2, default=Decimal("0.00"),
+        blank=True, null=True
+    )
+
+    def clean(self):
+        # price should never be negative
+        if self.price < 0:
+            raise ValidationError("Price cannot be negative")
+
+        # if discount_price exists, it must be valid
+        if self.discount_price is not None:
+            if self.discount_price < 0:
+                raise ValidationError("Selling price cannot be negative")
+
+            if self.discount_price >= self.price and self.price > 0:
+                raise ValidationError("Selling price must be less than marked price")
+
+    @property
+    def discounted_price(self):
+        """If discount_price is set & valid, return it else return original price"""
+        if self.discount_price and self.discount_price > 0 and self.discount_price < self.price:
+            return self.discount_price
+        return self.price
+
+    @property
+    def discount_amount(self):
+        """How much customer saves"""
+        if self.discount_price and self.discount_price > 0 and self.discount_price < self.price:
+            return self.price - self.discount_price
+        return Decimal("0.00")
+
+    @property
+    def discount_percent(self):
+        """Calculate % off automatically"""
+        if self.discount_price and self.discount_price > 0 and self.discount_price < self.price and self.price > 0:
+            return round(100 - (self.discount_price / self.price * 100))
+        return 0
 
     class Meta:
         unique_together = ("product", "type_name")
 
-    def clean(self):
-        if self.discount_price and self.discount_price >= self.price:
-            raise ValidationError("Discount price must be less than price")
-
-    @property
-    def final_price(self):
-        return self.discount_price if self.discount_price else self.price
-
     def __str__(self):
         return f"{self.product.name} - {self.type_name}"
+
 class ProductColor(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="colors"
@@ -110,17 +147,10 @@ class ProductImage(models.Model):
     )
 
     is_primary = models.BooleanField(default=False)
+    show_in_shop = models.BooleanField(default=True)
 
-    def clean(self):
-        if not self.product:
-            raise ValidationError("Image must belong to a product")
-
-        # Optional: enforce logical consistency
-        if self.product_type and self.product_type.product != self.product:
-            raise ValidationError("ProductType does not belong to this product")
-
-        if self.color and self.color.product != self.product:
-            raise ValidationError("Color does not belong to this product")
+    # ✅ NEW: design-level description
+    description = models.TextField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if self.is_primary:
@@ -140,6 +170,7 @@ class ProductImage(models.Model):
         if self.color:
             parts.append(self.color.name)
         return " - ".join(parts)
+
 @transaction.atomic
 def reduce_stock(color, size, qty):
     if qty <= 0:

@@ -52,13 +52,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductType)
 class ProductTypeAdmin(admin.ModelAdmin):
-    list_display = (
-        "product",
-        "type_name",
-        "price",
-        "discount_price",
-        "final_price",
-    )
+    list_display = ("product", "type_name", "price", "discount_price", "discounted_price")
     list_filter = ("type_name",)
     search_fields = ("product__name",)
 

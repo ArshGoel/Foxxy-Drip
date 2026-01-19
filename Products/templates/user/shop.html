@@ -84,30 +84,31 @@ body {
 
           <!-- PRODUCT NAME -->
           <h5 class="card-title fw-bold">
-            {{ item.product.name }}
+            {{ item.color.name }}
+            
           </h5>
 
           <!-- DESIGN META -->
-          <p class="text-muted mb-1">
-            {{ item.product_type.type_name|title }} • {{ item.color.name }}
+          <p class="text mb-1">
+            {{ item.product_type.type_name|title }} • {{ item.product.name }}
           </p>
 
           <!-- PRICE -->
           <p class="price mb-2">
-            {% if item.product_type.discount_price %}
+            {% if item.product_type.discount_percent > 0 %}
               <span class="text-strike">₹{{ item.product_type.price }}</span>
-              <span class="text-danger ms-2">₹{{ item.product_type.discount_price }}</span>
-              <span class="badge ms-2">
-                -{{ item.product_type.discount_percent }}%
-              </span>
+              <span class="text-danger ms-2">₹{{ item.product_type.discounted_price }}</span>
+              <span class="badge ms-2">-{{ item.product_type.discount_percent }}%</span>
             {% else %}
               ₹{{ item.product_type.price }}
             {% endif %}
+
           </p>
 
           <!-- VIEW BUTTON -->
           <a
-            href="{% url 'design_detail' item.id %}"
+            href="{% url 'product_detail' item.product.product_id %}?type={{ item.product_type.id }}&color={{ item.color.id }}"
+
             class="btn btn-view mt-auto w-100"
           >
             View

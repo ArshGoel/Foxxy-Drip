@@ -162,10 +162,61 @@ def product_full_create(request):
 def shop(request):
     designs = (
         ProductImage.objects
-        .filter(is_primary=True)
+        .filter(is_primary=True, show_in_shop=True)
         .select_related("product", "product_type", "color")
     )
 
-    return render(request, "user/shop.html", {
-        "designs": designs
+    return render(request, "user/shop.html", {"designs": designs})
+ 
+from django.shortcuts import render, get_object_or_404
+from django.db.models import Prefetch
+from .models import Product, ProductType, ProductColor, ProductColorSize, ProductImage
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, product_id=product_id)
+
+    # all types + colors for this product
+    types = ProductType.objects.filter(product=product)
+    colors = ProductColor.objects.filter(product=product)
+
+    # default selection (first available)
+    selected_type_id = request.GET.get("type")
+    selected_color_id = request.GET.get("color")
+
+    selected_type = None
+    selected_color = None
+
+    if selected_type_id:
+        selected_type = ProductType.objects.filter(id=selected_type_id, product=product).first()
+    if not selected_type:
+        selected_type = types.first()
+
+    if selected_color_id:
+        selected_color = ProductColor.objects.filter(id=selected_color_id, product=product).first()
+    if not selected_color:
+        selected_color = colors.first()
+
+    # sizes stock for selected color
+    sizes = []
+    if selected_color:
+        sizes = ProductColorSize.objects.filter(color=selected_color).order_by("size")
+
+    # images for selected design (product + type + color)
+    images = ProductImage.objects.filter(
+        product=product,
+        product_type=selected_type,
+        color=selected_color,
+    ).order_by("-is_primary", "id")
+
+    primary_image = images.first()
+
+    return render(request, "user/product_detail.html", {
+        "product": product,
+        "types": types,
+        "colors": colors,
+        "selected_type": selected_type,
+        "selected_color": selected_color,
+        "sizes": sizes,
+        "images": images,
+        "primary_image": primary_image,
     })
