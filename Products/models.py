@@ -128,8 +128,9 @@ class Design(models.Model):
     show_in_shop = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = ("product", "product_type", "color")
-
+        indexes = [
+            models.Index(fields=["product", "product_type", "color"]),
+        ]
     def clean(self):
         if self.product_type.product != self.product:
             raise ValidationError("ProductType does not belong to this product")
