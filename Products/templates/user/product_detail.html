@@ -565,13 +565,15 @@
             function selectSize(size, btn) {
                 document.getElementById("selectedSize").value = size;
 
-                // remove selected class from all buttons
-                document.querySelectorAll(".size-btn").forEach(b => b.classList.remove("selected"));
+                // remove highlight from all size buttons
+                document.querySelectorAll(".size-btn").forEach(b => {
+                b.classList.remove("selected");
+                });
 
-                // add selected class
+                // highlight clicked one
                 btn.classList.add("selected");
             }
-        </script>
+        </script>   
 
 </body>
 
