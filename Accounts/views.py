@@ -17,7 +17,77 @@ from allauth.socialaccount.models import SocialAccount
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Product, ProductDesign
-# ------------------------ Clean Email ------------------------ #
+from django.db.models import Prefetch, Case, When, IntegerField
+from Services.models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
+#------------- Basics Pages Views -------------#
+def aboutus(request):
+    cart_count = 0
+    if request.user.is_authenticated:
+        cart_count = CartItem.objects.filter(user=request.user).count()
+    return render(request, 'basics/aboutus.html', {'cart_count': cart_count})
+
+def contactus(request):
+    cart_count = 0
+    if request.user.is_authenticated:
+        cart_count = CartItem.objects.filter(user=request.user).count()
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        email = request.POST.get('email', '').strip()
+        message = request.POST.get('message', '').strip()
+
+        if name and email and message:
+            send_contact_email(name, email, message)
+            
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect('contactus')  # Make sure this matches your URL name
+        else:
+            messages.error(request, "All fields are required.")
+
+    return render(request, 'basics/contactus.html', {'cart_count': cart_count})
+
+def FAQ(request):
+    cart_count = 0
+    if request.user.is_authenticated:
+        cart_count = CartItem.objects.filter(user=request.user).count()
+    return render(request, 'basics/FAQ.html', {'cart_count': cart_count})
+
+def privacy_policy(request, lang_code=None):
+    context = {
+        'initial_lang_code': lang_code if lang_code in ['en', 'hi', 'gu', 'ta', 'te', 'mr', 'ml', 'bn', 'kn', 'or'] else 'en'
+    }
+    return render(request, 'basics/privacy_policy.html', context)
+
+def terms_conditions(request, lang_code=None): 
+    context = {
+        'initial_lang_code': lang_code if lang_code in ['en', 'hi', 'gu', 'ta', 'te', 'mr', 'ml', 'bn', 'kn', 'or'] else 'en'
+    }
+    return render(request, 'basics/terms_conditions.html', context)
+
+def returns_and_exchanges_policy(request):
+    return render(request, 'basics/returns_exchange_policy.html')
+
+def shipping_delivery_policy(request):
+    return render(request, 'basics/shipping_delivery_policy.html')
+#------------- Basics Pages Views -------------#
+
+def home(request):
+    cart_count = 0
+    if request.user.is_authenticated:
+        cart_count = CartItem.objects.filter(user=request.user).count()
+
+    # ✅ Fetch designs instead of products
+    featured_designs = (
+        ProductDesign.objects.filter(id__in=[2, 17, 15])
+        .select_related("color__product", "type")
+        .prefetch_related("images", "color__images", "color__product__images")
+    )
+    
+    return render(request, "home.html", {
+        "cart_count": cart_count,
+        "featured_designs": featured_designs
+    })
+
+# ------------------------ Emails Page Views ------------------------ #
 def send_contact_email(name, email, message):
     subject = f"Foxxy Drip | New Contact Message from {name}"
     
@@ -77,147 +147,7 @@ def send_otp_email(name, email, otp):
     )
     msg.attach_alternative(html_content, "text/html")
     msg.send()
-
-
-# ------------------------ Clean Email ------------------------ #
-
-# views.py
-from django.shortcuts import render
-from .models import ProductDesign
-from django.shortcuts import render
-from django.db.models import Prefetch, Case, When, IntegerField
-from .models import Product, ProductColor, ProductDesign
-
-# Define the desired type order
-TYPE_ORDER = ['printed', 'plain', 'embroidery']
-def all_products_designs_view(request):
-    # Annotate designs with custom ordering
-    custom_order = Case(
-        *[When(type__type_name=t, then=pos) for pos, t in enumerate(TYPE_ORDER)],
-        output_field=IntegerField()
-    )
-
-    # Prefetch designs for each color, ordering by type custom order
-    color_qs = ProductColor.objects.prefetch_related(
-        Prefetch(
-            'designs',
-            queryset=ProductDesign.objects.prefetch_related('images', 'type').order_by(custom_order)
-        )
-    )
-
-    # Prefetch colors for each product
-    products = Product.objects.prefetch_related(
-        Prefetch('colors', queryset=color_qs)
-    )
-
-    context = {'products': products}
-    return render(request, 'all_products_designs.html', context)
-
-def home(request):
-    cart_count = 0
-    if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
-
-    # ✅ Fetch designs instead of products
-    featured_designs = (
-        ProductDesign.objects.filter(id__in=[2, 17, 15])
-        .select_related("color__product", "type")
-        .prefetch_related("images", "color__images", "color__product__images")
-    )
-    
-    return render(request, "home.html", {
-        "cart_count": cart_count,
-        "featured_designs": featured_designs
-    })
-
-
-def FAQ(request):
-    cart_count = 0
-    if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
-    return render(request, 'FAQ.html', {'cart_count': cart_count})
-
-def aboutus(request):
-    cart_count = 0
-    if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
-    return render(request, 'aboutus.html', {'cart_count': cart_count})
-
-from Services.models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
-
-from django.shortcuts import render
-from .models import Product
-
-from django.db.models import Prefetch
-
-def shop(request):
-    # Prefetch colors, designs, images in a single query
-    products = Product.objects.all().prefetch_related(
-        Prefetch('colors', queryset=ProductColor.objects.prefetch_related(
-            Prefetch(
-                'designs',
-                queryset=ProductDesign.objects.filter(show_in_shop=True).prefetch_related('images')  # 👈 only True designs
-            ),
-            'sizes',
-            'images'
-        ))
-    )
-
-    # Flatten each product per design for easier template rendering
-    products_with_designs = []
-    for product in products:
-        for color in product.colors.all():  # type: ignore
-            # If no (visible) designs, still show product+color
-            if color.designs.exists():
-                for design in color.designs.all():
-                    products_with_designs.append({
-                        "product": product,
-                        "color": color,
-                        "design": design,
-                        "image": design.images.first() or color.images.first() or None
-                    })
-    return render(request, "shop.html", {"products_with_designs": products_with_designs})
-
-
-@login_required
-def update_cart(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
-    cart_item, created = CartItem.objects.get_or_create(user=request.user, product=product)
-
-    if request.POST.get("action") == "increase":
-        cart_item.quantity += 1
-    elif request.POST.get("action") == "decrease":
-        cart_item.quantity -= 1
-        if cart_item.quantity <= 0:
-            cart_item.delete()
-            return redirect('shop')
-    cart_item.save()
-    return redirect('shop')
-
-def customize(request):
-    cart_count = 0
-    if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
-    return render(request, 'customize.html', {'cart_count': cart_count})
-
-def contactus(request):
-    cart_count = 0
-    if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
-    if request.method == 'POST':
-        name = request.POST.get('name', '').strip()
-        email = request.POST.get('email', '').strip()
-        message = request.POST.get('message', '').strip()
-
-        if name and email and message:
-            send_contact_email(name, email, message)
-            
-            messages.success(request, "Your message has been sent successfully!")
-            return redirect('contactus')  # Make sure this matches your URL name
-        else:
-            messages.error(request, "All fields are required.")
-
-    return render(request, 'contactus.html', {'cart_count': cart_count})
+# ------------------------ Emails Page Views ------------------------ #
 
 
 def login(request):
@@ -257,8 +187,6 @@ def login(request):
             messages.success(request,"Success")
         
     return render(request, 'login_register.html')
-
-
 
 def logout(request):
     auth.logout(request)
@@ -453,20 +381,3 @@ def complete_profile(request):
 
     return render(request, "complete_profile.html")
 
-def privacy_policy(request, lang_code=None):
-    context = {
-        'initial_lang_code': lang_code if lang_code in ['en', 'hi', 'gu', 'ta', 'te', 'mr', 'ml', 'bn', 'kn', 'or'] else 'en'
-    }
-    return render(request, 'privacy_policy.html', context)
-
-def terms_conditions(request, lang_code=None): 
-    context = {
-        'initial_lang_code': lang_code if lang_code in ['en', 'hi', 'gu', 'ta', 'te', 'mr', 'ml', 'bn', 'kn', 'or'] else 'en'
-    }
-    return render(request, 'terms_conditions.html', context)
-
-def returns_and_exchanges_policy(request):
-    return render(request, 'returns_exchange_policy.html')
-
-def shipping_delivery_policy(request):
-    return render(request, 'shipping_delivery_policy.html')

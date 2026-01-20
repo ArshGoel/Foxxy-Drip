@@ -31,7 +31,7 @@ urlpatterns = [
     # Images
     path("images/<int:pk>/edit/", views.image_form, name="image_edit"),
     path("products/add-full/", views.product_full_create, name="product_full_create"),      
-    path("shop/", views.shop, name="shop"), 
+    path("", views.shop, name="shop"), 
     path("shop/<str:product_id>/", views.product_detail, name="product_detail"),
     path("designs/", views.design_list, name="design_list"),
     path("designs/add/", views.design_form, name="design_add"),

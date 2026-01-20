@@ -1,11 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from .forms import *
+from django.db import transaction
+from .models import Product, ProductType, ProductColor, ProductColorSize, Design, ProductImage
+from .forms import DesignForm
+from django.contrib.admin.views.decorators import staff_member_required
+
+#admin methods
+@staff_member_required
 def category_list(request):
     return render(request, "admin_d/category_list.html", {
         "categories": Category.objects.all()
     })
 
+@staff_member_required
 def category_form(request, pk=None):
     obj = Category.objects.get(pk=pk) if pk else None
     form = CategoryForm(request.POST or None, instance=obj)
@@ -14,17 +22,21 @@ def category_form(request, pk=None):
         return redirect("category_list")
     return render(request, "admin_d/category_form.html", {"form": form})
 
+@staff_member_required
 def category_delete(request, pk):
     obj = get_object_or_404(Category, pk=pk)
     if request.method == "POST":
         obj.delete()
         return redirect("category_list")
     return render(request, "admin_d/confirm_delete.html", {"object": obj})
+
+@staff_member_required
 def product_list(request):
     return render(request, "admin_d/product_list.html", {
         "products": Product.objects.select_related("category")
     })
 
+@staff_member_required
 def product_form(request, pk=None):
     obj = Product.objects.get(pk=pk) if pk else None
     form = ProductForm(request.POST or None, instance=obj)
@@ -32,11 +44,14 @@ def product_form(request, pk=None):
         form.save()
         return redirect("product_list") 
     return render(request, "admin_d/product_form.html", {"form": form})
+
+@staff_member_required
 def type_list(request):
     return render(request, "admin_d/type_list.html", {
         "types": ProductType.objects.select_related("product")
     })
 
+@staff_member_required
 def type_form(request, pk=None):
     obj = ProductType.objects.get(pk=pk) if pk else None
     form = ProductTypeForm(request.POST or None, instance=obj)
@@ -44,11 +59,14 @@ def type_form(request, pk=None):
         form.save()
         return redirect("type_list")
     return render(request, "admin_d/type_form.html", {"form": form})
+
+@staff_member_required
 def color_list(request):
     return render(request, "admin_d/color_list.html", {
         "colors": ProductColor.objects.select_related("product")
     })
 
+@staff_member_required
 def color_form(request, pk=None):
     obj = ProductColor.objects.get(pk=pk) if pk else None
     form = ProductColorForm(request.POST or None, instance=obj)
@@ -56,11 +74,14 @@ def color_form(request, pk=None):
         form.save()
         return redirect("color_list")
     return render(request, "admin_d/color_form.html", {"form": form})
+
+@staff_member_required
 def size_list(request):
     return render(request, "admin_d/size_list.html", {
         "sizes": ProductColorSize.objects.select_related("color")
     })
 
+@staff_member_required
 def size_form(request, pk=None):
     obj = ProductColorSize.objects.get(pk=pk) if pk else None
     form = ProductColorSizeForm(request.POST or None, instance=obj)
@@ -68,11 +89,14 @@ def size_form(request, pk=None):
         form.save()
         return redirect("size_list")
     return render(request, "admin_d/size_form.html", {"form": form})
+
+@staff_member_required
 def image_list(request):
     return render(request, "admin_d/image_list.html", {
         "images": ProductImage.objects.select_related("product")
     })
 
+@staff_member_required
 def image_form(request, pk=None):
     obj = ProductImage.objects.get(pk=pk) if pk else None
 
@@ -86,10 +110,7 @@ def image_form(request, pk=None):
 
     return render(request, "admin_d/image_form.html", {"form": form})
  
-from django.db import transaction
-from django.shortcuts import render, redirect
-from .models import *
-
+@staff_member_required
 @transaction.atomic
 def product_full_create(request):
     context = {
@@ -172,9 +193,68 @@ def product_full_create(request):
 
     return render(request, "admin_d/product_full_create.html", context)
 
-from django.shortcuts import render
-from .models import Design, ProductImage
+@staff_member_required
+def design_list(request):
+    designs = Design.objects.select_related("product", "product_type", "color").prefetch_related("images")
+    return render(request, "admin_d/design_list.html", {"designs": designs})
 
+@staff_member_required
+def design_form(request, pk=None):
+    obj = Design.objects.get(pk=pk) if pk else None
+    form = DesignForm(request.POST or None, instance=obj)
+
+    if request.method == "POST":
+        if form.is_valid():
+            design = form.save()
+
+            # ✅ handle images upload
+            images = request.FILES.getlist("images")
+
+            # if design has no primary yet, first upload becomes primary
+            has_primary = ProductImage.objects.filter(design=design, is_primary=True).exists()
+
+            for i, img in enumerate(images):
+                ProductImage.objects.create(
+                    design=design,
+                    image=img,
+                    is_primary=(not has_primary and i == 0)
+                )
+
+            return redirect("design_list")
+
+    return render(request, "admin_d/design_form.html", {"form": form})
+
+@staff_member_required
+def design_reorder(request):
+    designs = Design.objects.all().order_by("position", "id")
+    return render(request, "admin_d/design_reorder.html", {"designs": designs})
+
+@staff_member_required
+def move_design_up(request, pk):
+    design = get_object_or_404(Design, pk=pk)
+    above = Design.objects.filter(position__lt=design.position).order_by("-position").first()
+
+    if above:
+        design.position, above.position = above.position, design.position
+        design.save()
+        above.save()
+
+    return redirect("design_reorder")
+
+@staff_member_required
+def move_design_down(request, pk):
+    design = get_object_or_404(Design, pk=pk)
+    below = Design.objects.filter(position__gt=design.position).order_by("position").first()
+
+    if below:
+        design.position, below.position = below.position, design.position
+        design.save()
+        below.save()
+
+    return redirect("design_reorder")
+
+
+#user methods
 def shop(request):
     designs = (
         Design.objects
@@ -188,14 +268,6 @@ def shop(request):
         d.primary_image = d.images.filter(is_primary=True).first() or d.images.first()
         d.sizes = ProductColorSize.objects.filter(color=d.color).order_by("size")
     return render(request, "user/shop.html", {"designs": designs})
-
- 
-from django.shortcuts import render, get_object_or_404
-from django.db.models import Prefetch
-from .models import Product, ProductType, ProductColor, ProductColorSize, ProductImage
-
-from django.shortcuts import render, get_object_or_404
-from .models import Product, ProductType, ProductColor, ProductColorSize, Design, ProductImage
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, product_id=product_id)
@@ -273,72 +345,3 @@ def product_detail(request, product_id):
         "images": images,
         "primary_image": primary_image,
     })
-
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Design
-from .forms import DesignForm
-
-def design_list(request):
-    designs = Design.objects.select_related("product", "product_type", "color").prefetch_related("images")
-    return render(request, "admin_d/design_list.html", {"designs": designs})
-
-
-from django.shortcuts import render, redirect
-from .models import Design, ProductImage
-from .forms import DesignForm
-
-def design_form(request, pk=None):
-    obj = Design.objects.get(pk=pk) if pk else None
-    form = DesignForm(request.POST or None, instance=obj)
-
-    if request.method == "POST":
-        if form.is_valid():
-            design = form.save()
-
-            # ✅ handle images upload
-            images = request.FILES.getlist("images")
-
-            # if design has no primary yet, first upload becomes primary
-            has_primary = ProductImage.objects.filter(design=design, is_primary=True).exists()
-
-            for i, img in enumerate(images):
-                ProductImage.objects.create(
-                    design=design,
-                    image=img,
-                    is_primary=(not has_primary and i == 0)
-                )
-
-            return redirect("design_list")
-
-    return render(request, "admin_d/design_form.html", {"form": form})
-
-
-
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Design
-
-def design_reorder(request):
-    designs = Design.objects.all().order_by("position", "id")
-    return render(request, "admin_d/design_reorder.html", {"designs": designs})
-
-def move_design_up(request, pk):
-    design = get_object_or_404(Design, pk=pk)
-    above = Design.objects.filter(position__lt=design.position).order_by("-position").first()
-
-    if above:
-        design.position, above.position = above.position, design.position
-        design.save()
-        above.save()
-
-    return redirect("design_reorder")
-
-def move_design_down(request, pk):
-    design = get_object_or_404(Design, pk=pk)
-    below = Design.objects.filter(position__gt=design.position).order_by("position").first()
-
-    if below:
-        design.position, below.position = below.position, design.position
-        design.save()
-        below.save()
-
-    return redirect("design_reorder")
