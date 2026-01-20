@@ -11,7 +11,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://foxxy-drip.onrender.com",
+    "https://foxxy-drip.vercel.app/",
     "https://foxxydrip.com",
 ]
 
