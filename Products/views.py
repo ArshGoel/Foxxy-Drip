@@ -205,29 +205,51 @@ def product_detail(request, product_id):
 
     selected_type_id = request.GET.get("type")
     selected_color_id = request.GET.get("color")
+    selected_design_id = request.GET.get("design")  # ✅ NEW
 
-    selected_type = ProductType.objects.filter(id=selected_type_id, product=product).first() if selected_type_id else None
-    selected_color = ProductColor.objects.filter(id=selected_color_id, product=product).first() if selected_color_id else None
+    selected_type = (
+        ProductType.objects.filter(id=selected_type_id, product=product).first()
+        if selected_type_id else None
+    )
+    selected_color = (
+        ProductColor.objects.filter(id=selected_color_id, product=product).first()
+        if selected_color_id else None
+    )
 
+    # ✅ defaults
     if not selected_type:
         selected_type = types.first()
 
     if not selected_color:
         selected_color = colors.first()
 
-    # ✅ Sizes stock stays same (color based)
+    # ✅ Stock sizes (still based on color)
     sizes = []
     if selected_color:
         sizes = ProductColorSize.objects.filter(color=selected_color).order_by("size")
 
-    # ✅ Find design (based on product + type + color)
-    design = None
+    # ✅ ALL designs for current selection
+    designs = Design.objects.none()
     if selected_type and selected_color:
-        design = Design.objects.filter(
-            product=product,
-            product_type=selected_type,
-            color=selected_color
-        ).first()
+        designs = (
+            Design.objects.filter(
+                product=product,
+                product_type=selected_type,
+                color=selected_color,
+                show_in_shop=True   # ✅ optional: only show visible designs
+            )
+            .order_by("position", "-id")
+        )
+
+    # ✅ choose 1 design (by design id if present)
+    design = None
+
+    if selected_design_id:
+        design = designs.filter(id=selected_design_id).first()
+
+    # ✅ fallback = first design
+    if not design:
+        design = designs.first()
 
     # ✅ Images from design
     images = ProductImage.objects.none()
@@ -241,14 +263,15 @@ def product_detail(request, product_id):
         "product": product,
         "types": types,
         "colors": colors,
+
         "selected_type": selected_type,
         "selected_color": selected_color,
         "sizes": sizes,
+        "designs": designs,
+        "design": design,
+
         "images": images,
         "primary_image": primary_image,
-
-        # optional (if you want to show design name/desc later)
-        "design": design,
     })
 
 from django.shortcuts import render, redirect, get_object_or_404

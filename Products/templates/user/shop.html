@@ -205,7 +205,7 @@ body {
 
           <!-- ✅ VIEW BUTTON -->
           <a
-            href="{% url 'product_detail' item.product.product_id %}?type={{ item.product_type.id }}&color={{ item.color.id }}"
+            href="{% url 'product_detail' item.product.product_id %}?type={{ item.product_type.id }}&color={{ item.color.id }}&design={{ item.id }}"
             class="btn btn-view mt-auto w-100"
           >
             View
