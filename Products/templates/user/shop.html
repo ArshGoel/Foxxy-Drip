@@ -94,11 +94,11 @@ body {
           </p>
 
           <!-- ✅ DESCRIPTION -->
-          {% if item.description %}
+          {% comment %} {% if item.description %}
             <p class="text-muted" style="font-size: 14px;">
               {{ item.description|truncatechars:60 }}
             </p>
-          {% endif %}
+          {% endif %} {% endcomment %}
 
           <!-- ✅ PRICE -->
           <p class="price mb-2">
