@@ -183,7 +183,7 @@ form .field input:focus::placeholder {
 
 .form-inner form .pass-link a,
 .form-inner form .signup-link a {
-    color: #000000;
+    color: #ffffff;
     text-decoration: none;
 }
 
