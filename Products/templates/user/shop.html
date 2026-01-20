@@ -77,6 +77,62 @@ body {
 .btn-view:hover {
     background-color: #d63384;
 }
+.size-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+    margin-bottom: 16px;
+}
+
+.size-box {
+    position: relative;
+    padding: 10px 0;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 700;
+    background: #111;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.size-box:hover {
+    border-color: #d63384;
+    transform: translateY(-2px);
+}
+
+.size-box.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    border-color: rgba(255,255,255,0.15);
+}
+
+/* ✅ Cross line like screenshot */
+.size-box.disabled::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10%;
+    width: 120%;
+    height: 2px;
+    background: rgba(255,255,255,0.35);
+    transform: rotate(-30deg);
+}
+
+.stock-badge {
+    position: absolute;
+    top: -9px;
+    right: -6px;
+    background: #000;
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 7px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.25);
+}
+
 </style>
 {% endblock extracss %}
 
@@ -129,6 +185,23 @@ body {
               ₹{{ item.product_type.price }}
             {% endif %}
           </p>
+          <!-- ✅ SIZES GRID -->
+          <div class="size-grid">
+            {% for s in item.sizes %}
+              {% if s.quantity > 0 %}
+                <div class="size-box">
+                  {{ s.size }}
+                  {% if s.quantity <= 5 %}
+                    <span class="stock-badge">{{ s.quantity }} left</span>
+                  {% endif %}
+                </div>
+              {% else %}
+                <div class="size-box disabled">
+                  {{ s.size }}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
 
           <!-- ✅ VIEW BUTTON -->
           <a

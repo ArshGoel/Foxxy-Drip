@@ -186,7 +186,7 @@ def shop(request):
     # attach primary image to each design
     for d in designs:
         d.primary_image = d.images.filter(is_primary=True).first() or d.images.first()
-
+        d.sizes = ProductColorSize.objects.filter(color=d.color).order_by("size")
     return render(request, "user/shop.html", {"designs": designs})
 
  
