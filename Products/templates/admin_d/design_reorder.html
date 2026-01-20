@@ -1,0 +1,44 @@
+{% extends "admin_d/base.html" %}
+{% block content %}
+
+<h2>Rearrange Designs (Shop Order)</h2>
+
+<p style="color:gray;">
+  Use ⬆️ / ⬇️ buttons to change order. Shop will show designs in this order.
+</p>
+
+<table border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse:collapse;">
+  <tr style="background:#222; color:white;">
+    <th>Position</th>
+    <th>Design Name</th>
+    <th>Product</th>
+    <th>Type</th>
+    <th>Color</th>
+    <th>Show in Shop</th>
+    <th>Actions</th>
+  </tr>
+
+  {% for d in designs %}
+  <tr>
+    <td>{{ d.position }}</td>
+    <td><b>{{ d.name }}</b></td>
+    <td>{{ d.product.name }}</td>
+    <td>{{ d.product_type.type_name|title }}</td>
+    <td>{{ d.color.name }}</td>
+    <td>
+      {% if d.show_in_shop %}
+        ✅
+      {% else %}
+        ❌
+      {% endif %}
+    </td>
+    <td>
+      <a href="{% url 'design_up' d.id %}">⬆️ Up</a>
+      |
+      <a href="{% url 'design_down' d.id %}">⬇️ Down</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

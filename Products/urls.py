@@ -36,5 +36,7 @@ urlpatterns = [
     path("designs/", views.design_list, name="design_list"),
     path("designs/add/", views.design_form, name="design_add"),
     path("designs/<int:pk>/edit/", views.design_form, name="design_edit"),
-
+    path("designs/reorder/", views.design_reorder, name="design_reorder"),
+    path("designs/<int:pk>/up/", views.move_design_up, name="design_up"),
+    path("designs/<int:pk>/down/", views.move_design_down, name="design_down"),
 ]

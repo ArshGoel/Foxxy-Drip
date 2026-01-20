@@ -81,13 +81,18 @@ class ProductColorSizeAdmin(admin.ModelAdmin):
     search_fields = ("color__product__name", "color__name")
 
 
-# ✅ NEW: Design Admin
 @admin.register(Design)
 class DesignAdmin(admin.ModelAdmin):
-    list_display = ("name", "product", "product_type", "color", "show_in_shop")
+    list_display = ("name", "product", "product_type", "color", "position", "show_in_shop")
+    list_editable = ("position", "show_in_shop")   # ✅ editable in list view
+    list_display_links = ("name",)                 # ✅ only name will open edit page
+
     list_filter = ("show_in_shop", "product_type")
     search_fields = ("name", "product__name", "color__name")
-    inlines = [ProductImageInline]  # ✅ images inside design
+    ordering = ("position", "id")                  # ✅ show in correct order
+
+    inlines = [ProductImageInline]
+
 
 
 # ✅ UPDATED: ProductImage Admin

@@ -288,3 +288,34 @@ def design_form(request, pk=None):
             return redirect("design_list")
 
     return render(request, "admin_d/design_form.html", {"form": form})
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Design
+
+def design_reorder(request):
+    designs = Design.objects.all().order_by("position", "id")
+    return render(request, "admin_d/design_reorder.html", {"designs": designs})
+
+def move_design_up(request, pk):
+    design = get_object_or_404(Design, pk=pk)
+    above = Design.objects.filter(position__lt=design.position).order_by("-position").first()
+
+    if above:
+        design.position, above.position = above.position, design.position
+        design.save()
+        above.save()
+
+    return redirect("design_reorder")
+
+def move_design_down(request, pk):
+    design = get_object_or_404(Design, pk=pk)
+    below = Design.objects.filter(position__gt=design.position).order_by("position").first()
+
+    if below:
+        design.position, below.position = below.position, design.position
+        design.save()
+        below.save()
+
+    return redirect("design_reorder")

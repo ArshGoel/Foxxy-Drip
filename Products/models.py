@@ -122,7 +122,7 @@ class Design(models.Model):
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE, related_name="designs")
     color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="designs")
 
-    # ✅ moved here
+    position = models.PositiveIntegerField(default=0)
     name = models.CharField(max_length=150,default="Default Design Name")
     description = models.TextField(blank=True, null=True)
     show_in_shop = models.BooleanField(default=True)
@@ -131,6 +131,7 @@ class Design(models.Model):
         indexes = [
             models.Index(fields=["product", "product_type", "color"]),
         ]
+        ordering = ["position", "-id"]
     def clean(self):
         if self.product_type.product != self.product:
             raise ValidationError("ProductType does not belong to this product")
@@ -141,7 +142,6 @@ class Design(models.Model):
         return f"{self.name} ({self.product.name} - {self.product_type.type_name} - {self.color.name})"
 
 
-# ✅ UPDATED: ProductImage becomes DesignImage (images belong to a design)
 class ProductImage(models.Model):
     design = models.ForeignKey(
         Design, on_delete=models.CASCADE, related_name="images"
