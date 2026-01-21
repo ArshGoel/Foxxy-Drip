@@ -35,7 +35,7 @@
         <tbody>
             {% for item in order.items.all %}
             <tr>
-                <td>{{ item.product.name }}</td>
+                <td>{{ item.design.product.name }}</td>
                 <td>
                     {% if item.design %}
                         {{ item.design.name }}

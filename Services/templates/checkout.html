@@ -6,7 +6,9 @@
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
 {% endblock extracss %}
+
 <div class="container my-5">
+
     <!-- Progress Bar -->
     <div class="checkout-progress d-flex justify-content-between align-items-center mb-5">
         <div class="step completed">
@@ -19,24 +21,30 @@
             <span class="label">Checkout</span>
         </div>
         <div class="line"></div>
-        <div class="step ">
+        <div class="step">
             <span class="circle">3</span>
             <span class="label">Payment</span>
         </div>
     </div>
 
-    <div class="row">
-        <!-- Address Section -->
-        <div class="col-lg-7 mb-4">
-            <div class="card shadow-sm border-0 rounded-3">
-                <div class="card-body">
-                    <h4 class="mb-3">Select Delivery Address</h4>
-                    <form method="POST">
-                        {% csrf_token %}
+    <!-- ✅ Form should wrap BOTH sections -->
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="row">
+
+            <!-- Address Section -->
+            <div class="col-lg-7 mb-4">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body">
+                        <h4 class="mb-3">Select Delivery Address</h4>
+
                         {% if addresses %}
                             {% for addr in addresses %}
                                 <div class="form-check mb-3 p-3 border rounded-3 hover-shadow">
-                                    <input class="form-check-input" type="radio" name="address" value="{{ addr.id }}" {% if addr.is_default %}checked{% endif %}>
+                                    <input class="form-check-input" type="radio" name="address"
+                                           value="{{ addr.id }}"
+                                           {% if addr.is_default %}checked{% endif %}>
                                     <label class="form-check-label ms-2">
                                         <strong>{{ addr.receiver_name }}</strong> - {{ addr.phone }} <br>
                                         <small class="text-muted">
@@ -48,83 +56,115 @@
                                 </div>
                             {% endfor %}
                         {% else %}
-                            <p class="text-danger">
-                                ⚠️ You don't have any addresses yet. 
-                                <a href="{% url 'manage_address' %}" class="text-decoration-none fw-bold">Manage your addresses</a> to add one before placing an order.
+                            <p class="text-danger mb-0">
+                                ⚠️ You don't have any addresses yet.
+                                <a href="{% url 'manage_address' %}" class="text-decoration-none fw-bold">
+                                    Manage your addresses
+                                </a>
+                                to add one before placing an order.
                             </p>
                         {% endif %}
 
                         <!-- Buttons at bottom for mobile -->
                         <div class="d-lg-none text-center mt-4">
-                            <button type="submit" class="btn btn-success w-100 mb-2"><i class="bi bi-credit-card me-1"></i>Proceed To Payment</button>
+                            {% if addresses %}
+                                <button type="submit" class="btn btn-success w-100 mb-2">
+                                    <i class="bi bi-credit-card me-1"></i>Proceed To Payment
+                                </button>
+                            {% else %}
+                                <button type="button" class="btn btn-success w-100 mb-2" disabled>
+                                    <i class="bi bi-credit-card me-1"></i>Proceed To Payment
+                                </button>
+                            {% endif %}
                             <a href="{% url 'view_cart' %}" class="btn btn-outline-secondary w-100">Back to Cart</a>
                         </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Order Summary -->
-        <div class="col-lg-5">
-            <div class="card shadow-sm border-0 rounded-3">
-                <div class="card-body">
-                    <h4 class="mb-3">Order Summary</h4>
-                    <div class="table-responsive">
-                        <table class="table align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Details</th>
-                                    <th class="text-end">Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in cart_items %}
-                                <tr>
-                                    <td>
-                                        {% if item.design and item.design.images.first %}
-                                            <img src="{{ item.design.images.first.image.url }}" alt="{{ item.design.name }}" class="img-fluid rounded" style="width:60px;height:60px;object-fit:cover;">
-                                        {% elif item.product.images.first %}
-                                            <img src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}" class="img-fluid rounded" style="width:60px;height:60px;object-fit:cover;">
-                                        {% else %}
-                                            <img src="https://via.placeholder.com/60" class="img-fluid rounded" alt="No Image">
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        <strong>{{ item.product.name }}</strong><br>
-                                        {% if item.design %}<small>{{ item.design.name }}</small><br>{% endif %}
-                                        <small>Size: {{ item.size }}</small><br>
-                                        <small>Qty: {{ item.quantity }}</small><br>
-                                        {% if item.product.types.first.discount_price %}
-                                            <span class="text-success fw-bold">₹{{ item.product.types.first.discount_price }}</span>
-                                            <small class="text-muted"><del>₹{{ item.product.types.first.price }}</del></small>
-                                        {% else %}
-                                            <span>₹{{ item.product.types.first.price }}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td class="text-end fw-bold">₹{{ item.subtotal }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+            <!-- Order Summary -->
+            <div class="col-lg-5">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body">
+                        <h4 class="mb-3">Order Summary</h4>
+
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Details</th>
+                                        <th class="text-end">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cart_items %}
+                                    <tr>
+                                        <td>
+                                            {% if item.design and item.design.images.first %}
+                                                <img src="{{ item.design.images.first.image.url }}" alt="{{ item.design.name }}"
+                                                     class="img-fluid rounded"
+                                                     style="width:60px;height:60px;object-fit:cover;">
+                                            {% elif item.product.images.first %}
+                                                <img src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}"
+                                                     class="img-fluid rounded"
+                                                     style="width:60px;height:60px;object-fit:cover;">
+                                            {% else %}
+                                                <img src="https://via.placeholder.com/60" class="img-fluid rounded" alt="No Image">
+                                            {% endif %}
+                                        </td>
+
+                                        <td>
+                                            <strong>{{ item.product.name }}</strong><br>
+                                            {% if item.design %}
+                                                <small>{{ item.design.name }}</small><br>
+                                            {% endif %}
+                                            <small>Size: {{ item.size }}</small><br>
+                                            <small>Qty: {{ item.quantity }}</small><br>
+
+                                            {% if item.product.types.first.discount_price %}
+                                                <span class="text-success fw-bold">₹{{ item.product.types.first.discount_price }}</span>
+                                                <small class="text-muted"><del>₹{{ item.product.types.first.price }}</del></small>
+                                            {% else %}
+                                                <span>₹{{ item.product.types.first.price }}</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <td class="text-end fw-bold">₹{{ item.subtotal }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Total -->
+                        <div class="d-flex justify-content-between border-top pt-3 mt-3">
+                            <h5>Total</h5>
+                            <h5 class="text-success fw-bold">₹{{ total }}</h5>
+                        </div>
+
+                        <!-- Buttons for desktop -->
+                        <div class="mt-4 d-none d-lg-block">
+                            {% if addresses %}
+                                <button type="submit" class="btn btn-success w-100 mb-2">
+                                    <i class="bi bi-credit-card me-1"></i>Proceed To Payment
+                                </button>
+                            {% else %}
+                                <button type="button" class="btn btn-success w-100 mb-2" disabled>
+                                    <i class="bi bi-credit-card me-1"></i>Proceed To Payment
+                                </button>
+                            {% endif %}
+
+                            <a href="{% url 'view_cart' %}" class="btn btn-outline-secondary w-100">Back to Cart</a>
+                        </div>
+
                     </div>
-
-                    <!-- Total -->
-                    <div class="d-flex justify-content-between border-top pt-3 mt-3">
-                        <h5>Total</h5>
-                        <h5 class="text-success fw-bold">₹{{ total }}</h5>
-                    </div>
-
-                    <!-- Buttons for desktop -->
-                    <div class="mt-4 d-none d-lg-block">
-                        <button type="submit" class="btn btn-success w-100 mb-2"><i class="bi bi-credit-card me-1"></i>Proceed To Payment</button>
-                        <a href="{% url 'view_cart' %}" class="btn btn-outline-secondary w-100">Back to Cart</a>
-                    </div>
-
-                    </form>
                 </div>
             </div>
+
         </div>
-    </div>
+    </form>
 </div>
 
 {% endblock %}

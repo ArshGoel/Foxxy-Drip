@@ -48,7 +48,7 @@
       {% for it in order.items.all %}
       <tr>
         <td style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
-          {{ it.product.name }}
+          {{ it.design.product.name }}
         </td>
         <td style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
           {% if it.design %}
@@ -59,8 +59,8 @@
         </td>
        <td align="center" style="font-size:13px; padding:8px; border-bottom:1px solid #f5f5f5;">
           {% if it.design and it.design.images.first %}
-            <img src="https://foxxydrip.com{{ it.design.images.first.image.url }}" 
-                alt="{{ it.design.name }}" 
+            <img src="{{ it.design.images.all.0.image.url }}"
+                alt="{{ it.design.name }}"
                 style="height:50px; width:auto;">
           {% else %}
             —

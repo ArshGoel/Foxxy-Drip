@@ -16,6 +16,157 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
 
 
+@login_required
+def view_cart(request):
+    cart_items = CartItem.objects.filter(user=request.user)
+    total = sum(item.subtotal() for item in cart_items)
+    return render(request, "view_cart.html", {"cart_items": cart_items, "total": total})
+
+@login_required
+def checkout(request):
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        messages.warning(request, "Please complete your profile before checkout.")
+        return redirect("complete_profile")
+
+    cart_items = CartItem.objects.filter(user=request.user)
+    total = sum(item.subtotal() for item in cart_items)
+
+    if not cart_items:
+        messages.warning(request, "Your cart is empty. Add some products first.")
+        return redirect("view_cart")
+
+    addresses = profile.addresses.all() #type:ignore
+
+    if request.method == "POST":
+        address_id = request.POST.get("address")
+        if not address_id:
+            messages.error(request, "Please select an address.")
+            return redirect("checkout")
+
+        request.session["checkout_address"] = address_id  # ✅ save temporarily
+        return redirect("payment_page")
+
+    return render(request, "checkout.html", {
+        "cart_items": cart_items,
+        "total": total,
+        "addresses": addresses
+    })
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from decimal import Decimal
+
+from Products.models import ProductColorSize
+# from .utils import send_order_emails   # keep your function import
+
+@login_required
+def payment_page(request):
+    # ✅ profile check
+    profile = Profile.objects.filter(user=request.user).first()
+    if not profile:
+        messages.warning(request, "Please complete your profile before checkout.")
+        return redirect("complete_profile")
+
+    cart_items = CartItem.objects.filter(user=request.user).select_related("design")
+
+    # ✅ prevent empty cart
+    if not cart_items.exists():
+        messages.error(request, "Your cart is empty.")
+        return redirect("view_cart")
+
+    # ✅ calculate total using cart's subtotal()
+    total = sum(item.subtotal() for item in cart_items)
+
+    if total <= 0:
+        messages.error(request, "Invalid cart total.")
+        return redirect("view_cart")
+
+    # ✅ address selected in checkout session
+    address_id = request.session.get("checkout_address")
+    address = Address.objects.filter(id=address_id, profile=profile).first()
+
+    if request.method == "POST":
+        payment_mode = request.POST.get("payment_mode")
+
+        if not payment_mode:
+            messages.error(request, "Please select a payment method.")
+            return redirect("payment_page")
+
+        try:
+            with transaction.atomic():
+                # ✅ Create Order
+                order = Order.objects.create(
+                    profile=profile,
+                    address=address,
+                    total_price=Decimal(total),
+                    status="P",
+                    payment_mode=payment_mode
+                )
+
+                # ✅ Move cart items to order items + reduce stock
+                for item in cart_items:
+                    design = item.design
+                    size = item.size
+                    qty_needed = item.quantity
+
+                    if not design:
+                        raise ValueError("Cart item has no design")
+
+                    if not size:
+                        raise ValueError("Please select size for all items")
+
+                    if qty_needed <= 0:
+                        raise ValueError("Invalid quantity")
+
+                    # ✅ Stock check: based on design.color + size
+                    size_entry = ProductColorSize.objects.select_for_update().filter(
+                        color=design.color,
+                        size=size
+                    ).first()
+
+                    if not size_entry:
+                        raise ValueError(f"Size {size} not available for {design.name}")
+
+                    if size_entry.quantity < qty_needed:
+                        raise ValueError(
+                            f"Only {size_entry.quantity} left for {design.name} ({size})"
+                        )
+
+                    # ✅ reduce stock
+                    size_entry.quantity -= qty_needed
+                    size_entry.save()
+
+                    # ✅ create OrderItem (updated model = stores design only)
+                    OrderItem.objects.create(
+                        order=order,
+                        design=design,
+                        size=size,
+                        quantity=qty_needed,
+                        price=Decimal(item.price)
+                    )
+
+                # ✅ clear cart
+                cart_items.delete()
+
+        except Exception as e:
+            messages.error(request, f"Error placing order: {e}")
+            return redirect("view_cart")
+
+        # ✅ Email + success redirect
+        send_order_emails(order, request=request)
+        messages.success(request, f"Order #{order.id} placed successfully!")
+        return redirect("order_detail", order_id=order.id)
+
+    return render(request, "payment_page.html", {
+        "cart_items": cart_items,
+        "total": total,
+        "address": address
+    })
+
+
 def send_order_emails(order, request=None):
     """
     Sends:
@@ -406,45 +557,6 @@ def view_product(request, pk):
     return render(request, "view_product.html", {"product": product})
 
 
-@login_required
-def add_to_cart(request, design_id):
-    # Get the selected design
-    design = get_object_or_404(ProductDesign, id=design_id)
-
-    # Design already links to product, color, and type
-    product = design.color.product # type: ignore
-    color = design.color
-    size = request.POST.get("size")  # must be chosen
-    quantity = int(request.POST.get("quantity", 1))
-
-    # ✅ Ensure size is selected
-    if not size:
-        messages.error(request, "Please select a size before adding to cart.")
-        return redirect(request.META.get("HTTP_REFERER", "shop"))  # send back to product page
-
-    # Create / update CartItem
-    cart_item, created = CartItem.objects.get_or_create(
-        user=request.user,
-        product=product,
-        color=color,
-        design=design,
-        size=size,
-        defaults={"quantity": quantity}
-    )
-
-    if not created:
-        cart_item.quantity += quantity
-        cart_item.save()
-
-    messages.success(request, f"{product.name} ({size}) added to cart.")
-    return redirect("view_cart")
-
-
-@login_required
-def view_cart(request):
-    cart_items = CartItem.objects.filter(user=request.user)
-    total = sum(item.subtotal() for item in cart_items)
-    return render(request, "view_cart.html", {"cart_items": cart_items, "total": total})
 
 
 @login_required 
@@ -481,37 +593,6 @@ def view_products(request):
     return render(request, "product_list.html", {"products": products})
 
 
-@login_required
-def checkout(request):
-    try:
-        profile = Profile.objects.get(user=request.user)
-    except Profile.DoesNotExist:
-        messages.warning(request, "Please complete your profile before checkout.")
-        return redirect("complete_profile")
-
-    cart_items = CartItem.objects.filter(user=request.user)
-    total = sum(item.subtotal() for item in cart_items)
-
-    if not cart_items:
-        messages.warning(request, "Your cart is empty. Add some products first.")
-        return redirect("view_cart")
-
-    addresses = profile.addresses.all() #type:ignore
-
-    if request.method == "POST":
-        address_id = request.POST.get("address")
-        if not address_id:
-            messages.error(request, "Please select an address.")
-            return redirect("checkout")
-
-        request.session["checkout_address"] = address_id  # ✅ save temporarily
-        return redirect("payment_page")
-
-    return render(request, "checkout.html", {
-        "cart_items": cart_items,
-        "total": total,
-        "addresses": addresses
-    })
 
 
 @login_required
@@ -592,90 +673,6 @@ def design_detail(request, design_id):
     design = get_object_or_404(ProductDesign, id=design_id)
     return render(request, "design_detail.html", {"design": design})
 
-
-@login_required
-def payment_page(request):
-    try:
-        profile = Profile.objects.get(user=request.user)
-    except Profile.DoesNotExist:
-        messages.warning(request, "Please complete your profile before checkout.")
-        return redirect("complete_profile")
-
-    cart_items = CartItem.objects.filter(user=request.user)
-    total = sum(item.subtotal() for item in cart_items)
-
-    # ✅ Get address chosen in checkout (if any)
-    address_id = request.session.get("checkout_address")
-    address = Address.objects.filter(id=address_id, profile=profile).first()
-
-    if request.method == "POST":
-        payment_mode = request.POST.get("payment_mode")
-        if not payment_mode:
-            messages.error(request, "Please select a payment method.")
-            return redirect("payment_page")
-
-        # 🚫 Prevent empty orders
-        if not cart_items.exists() or total <= 0:
-            messages.error(request, "Your cart is empty.")
-            return redirect("view_cart")
-
-        try:
-            with transaction.atomic():
-                # ✅ Create Order
-                order = Order.objects.create(
-                    profile=profile,
-                    address=address,
-                    total_price=total,
-                    status="P",  # Pending
-                    payment_mode=payment_mode
-                )
-
-                # ✅ Add items to the order
-                for item in cart_items:
-                    product = item.product
-                    color = item.color
-                    size = item.size
-                    qty_needed = item.quantity
-
-                    # Match correct color + size entry
-                    size_entry = ProductColorSize.objects.filter(
-                        color=color,
-                        size=size
-                    ).first()
-
-                    if not size_entry or size_entry.quantity < qty_needed:
-                        raise ValueError("Stock issue")
-
-                    size_entry.quantity -= qty_needed
-                    size_entry.save()
-
-                    OrderItem.objects.create(
-                        order=order,
-                        product=product,
-                        design=getattr(item, "design", None),
-                        size=size,
-                        quantity=qty_needed,
-                        price=item.price
-                    )
-
-                # ✅ Clear cart
-                cart_items.delete()
-
-        except Exception as e:
-            messages.error(request, f"Error placing order: {e}")
-            return redirect("view_cart")
-
-        # ✅ Send confirmation email & success message
-        send_order_emails(order, request=request)
-        messages.success(request, f"Order #{order.id} placed successfully!")  # type:ignore
-        return redirect("order_detail", order_id=order.id)  # type:ignore
-
-    # GET request → show payment page
-    return render(request, "payment_page.html", {
-        "cart_items": cart_items,
-        "total": total,
-        "address": address
-    })
 
 
 @login_required
