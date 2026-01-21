@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Wishlist - FOXXY DRIP{% endblock %}
+
+{% block body %}
+
+<style>
+body{background:#000;color:#fff;}
+.container{max-width:1100px;margin:auto;padding:30px 16px;}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap:20px;
+}
+.card{
+  background:#111;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.08);
+  transition:0.25s;
+}
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 8px 18px rgba(255,255,255,0.08);
+}
+.card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+}
+.card-body{
+  padding:14px;
+}
+.title{
+  font-size:16px;
+  font-weight:800;
+  margin:0 0 6px;
+}
+.meta{
+  color:#bbb;
+  font-size:13px;
+  margin:0 0 12px;
+}
+.actions{
+  display:flex;
+  gap:10px;
+}
+.btn{
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+  background:#333;
+  color:#fff;
+  transition:0.2s;
+  text-decoration:none;
+  text-align:center;
+}
+.btn:hover{
+  background:#d63384;
+}
+.btn-remove{
+  background:#111;
+  border:1px solid rgba(255,255,255,0.2);
+}
+.btn-remove:hover{
+  background:#ff3b3b;
+  border-color:#ff3b3b;
+}
+.empty{
+  background:#111;
+  border-radius:14px;
+  padding:30px;
+  text-align:center;
+  color:#aaa;
+}
+</style>
+
+<div class="container">
+  <h2 style="font-weight:900; text-align:center; margin-bottom:25px;">❤️ My Wishlist</h2>
+
+  {% if items %}
+    <div class="grid">
+      {% for w in items %}
+      <div class="card">
+
+        {% if w.design.primary_image %}
+          <img src="{{ w.design.primary_image.image.url }}" alt="{{ w.design.name }}">
+        {% else %}
+          <img src="https://via.placeholder.com/400x400?text=No+Image" alt="No Image">
+        {% endif %}
+
+        <div class="card-body">
+          <p class="title">{{ w.design.name }}</p>
+          <p class="meta">
+            {{ w.design.product.name }} • {{ w.design.product_type.type_name|title }} • {{ w.design.color.name }}
+          </p>
+
+          <div class="actions">
+            <!-- ✅ View -->
+             <a class="btn"
+              href="{% url 'design_detail' w.design.id %}">
+              View
+            </a>
+
+            <!-- ✅ Remove (AJAX will be better but this works) -->
+            <a class="btn btn-remove"
+              href="{% url 'toggle_wishlist' w.design.id %}">
+              Remove
+            </a>
+          </div>
+
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty">
+      <h3>No items in Wishlist 😢</h3>
+      <p>Go to shop and add designs you love ❤️</p>
+      <a href="{% url 'shop' %}" class="btn" style="max-width:250px; margin:auto;">Go to Shop</a>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock body %}

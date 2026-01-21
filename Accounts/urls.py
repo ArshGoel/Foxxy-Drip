@@ -12,4 +12,6 @@ urlpatterns = [
     path('verify/<str:username>/', views.verify, name='verify'),
     path('validate', views.validate, name='validate'),
     path('complete_profile', views.complete_profile, name='complete_profile'),
+    path('wishlist', views.wishlist_page, name='wishlist_page'),
+
 ]

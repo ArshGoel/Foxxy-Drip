@@ -5,6 +5,10 @@ from django.db import transaction
 from .models import Product, ProductType, ProductColor, ProductColorSize, Design, ProductImage
 from .forms import DesignForm
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from Accounts.models import Wishlist, Profile
+from Services.models import Product
 
 #admin methods
 @staff_member_required
@@ -257,90 +261,90 @@ def move_design_down(request, pk):
 #user methods
 def shop(request):
     designs = (
-        Design.objects
-        .filter(show_in_shop=True)
+        Design.objects.filter(show_in_shop=True)
         .select_related("product", "product_type", "color")
         .prefetch_related("images")
     )
 
-    # attach primary image to each design
     for d in designs:
         d.primary_image = d.images.filter(is_primary=True).first() or d.images.first()
         d.sizes = ProductColorSize.objects.filter(color=d.color).order_by("size")
-    return render(request, "user/shop.html", {"designs": designs})
 
-def product_detail(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
+    wishlist_product_ids = set()
+    if request.user.is_authenticated:
+        profile = Profile.objects.filter(user=request.user).first()
+        if profile:
+            wishlist_product_ids = set(
+                Wishlist.objects.filter(profile=profile).values_list("design_id", flat=True)
+            )
 
+    return render(request, "user/shop.html", {
+        "designs": designs,
+        "wishlist_product_ids": wishlist_product_ids
+    })
+
+@login_required
+def toggle_wishlist(request, design_id):
+    profile = get_object_or_404(Profile, user=request.user)
+    design = get_object_or_404(Design, id=design_id)
+
+    obj = Wishlist.objects.filter(profile=profile, design=design).first()
+
+    if obj:
+        obj.delete()
+    else:
+        Wishlist.objects.create(profile=profile, design=design)
+
+    return redirect(request.META.get("HTTP_REFERER", "shop"))
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import ProductColorSize, ProductImage, Design, ProductType, ProductColor
+
+def design_detail(request, design_id):
+    design = get_object_or_404(
+        Design.objects.select_related("product", "product_type", "color"),
+        id=design_id,
+        show_in_shop=True
+    )
+
+    product = design.product
+
+    # ✅ show all types/colors for switching
     types = ProductType.objects.filter(product=product)
     colors = ProductColor.objects.filter(product=product)
 
-    selected_type_id = request.GET.get("type")
-    selected_color_id = request.GET.get("color")
-    selected_design_id = request.GET.get("design")  # ✅ NEW
+    selected_type = design.product_type
+    selected_color = design.color
 
-    selected_type = (
-        ProductType.objects.filter(id=selected_type_id, product=product).first()
-        if selected_type_id else None
-    )
-    selected_color = (
-        ProductColor.objects.filter(id=selected_color_id, product=product).first()
-        if selected_color_id else None
-    )
+    # ✅ Sizes stock (color based)
+    sizes = ProductColorSize.objects.filter(color=selected_color).order_by("size")
 
-    # ✅ defaults
-    if not selected_type:
-        selected_type = types.first()
-
-    if not selected_color:
-        selected_color = colors.first()
-
-    # ✅ Stock sizes (still based on color)
-    sizes = []
-    if selected_color:
-        sizes = ProductColorSize.objects.filter(color=selected_color).order_by("size")
-
-    # ✅ ALL designs for current selection
-    designs = Design.objects.none()
-    if selected_type and selected_color:
-        designs = (
-            Design.objects.filter(
-                product=product,
-                product_type=selected_type,
-                color=selected_color,
-                show_in_shop=True   # ✅ optional: only show visible designs
-            )
-            .order_by("position", "-id")
+    # ✅ all designs for current product + selected type + color
+    designs = (
+        Design.objects.filter(
+            product=product,
+            product_type=selected_type,
+            color=selected_color,
+            show_in_shop=True
         )
+        .order_by("position", "-id")
+    )
 
-    # ✅ choose 1 design (by design id if present)
-    design = None
+    # ✅ Images of THIS design
+    images = design.images.all().order_by("-is_primary", "id")
+    primary_image = images.filter(is_primary=True).first() or images.first()
 
-    if selected_design_id:
-        design = designs.filter(id=selected_design_id).first()
-
-    # ✅ fallback = first design
-    if not design:
-        design = designs.first()
-
-    # ✅ Images from design
-    images = ProductImage.objects.none()
-    primary_image = None
-
-    if design:
-        images = ProductImage.objects.filter(design=design).order_by("-is_primary", "id")
-        primary_image = images.first()
-
-    return render(request, "user/product_detail.html", {
+    return render(request, "user/design_detail.html", {
         "product": product,
         "types": types,
         "colors": colors,
+        "sizes": sizes,
 
+        "designs": designs,     # for design switching if you want
+        "design": design,       # main design
         "selected_type": selected_type,
         "selected_color": selected_color,
-        "sizes": sizes,
-        "designs": designs,
-        "design": design,
 
         "images": images,
         "primary_image": primary_image,

@@ -85,7 +85,7 @@
                     {% if request.user.is_authenticated %}
                         {% if request.user.is_superuser %}
                         {% else %}
-                        <a href="/dash/wishlist" class="text-white fs-5 fav-hover">
+                        <a href="/auth/wishlist" class="text-white fs-5 fav-hover">
                             <i class="bi bi-heart"></i>
                         </a>
                         <a href="/dash/view_cart" class="position-relative text-white fs-5">

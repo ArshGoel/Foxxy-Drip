@@ -1,7 +1,6 @@
 from email.mime import message
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from Services.models import Product
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import CartItem
@@ -9,16 +8,16 @@ from django.contrib import auth,messages
 from django.contrib.auth import authenticate, login as auth_login
 from random import randint
 from django.conf import settings
-from .models import Profile
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from allauth.socialaccount.models import SocialAccount
-from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .models import Product, ProductDesign
 from django.db.models import Prefetch, Case, When, IntegerField
-from Services.models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
+from django.http import JsonResponse
+from .models import Wishlist, Profile
+from Products.models import Product, ProductColor, ProductColorSize, Design, ProductImage
+
 #------------- Basics Pages Views -------------#
 def aboutus(request):
     cart_count = 0
@@ -77,9 +76,9 @@ def home(request):
 
     # ✅ Fetch designs instead of products
     featured_designs = (
-        ProductDesign.objects.filter(id__in=[2, 17, 15])
-        .select_related("color__product", "type")
-        .prefetch_related("images", "color__images", "color__product__images")
+        Design.objects.filter(id__in=[2, 17, 15], show_in_shop=True)
+        .select_related("product", "product_type", "color")
+        .prefetch_related("images")
     )
     
     return render(request, "home.html", {
@@ -347,6 +346,33 @@ def forgetpass(request):
         stage = "enter_otp"
 
     return render(request, "forgetpass.html", {"stage": stage, "email_masked": email_masked})
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
+from Accounts.models import Profile, Wishlist   # adjust if app name differs
+
+@login_required
+def wishlist_page(request):
+    profile = get_object_or_404(Profile, user=request.user)
+
+    items = (
+        Wishlist.objects.filter(profile=profile)
+        .select_related(
+            "design",
+            "design__product",
+            "design__product_type",
+            "design__color",
+        )
+        .prefetch_related("design__images")
+        .order_by("-date_added")
+    )
+
+    # attach primary image like shop
+    for w in items:
+        d = w.design
+        d.primary_image = d.images.filter(is_primary=True).first() or d.images.first()
+
+    return render(request, "basics/wishlist.html", {"items": items})
 
 @login_required
 def complete_profile(request):

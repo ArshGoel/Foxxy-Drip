@@ -132,6 +132,50 @@ body {
     border-radius: 8px;
     border: 1px solid rgba(255,255,255,0.25);
 }
+.action-row{
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.view-btn{
+  flex: 8;               /* ✅ 90% */
+  width: 80%;
+}
+
+.wish-btn{
+  flex: 2;               /* ✅ 10% */
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+  font-weight: 800;
+  padding: 10px 0;
+
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 10px;
+  color: #fff;
+}
+
+.wish-btn:hover{
+  border-color: #d63384;
+  color: #d63384;
+  transform: translateY(-2px);
+}
+.wishlist-btn:hover {
+  border-color: #d63384 !important;
+  transform: translateY(-2px);
+  transition: 0.2s;
+}
+
+.wishlist-btn .heart {
+  font-size: 20px;
+  font-weight: 900;
+  color: #d63384;
+}
 
 </style>
 {% endblock extracss %}
@@ -204,12 +248,30 @@ body {
           </div>
 
           <!-- ✅ VIEW BUTTON -->
-          <a
-            href="{% url 'product_detail' item.product.product_id %}?type={{ item.product_type.id }}&color={{ item.color.id }}&design={{ item.id }}"
-            class="btn btn-view mt-auto w-100"
-          >
-            View
-          </a>
+          <div class="action-row">
+            <!-- ✅ View 90% -->
+            <a
+              href="{% url 'design_detail' item.id %}"
+              class="btn btn-view view-btn"
+            >
+              View
+            </a>
+
+            <!-- ✅ Wishlist 10% -->
+            <a
+              href="{% url 'toggle_wishlist' item.id %}"
+              class="btn wish-btn"
+              title="Wishlist"
+            >
+              {% if item.id in wishlist_product_ids %}
+                <i class="fa-solid fa-heart" style="color: #ff0000;"></i>
+              {% else %}
+                <i class="fa-regular fa-heart"></i>
+              {% endif %}
+            </a>
+          </div>
+          
+
 
         </div>
       </div>
@@ -219,5 +281,49 @@ body {
 
   </div>
 </div>
+<script>
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + "=")) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+const csrftoken = getCookie("csrftoken");
+
+document.querySelectorAll(".wishlist-btn").forEach(btn => {
+  btn.addEventListener("click", async () => {
+    const designId = btn.dataset.designId;
+
+    try {
+      const res = await fetch(`/products/wishlist/toggle/${designId}/`, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrftoken,
+          "Content-Type": "application/json"
+        }
+      });
+
+      const data = await res.json();
+
+      // ✅ update heart instantly
+      const heart = btn.querySelector(".heart");
+      heart.innerHTML = data.added ? "♥" : "♡";
+
+    } catch (err) {
+      console.log(err);
+      alert("Login required for wishlist ❌");
+    }
+  });
+});
+</script>
 
 {% endblock body %}
