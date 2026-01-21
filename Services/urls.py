@@ -21,7 +21,6 @@ urlpatterns = [
     path("checkout/", views.checkout, name="checkout"), 
     path("order/<int:order_id>/", views.order_detail, name="order_detail"),
     path("orders/", views.orders, name="orders"),
-    path("add-to-cart/<int:design_id>/", views.add_to_cart, name="add_to_cart"),#type:ignore
 
     path("admin/orders/", views.admin_orders_list, name="admin_orders_list"), 
     path("admin/orders/<int:order_id>/", views.admin_order_detail, name="admin_order_detail"),

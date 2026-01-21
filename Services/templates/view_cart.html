@@ -56,11 +56,15 @@
                     <td>{{ item.design.name }}</td>
                     <td><span class="badge bg-secondary">{{ item.size }}</span></td>
                     <td>
-                        {% if item.design.discounted_price %}
-                            <span class="text-decoration-line-through text-muted small">₹{{ item.design.price }}</span><br>
-                            <span class="fw-bold text-success">₹{{ item.design.discounted_price }}</span>
+                        {% if item.design.product_type.discount_percent > 0 %}
+                            <span class="text-decoration-line-through text-muted small">
+                                ₹{{ item.design.product_type.price }}
+                            </span><br>
+                            <span class="fw-bold text-success">
+                                ₹{{ item.design.product_type.discounted_price }}
+                            </span>
                         {% else %}
-                            ₹{{ item.design.price }}
+                            ₹{{ item.design.product_type.price }}
                         {% endif %}
                     </td>
                     <td>
@@ -100,11 +104,15 @@
                         <p class="text-muted mb-1 small">{{ item.design.name }} | Size: <span class="badge bg-dark">{{ item.size }}</span></p>
                         
                         <p class="mb-1">
-                            {% if item.design.discounted_price %}
-                                <span class="text-decoration-line-through text-muted small">₹{{ item.design.price }}</span>
-                                <span class="fw-bold text-success ms-1">₹{{ item.design.discounted_price }}</span>
+                            {% if item.design.product_type.discount_percent > 0 %}
+                                <span class="text-decoration-line-through text-muted small">
+                                    ₹{{ item.design.product_type.price }}
+                                </span>
+                                <span class="fw-bold text-success ms-1">
+                                    ₹{{ item.design.product_type.discounted_price }}
+                                </span>
                             {% else %}
-                                ₹{{ item.design.price }}
+                                ₹{{ item.design.product_type.price }}
                             {% endif %}
                         </p>
 

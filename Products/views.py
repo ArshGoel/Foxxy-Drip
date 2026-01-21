@@ -8,7 +8,10 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from Accounts.models import Wishlist, Profile
-from Services.models import Product
+from django.views.decorators.http import require_POST
+from Products.models import Design, ProductColorSize
+from Accounts.models import CartItem
+from django.contrib import messages
 
 #admin methods
 @staff_member_required
@@ -297,10 +300,6 @@ def toggle_wishlist(request, design_id):
 
     return redirect(request.META.get("HTTP_REFERER", "shop"))
 
-
-from django.shortcuts import render, get_object_or_404
-from .models import ProductColorSize, ProductImage, Design, ProductType, ProductColor
-
 def design_detail(request, design_id):
     design = get_object_or_404(
         Design.objects.select_related("product", "product_type", "color"),
@@ -349,3 +348,59 @@ def design_detail(request, design_id):
         "images": images,
         "primary_image": primary_image,
     })
+ 
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+
+@require_POST
+@login_required
+def add_to_cart(request):
+    design_id = request.POST.get("design_id")
+    size = request.POST.get("size")
+    qty = request.POST.get("quantity")
+
+    # ✅ redirect back to same page
+    redirect_url = request.META.get("HTTP_REFERER", "/")
+
+    if not design_id or not size or not qty:
+        messages.error(request, "Missing fields ❌")
+        return redirect(redirect_url)
+
+    try:
+        qty = int(qty)
+        if qty <= 0:
+            messages.error(request, "Quantity must be >= 1 ❌")
+            return redirect(redirect_url)
+    except:
+        messages.error(request, "Invalid quantity ❌")
+        return redirect(redirect_url)
+
+    design = get_object_or_404(Design, id=design_id)
+
+    # ✅ Stock check
+    stock = ProductColorSize.objects.filter(color=design.color, size=size).first()
+
+    if not stock:
+        messages.error(request, "Size not available ❌")
+        return redirect(redirect_url)
+
+    if stock.quantity < qty:
+        messages.error(request, f"Only {stock.quantity} left in stock ❌")
+        return redirect(redirect_url)
+
+    # ✅ Add/update cart
+    cart_item, created = CartItem.objects.get_or_create(
+        user=request.user,
+        design=design,
+        size=size,
+        defaults={"quantity": qty}
+    )
+
+    if not created:
+        cart_item.quantity += qty
+        cart_item.save()
+
+    messages.success(request, "Added to cart ✅")
+    return redirect("view_cart")
