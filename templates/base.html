@@ -87,6 +87,13 @@
                         {% else %}
                         <a href="/auth/wishlist" class="text-white fs-5 fav-hover">
                             <i class="bi bi-heart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {% if request.user.is_authenticated and request.user.profile %}
+                                    {{ request.user.profile.wishlist_items.count }}
+                                {% else %}
+                                    0 
+                                {% endif %}
+                            </span>
                         </a>
                         <a href="/dash/view_cart" class="position-relative text-white fs-5">
                             <i class="bi bi-cart3"></i>

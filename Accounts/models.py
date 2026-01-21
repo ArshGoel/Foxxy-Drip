@@ -111,7 +111,7 @@ class CartItem(models.Model):
 
 # ----------------- WISHLIST MODEL ----------------- #
 class Wishlist(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="wishlist_items")
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="wishlist_items")
 
     # ✅ NEW: Wishlist stores Design (not Product)
     design = models.ForeignKey(
@@ -125,10 +125,10 @@ class Wishlist(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("profile", "design")
+        unique_together = ("user", "design")
 
     def __str__(self):
-        return f"{self.profile.user.username} - {self.design.name}"
+        return f"{self.user.username} - {self.design.name}"
 
 
 # ----------------- ORDER MODEL ----------------- #

@@ -275,7 +275,7 @@ def shop(request):
         profile = Profile.objects.filter(user=request.user).first()
         if profile:
             wishlist_product_ids = set(
-                Wishlist.objects.filter(profile=profile).values_list("design_id", flat=True)
+                Wishlist.objects.filter(user=profile).values_list("design_id", flat=True)
             )
 
     return render(request, "user/shop.html", {
@@ -288,12 +288,12 @@ def toggle_wishlist(request, design_id):
     profile = get_object_or_404(Profile, user=request.user)
     design = get_object_or_404(Design, id=design_id)
 
-    obj = Wishlist.objects.filter(profile=profile, design=design).first()
+    obj = Wishlist.objects.filter(user=profile, design=design).first()
 
     if obj:
         obj.delete()
     else:
-        Wishlist.objects.create(profile=profile, design=design)
+        Wishlist.objects.create(user=profile, design=design)
 
     return redirect(request.META.get("HTTP_REFERER", "shop"))
 

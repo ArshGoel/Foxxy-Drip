@@ -26,45 +26,56 @@
         </div>
     </section>
 
-    {% comment %} <!-- Featured Products -->
+    <!-- Featured Products -->
     <section class="featured">
-        <div class="container">
-            <div class="section-header">
-                <h2>FEATURED COLLECTION</h2>
-                <p>Handpicked selections that define urban elegance and street sophistication</p>
-            </div>
-            
-            <div class="products-grid">
-                {% for design in featured_designs %}
-                <div class="product-card">
-                    <div class="product-image">
-                        {% if design.images.first %}
-                        <img src="{{ design.images.first.image.url }}" alt="{{ design.name }}">
-                    {% elif design.color.images.first %}
-                        <img src="{{ design.color.images.first.image.url }}" alt="{{ design.name }}">
-                    {% elif design.color.product.images.first %}
-                        <img src="{{ design.color.product.images.first.image.url }}" alt="{{ design.name }}">
-                    {% endif %}
-                    </div>
+    <div class="container">
+        <div class="section-header">
+        <h2>FEATURED COLLECTION</h2>
+        <p>Handpicked selections that define urban elegance and street sophistication</p>
+        </div>
 
-                    <div class="product-info">
-                        <h3>{{ design.name }}</h3>
-                        <div class="product-price">
-                            ₹{{ design.discounted_price }}
-                            {% if design.discounted_price != design.price %}
-                                <span class="old-price">₹{{ design.price }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+        <div class="products-grid">
+        {% for design in featured_designs %}
+        <div class="product-card">
+            <div class="product-image">
+
+            {# ✅ show PRIMARY image if exists else first image #}
+            {% if design.images.first %}
+            <img src="{{ design.images.first.image.url }}">
+            {% endif %}
+
             </div>
-            
-            <div class="view-all">
-                <a href="/shop" class="btn btn-dark">VIEW ALL PRODUCTS</a>
+
+            <div class="product-info">
+            <h3>{{ design.name }}</h3>
+
+            <div class="product-price">
+                ₹{{ design.product_type.discounted_price }}
+
+                {% if design.product_type.discount_percent > 0 %}
+                <span class="old-price">₹{{ design.product_type.price }}</span>
+                {% endif %}
+            </div>
+
+            <a
+                href="{% url 'product_detail' design.product.product_id %}?type={{ design.product_type.id }}&color={{ design.color.id }}&design={{ design.id }}"
+                class="btn btn-dark"
+                style="margin-top:10px; display:inline-block;"
+            >
+                VIEW
+            </a>
+
             </div>
         </div>
-    </section> {% endcomment %}
+        {% endfor %}
+        </div>
+
+        <div class="view-all">
+        <a href="/prod/shop/" class="btn btn-dark">VIEW ALL PRODUCTS</a>
+        </div>
+    </div>
+    </section>
+
 
     <!-- Brand Story -->
     <section class="brand-story">

@@ -20,15 +20,9 @@ from Products.models import Product, ProductColor, ProductColorSize, Design, Pro
 
 #------------- Basics Pages Views -------------#
 def aboutus(request):
-    cart_count = 0
-    if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
-    return render(request, 'basics/aboutus.html', {'cart_count': cart_count})
+    return render(request, 'basics/aboutus.html')
 
 def contactus(request):
-    cart_count = 0
-    if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
         email = request.POST.get('email', '').strip()
@@ -42,13 +36,10 @@ def contactus(request):
         else:
             messages.error(request, "All fields are required.")
 
-    return render(request, 'basics/contactus.html', {'cart_count': cart_count})
+    return render(request, 'basics/contactus.html')
 
 def FAQ(request):
-    cart_count = 0
-    if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
-    return render(request, 'basics/FAQ.html', {'cart_count': cart_count})
+    return render(request, 'basics/FAQ.html')
 
 def privacy_policy(request, lang_code=None):
     context = {
@@ -70,21 +61,28 @@ def shipping_delivery_policy(request):
 #------------- Basics Pages Views -------------#
 
 def home(request):
-    cart_count = 0
-    if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
-
-    # ✅ Fetch designs instead of products
     featured_designs = (
         Design.objects.filter(id__in=[2, 17, 15], show_in_shop=True)
         .select_related("product", "product_type", "color")
-        .prefetch_related("images")
+        .prefetch_related(
+            Prefetch("images", queryset=ProductImage.objects.order_by("-is_primary", "id"))
+        )
     )
-    
+
+    print("✅ Featured Designs Count:", featured_designs.count())
+
+    for d in featured_designs:
+        primary = d.images.first()  # primary first because we ordered by -is_primary
+        print(
+            f"➡️ Design: {d.id} | {d.name} | Product: {d.product.name} | "
+            f"Type: {d.product_type.type_name} | Color: {d.color.name} | "
+            f"Primary Image: {primary.image.url if primary else 'NO IMAGE'}"
+        )
+
     return render(request, "home.html", {
-        "cart_count": cart_count,
         "featured_designs": featured_designs
     })
+
 
 # ------------------------ Emails Page Views ------------------------ #
 def send_contact_email(name, email, message):
@@ -356,7 +354,7 @@ def wishlist_page(request):
     profile = get_object_or_404(Profile, user=request.user)
 
     items = (
-        Wishlist.objects.filter(profile=profile)
+        Wishlist.objects.filter(user=profile)
         .select_related(
             "design",
             "design__product",
