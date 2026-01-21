@@ -238,6 +238,7 @@ def manage_address(request):
     try:
         profile = Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:
+        messages.warning(request, "Please complete your profile before checkout.")
         return redirect("complete_profile")  # redirect if profile not found
 
     # Handle POST (Add New Address)
