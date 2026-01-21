@@ -340,7 +340,11 @@ from Accounts.models import Profile, Wishlist   # adjust if app name differs
 
 @login_required
 def wishlist_page(request):
-    profile = get_object_or_404(Profile, user=request.user)
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        messages.warning(request, "Please complete your profile before checkout.")
+        return redirect("complete_profile")
 
     items = (
         Wishlist.objects.filter(user=profile)

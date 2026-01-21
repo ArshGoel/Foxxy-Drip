@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from Accounts.models import Profile,Address,CartItem, Order, OrderItem
 from django.contrib.admin.views.decorators import staff_member_required
-from .models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
+# from .models import Product, ProductColor, ProductColorSize, ProductDesign, ProductImage
 
 
 @login_required
@@ -334,229 +334,6 @@ def wishlist(request):
     return render(request, 'wishlist.html') 
 
 
-@login_required
-def upload_product(request):
-    if request.method == "POST":
-        # Check if this is a product creation or image upload
-        action = request.POST.get("action", "create_product")
-        
-        if action == "upload_images":
-            # Handle image upload separately to avoid payload limits
-            product_id = request.POST.get("product_id")
-            design_id = request.POST.get("design_id")
-            
-            if not product_id or not design_id:
-                messages.error(request, "Invalid product or design ID")
-                return redirect("upload_product")
-            
-            product = get_object_or_404(Product, product_id=product_id)
-            design = get_object_or_404(ProductDesign, id=design_id)
-            
-            images = request.FILES.getlist("images")
-            uploaded_count = 0
-            
-            for img in images:
-                # Compress/validate image size before upload (optional)
-                if img.size > 10485760:  # 10MB limit per image
-                    messages.warning(request, f"Image {img.name} exceeds 10MB, skipping")
-                    continue
-                
-                ProductImage.objects.create(
-                    product=product,
-                    color=design.color,
-                    design=design,
-                    image=img
-                )
-                uploaded_count += 1
-            
-            if uploaded_count > 0:
-                messages.success(request, f"Successfully uploaded {uploaded_count} images!")
-            return redirect("edit_product", product_id=product_id)
-        
-        else:
-            # Create product, colors, sizes (no images in this request)
-            product_name = request.POST.get("name")
-            product_price = request.POST.get("price", 0.0)
-            
-            if not product_name:
-                messages.error(request, "Product name is required")
-                return redirect("upload_product")
-            
-            # 1️⃣ Create product
-            product = Product.objects.create(
-                name=product_name,
-                price=product_price
-            )
-
-            # 2️⃣ Create colors + sizes
-            color_names = request.POST.getlist("color_name[]")
-            color_objs = []
-            for idx, color_name in enumerate(color_names):
-                if color_name.strip():
-                    color_obj = ProductColor.objects.create(product=product, name=color_name.strip())
-                    color_objs.append(color_obj)
-                    # Sizes
-                    for size in ["S","M","L","XL"]:
-                        qty = request.POST.get(f"qty_{idx}_{size}", 0)
-                        ProductColorSize.objects.create(color=color_obj, size=size, quantity=int(qty))
-
-            # 3️⃣ Create designs (without images)
-            design_names = request.POST.getlist("design_name[]")
-            design_descs = request.POST.getlist("design_desc[]")
-            design_color_indices = request.POST.getlist("design_color_index[]")
-
-            for idx, name in enumerate(design_names):
-                if name.strip():
-                    color_idx = int(design_color_indices[idx])
-                    color_obj = color_objs[color_idx]
-                    ProductDesign.objects.create(
-                        color=color_obj,
-                        name=name.strip(),
-                        description=design_descs[idx].strip()
-                    )
-
-            messages.success(request, "Product created successfully! You can now upload images in the next step.")
-            return redirect("edit_product", product_id=product.product_id)
-
-    return render(request, "upload_product.html")
-
-
-@login_required
-def edit_product(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
-    colors = product.colors.all() # type: ignore
-    designs = ProductDesign.objects.filter(color__product=product)
-
-    # Prepare sizes dict for each color so template always has S, M, L, XL
-    for color in colors:
-        sizes_dict = {size: 0 for size in ["S", "M", "L", "XL"]}
-        for size_obj in color.sizes.all():
-            sizes_dict[size_obj.size] = size_obj.quantity
-        color.sizes_dict = sizes_dict  # attach to color object for template
-
-    if request.method == "POST":
-        # Update product
-        product.name = request.POST.get("name")
-        product.price = request.POST.get("price", 0.0) # type: ignore
-        product.save()
-
-        # ----------------- Handle Colors -----------------
-        color_ids = request.POST.getlist("color_id[]")
-        color_names = request.POST.getlist("color_name[]")
-
-        for idx, name in enumerate(color_names):
-            c_id = color_ids[idx] if idx < len(color_ids) else ''
-            if c_id:  # existing color
-                color = ProductColor.objects.get(id=c_id)
-                color.name = name
-                color.save()
-            else:  # new color
-                color = ProductColor.objects.create(product=product, name=name)
-                if idx < len(color_ids):
-                    color_ids[idx] = str(color.id) # type: ignore
-                else:
-                    color_ids.append(str(color.id)) # type: ignore
-
-            # Update sizes
-            for size in ["S", "M", "L", "XL"]:
-                qty = request.POST.get(f"qty_{c_id or color.id}_{size}", 0) # type: ignore
-                qty = int(qty)
-                obj, _ = ProductColorSize.objects.get_or_create(color=color, size=size)
-                obj.quantity = qty
-                obj.save()
-
-        # ----------------- Handle Designs -----------------
-        design_ids = request.POST.getlist("design_id[]")
-        design_names = request.POST.getlist("design_name[]")
-        design_descs = request.POST.getlist("design_desc[]")
-        design_color_index = request.POST.getlist("design_color_index[]")
-
-        for idx, name in enumerate(design_names):
-            if idx < len(design_color_index) and design_color_index[idx].isdigit():
-                color_idx = int(design_color_index[idx])
-                if color_idx < len(color_ids):
-                    color = ProductColor.objects.get(id=color_ids[color_idx])
-                else:
-                    continue
-            else:
-                continue
-
-            d_id = design_ids[idx] if idx < len(design_ids) else ''
-            if d_id:
-                design = ProductDesign.objects.get(id=d_id)
-                design.name = name
-                design.description = design_descs[idx]
-                design.color = color
-                design.save()
-            else:
-                design = ProductDesign.objects.create(
-                    name=name,
-                    description=design_descs[idx] if idx < len(design_descs) else "",
-                    color=color
-                )
-
-            images = request.FILES.getlist(f"design_images_{d_id or 'new'+str(idx)}")
-            for img in images:
-                ProductImage.objects.create(product=product, color=color, design=design, image=img)
-
-        # ----------------- Handle deleted images -----------------
-        delete_ids = request.POST.getlist("delete_images[]")
-        for img_id in delete_ids:
-            ProductImage.objects.filter(id=img_id).delete()
-
-        messages.success(request, "Product updated successfully!")
-        return redirect("view_products")
-
-    return render(request, "edit_product.html", {
-        "product": product,
-        "colors": colors,
-        "designs": designs
-    })
-
-
-def product_list(request):
-    products = Product.objects.all().order_by('-date_added')
-
-    return render(request, "product_list.html", {"products": products})
-
-
-def product_designs_view(request, product_id):
-    product = get_object_or_404(Product, product_id=product_id)
-    designs = []
-    for color in product.colors.all(): # type: ignore
-        for design in color.designs.all():
-            images = design.images.all()
-            designs.append({"color": color.name, "design": design, "images": images})
-    return render(request, "product_designs.html", {"product": product, "designs": designs})
-
-
-def view_product(request, pk):
-    product = get_object_or_404(Product, product_id=pk)
-
-    if request.method == "POST":
-        size = request.POST.get("size")
-        qty = int(request.POST.get("quantity", 1))
-
-        if not size:
-            messages.error(request, "Please select a size before adding to cart.")
-        else:
-            # Check if same product + same size already in cart
-            cart_item, created = CartItem.objects.get_or_create(
-                user=request.user,
-                product=product,
-                size=size,   # ✅ include size
-                defaults={"quantity": qty}
-            )
-            if not created:
-                cart_item.quantity += qty
-                cart_item.save()
-
-            messages.success(request, f"{product.name} (Size {size}) x{qty} added to your cart!")
-            return redirect("view_cart")
-
-    return render(request, "view_product.html", {"product": product})
-
-
 
 
 @login_required 
@@ -588,12 +365,6 @@ def remove_cart_item(request, item_id):
     return redirect("view_cart")
 
 
-def view_products(request):
-    products = Product.objects.all()
-    return render(request, "product_list.html", {"products": products})
-
-
-
 
 @login_required
 def order_detail(request, order_id):
@@ -603,7 +374,11 @@ def order_detail(request, order_id):
 
 @login_required
 def orders(request):
-    profile = Profile.objects.get(user=request.user)
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        messages.warning(request, "Please complete your profile before checkout.")
+        return redirect("complete_profile")
     orders = Order.objects.filter(profile=profile).order_by("-created_at")
     return render(request, "orders.html", {"orders": orders})
 
@@ -668,10 +443,6 @@ def download_backup(request):
 
     return FileResponse(open(zip_filename, "rb"), as_attachment=True, filename=f"backup_{timestamp}.zip")
 
-
-def design_detail(request, design_id):
-    design = get_object_or_404(ProductDesign, id=design_id)
-    return render(request, "design_detail.html", {"design": design})
 
 
 

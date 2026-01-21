@@ -9,12 +9,12 @@ urlpatterns = [
     path('addresses/make-default/<int:address_id>/', views.make_default_address, name='make_default_address'),
     path('addresses/edit/<int:address_id>/', views.edit_address, name='edit_address'),
 
-    path('upload/', views.upload_product, name='upload_product'),
-    path('', views.product_list, name='product_list'),
-    path('edit/<str:product_id>/', views.edit_product, name='edit_product'),
-    path('dash/<str:product_id>/designs/', views.product_designs_view, name='product_designs'),
-    path('product/<str:pk>/', views.view_product, name='view_product'),
-    path('view_products', views.view_products, name='view_products'),
+    # path('upload/', views.upload_product, name='upload_product'),
+    # path('', views.product_list, name='product_list'),
+    # path('edit/<str:product_id>/', views.edit_product, name='edit_product'),
+    # path('dash/<str:product_id>/designs/', views.product_designs_view, name='product_designs'),
+    # path('product/<str:pk>/', views.view_product, name='view_product'),
+    # path('view_products', views.view_products, name='view_products'),
     path('view_cart', views.view_cart, name='view_cart'),
     path("cart/update/<int:item_id>/", views.update_cart_quantity, name="update_cart_quantity"),
     path("cart/remove/<int:item_id>/", views.remove_cart_item, name="remove_cart_item"),
@@ -29,7 +29,7 @@ urlpatterns = [
 
     path("payment_page/", views.payment_page, name="payment_page"),
 
-    path("design/<int:design_id>/", views.design_detail, name="design_detail"),
+    # path("design/<int:design_id>/", views.design_detail, name="design_detail"),
 
     path("sessions/", views.active_sessions, name="active_sessions"),
     path("sessions/logout/<str:session_key>/", views.logout_other_session, name="logout_other_session"),
