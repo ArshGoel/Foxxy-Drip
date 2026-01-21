@@ -68,17 +68,6 @@ def home(request):
             Prefetch("images", queryset=ProductImage.objects.order_by("-is_primary", "id"))
         )
     )
-
-    print("✅ Featured Designs Count:", featured_designs.count())
-
-    for d in featured_designs:
-        primary = d.images.first()  # primary first because we ordered by -is_primary
-        print(
-            f"➡️ Design: {d.id} | {d.name} | Product: {d.product.name} | "
-            f"Type: {d.product_type.type_name} | Color: {d.color.name} | "
-            f"Primary Image: {primary.image.url if primary else 'NO IMAGE'}"
-        )
-
     return render(request, "home.html", {
         "featured_designs": featured_designs
     })

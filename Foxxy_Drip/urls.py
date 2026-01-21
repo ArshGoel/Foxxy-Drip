@@ -13,7 +13,7 @@ urlpatterns = [
     
     path('products/', include('Products.urls')), 
 
-    path('',TemplateView.as_view(template_name = "home.html"), name='home'),
+    path('',views.home,name='home'),
 
     path("accounts/",include("allauth.urls")),
 
