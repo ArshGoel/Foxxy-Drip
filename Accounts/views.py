@@ -62,7 +62,7 @@ def shipping_delivery_policy(request):
 
 def home(request):
     featured_designs = (
-        Design.objects.filter(id__in=[2, 17, 15], show_in_shop=True)
+        Design.objects.filter(id__in=[2, 14, 16], show_in_shop=True)
         .select_related("product", "product_type", "color")
         .prefetch_related(
             Prefetch("images", queryset=ProductImage.objects.order_by("-is_primary", "id"))
