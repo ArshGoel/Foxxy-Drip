@@ -9,16 +9,13 @@
 <h3>Redirecting to PhonePe…</h3>
 
 <script>
-    window.PhonePeCheckout.transact({
-    tokenUrl: "{{ token_url }}",
-    type: "IFRAME",
-    callback: function (response) {
-        if (response === "CONCLUDED") {
-        window.PhonePeCheckout.closePage();
-        window.location.href = "/payments/phonepe/return/";
-        }
-    }
-    });
-</script>
+    window.onload = function () {
+      if (window.PhonePeCheckout) {
+        PhonePeCheckout.transact({
+          tokenUrl: "{{ token_url }}"
+        });
+      }
+    };
+  </script>
 </body>
 </html>
