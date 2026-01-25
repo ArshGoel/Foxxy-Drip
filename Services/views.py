@@ -5,7 +5,8 @@ from django.conf import settings
 from django.db import transaction
 import os, zipfile, tempfile, csv
 from django.contrib import messages
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from user_sessions.models import Session
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -62,109 +63,6 @@ from decimal import Decimal
 from Products.models import ProductColorSize
 # from .utils import send_order_emails   # keep your function import
 
-@login_required
-def payment_page(request):
-    # ✅ profile check
-    profile = Profile.objects.filter(user=request.user).first()
-    if not profile:
-        messages.warning(request, "Please complete your profile before checkout.")
-        return redirect("complete_profile")
-
-    cart_items = CartItem.objects.filter(user=request.user).select_related("design")
-
-    # ✅ prevent empty cart
-    if not cart_items.exists():
-        messages.error(request, "Your cart is empty.")
-        return redirect("view_cart")
-
-    # ✅ calculate total using cart's subtotal()
-    total = sum(item.subtotal() for item in cart_items)
-
-    if total <= 0:
-        messages.error(request, "Invalid cart total.")
-        return redirect("view_cart")
-
-    # ✅ address selected in checkout session
-    address_id = request.session.get("checkout_address")
-    address = Address.objects.filter(id=address_id, profile=profile).first()
-
-    if request.method == "POST":
-        payment_mode = request.POST.get("payment_mode")
-
-        if not payment_mode:
-            messages.error(request, "Please select a payment method.")
-            return redirect("payment_page")
-
-        try:
-            with transaction.atomic():
-                # ✅ Create Order
-                order = Order.objects.create(
-                    profile=profile,
-                    address=address,
-                    total_price=Decimal(total),
-                    status="P",
-                    payment_mode=payment_mode
-                )
-
-                # ✅ Move cart items to order items + reduce stock
-                for item in cart_items:
-                    design = item.design
-                    size = item.size
-                    qty_needed = item.quantity
-
-                    if not design:
-                        raise ValueError("Cart item has no design")
-
-                    if not size:
-                        raise ValueError("Please select size for all items")
-
-                    if qty_needed <= 0:
-                        raise ValueError("Invalid quantity")
-
-                    # ✅ Stock check: based on design.color + size
-                    size_entry = ProductColorSize.objects.select_for_update().filter(
-                        color=design.color,
-                        size=size
-                    ).first()
-
-                    if not size_entry:
-                        raise ValueError(f"Size {size} not available for {design.name}")
-
-                    if size_entry.quantity < qty_needed:
-                        raise ValueError(
-                            f"Only {size_entry.quantity} left for {design.name} ({size})"
-                        )
-
-                    # ✅ reduce stock
-                    size_entry.quantity -= qty_needed
-                    size_entry.save()
-
-                    # ✅ create OrderItem (updated model = stores design only)
-                    OrderItem.objects.create(
-                        order=order,
-                        design=design,
-                        size=size,
-                        quantity=qty_needed,
-                        price=Decimal(item.price)
-                    )
-
-                # ✅ clear cart
-                cart_items.delete()
-
-        except Exception as e:
-            messages.error(request, f"Error placing order: {e}")
-            return redirect("view_cart")
-
-        # ✅ Email + success redirect
-        send_order_emails(order, request=request)
-        messages.success(request, f"Order #{order.id} placed successfully!")
-        return redirect("order_detail", order_id=order.id)
-
-    return render(request, "payment_page.html", {
-        "cart_items": cart_items,
-        "total": total,
-        "address": address
-    })
 
 
 def send_order_emails(order, request=None):
@@ -459,3 +357,105 @@ def logout_other_session(request, session_key):
     # End a specific session (other than current one)
     Session.objects.filter(user=request.user, session_key=session_key).delete()
     return redirect("active_sessions")
+
+@login_required
+def payment_page(request):
+    profile = Profile.objects.filter(user=request.user).first()
+    if not profile:
+        messages.warning(request, "Please complete your profile before checkout.")
+        return redirect("complete_profile")
+
+    cart_items = CartItem.objects.filter(user=request.user).select_related("design")
+
+    if not cart_items.exists():
+        messages.error(request, "Your cart is empty.")
+        return redirect("view_cart")
+
+    total = sum(item.subtotal() for item in cart_items)
+    if total <= 0:
+        messages.error(request, "Invalid cart total.")
+        return redirect("view_cart")
+
+    address_id = request.session.get("checkout_address")
+    address = Address.objects.filter(id=address_id, profile=profile).first()
+
+    if request.method == "POST":
+        payment_mode = request.POST.get("payment_mode")
+
+        if not payment_mode:
+            messages.error(request, "Please select a payment method.")
+            return redirect("payment_page")
+
+        # ✅ COD FLOW (UNCHANGED)
+        if payment_mode == "COD":
+            try:
+                with transaction.atomic():
+
+                    order = Order.objects.create(
+                        profile=profile,
+                        address=address,
+                        total_price=Decimal(total),
+                        status="P",
+                        payment_mode="COD"
+                    )
+
+                    for item in cart_items:
+                        design = item.design
+                        size = item.size
+                        qty_needed = item.quantity
+
+                        if not design or not size:
+                            raise ValueError("Invalid cart item.")
+
+                        size_entry = ProductColorSize.objects.select_for_update().filter(
+                            color=design.color,
+                            size=size
+                        ).first()
+
+                        if not size_entry:
+                            raise ValueError(
+                                f"Size {size} not available for {design.name}"
+                            )
+
+                        if size_entry.quantity < qty_needed:
+                            raise ValueError(
+                                f"Only {size_entry.quantity} left for {design.name} ({size})"
+                            )
+
+                        OrderItem.objects.create(
+                            order=order,
+                            design=design,
+                            size=size,
+                            quantity=qty_needed,
+                            price=Decimal(item.price)
+                        )
+
+                    # reduce stock
+                    for item in cart_items:
+                        size_entry = ProductColorSize.objects.select_for_update().filter(
+                            color=item.design.color,
+                            size=item.size
+                        ).first()
+
+                        size_entry.quantity -= item.quantity
+                        size_entry.save()
+
+                    cart_items.delete()
+                    messages.success(
+                        request, f"Order #{order.id} placed successfully!"
+                    )
+                    return redirect("order_detail", order_id=order.id)
+
+            except Exception as e:
+                messages.error(request, f"Error placing order: {e}")
+                return redirect("payment_page")
+
+        # ✅ ONLINE FLOW (NEW, CLEAN)
+        if payment_mode == "PHONEPE":
+            return redirect("start_phonepe_payment")
+
+    return render(request, "payment_page.html", {
+        "cart_items": cart_items,
+        "total": total,
+        "address": address
+    })

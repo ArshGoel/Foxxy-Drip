@@ -227,7 +227,7 @@ def design_form(request, pk=None):
                     is_primary=(not has_primary and i == 0)
                 )
 
-            return redirect("design_list")
+            return redirect("design_add")
 
     return render(request, "admin_d/design_form.html", {"form": form})
 

@@ -44,19 +44,24 @@
 
         <!-- Payment Modes -->
         <h5 class="mt-4">Choose Payment Mode</h5>
-        <form method="post" id="payment-form">
+        <form method="post" action="{% url 'payment_page' %}">
             {% csrf_token %}
-            <label><input type="radio" name="payment_mode" value="COD" checked> Cash on Delivery</label><br>
-            <label><input type="radio" name="payment_mode" value="UPI"> UPI</label><br>
-            <label><input type="radio" name="payment_mode" value="CARD"> Credit/Debit Card</label><br>
 
-            <!-- Desktop Button -->
-            <div class="text-end mt-3 d-none d-md-block">
-                <button type="submit" class="btn btn-primary">
-                    Place Order (₹{{ total }})
-                </button>
-            </div>
-        </form>
+            <label>
+                <input type="radio" name="payment_mode" value="COD" checked>
+                Cash on Delivery
+            </label><br>
+
+            <label>
+                <input type="radio" name="payment_mode" value="PHONEPE">
+                Pay Online (PhonePe)
+            </label>
+
+            <button type="submit" class="btn btn-primary w-100 mt-3">
+                Continue
+            </button>
+            </form>
+
     </div>
 </div>
 

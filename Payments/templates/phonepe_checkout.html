@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PhonePe Payment</title>
+    <script src="https://mercury.phonepe.com/web/bundle/checkout.js"></script>
+</head>
+<body>
+
+<h3>Redirecting to PhonePe…</h3>
+
+<script>
+    window.PhonePeCheckout.transact({
+    tokenUrl: "{{ token_url }}",
+    type: "IFRAME",
+    callback: function (response) {
+        if (response === "CONCLUDED") {
+        window.PhonePeCheckout.closePage();
+        window.location.href = "/payments/phonepe/return/";
+        }
+    }
+    });
+</script>
+</body>
+</html>
