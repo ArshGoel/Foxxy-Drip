@@ -163,17 +163,15 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 @csrf_exempt
 def phonepe_webhook(request):
-    # ===============================
-    # 1️⃣ Verify PhonePe Authorization
-    # ===============================
-    auth_header = request.headers.get("Authorization")
+    print("🔥 WEBHOOK AUTH HEADER:", request.headers.get("Authorization"))
 
     expected = "SHA256(" + hashlib.sha256(
         f"{settings.PHONEPE_WEBHOOK_USERNAME}:{settings.PHONEPE_WEBHOOK_PASSWORD}".encode()
     ).hexdigest() + ")"
 
-    if auth_header != expected:
-        # Unauthorized webhook
+    print("🔥 EXPECTED AUTH:", expected)
+
+    if request.headers.get("Authorization") != expected:
         return HttpResponse(status=401)
 
     # ===============================
