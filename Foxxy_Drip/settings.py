@@ -108,7 +108,7 @@ WSGI_APPLICATION = 'Foxxy_Drip.wsgi.application'
 DATABASES = {
     'default': dj_database_url.parse(
         config('DATABASE_URL'),  #type:ignore
-        conn_max_age=600,
+        conn_max_age=60,
         ssl_require=True
     )
 }
