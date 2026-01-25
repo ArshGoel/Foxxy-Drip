@@ -161,18 +161,31 @@ def start_phonepe_payment(request):
 import hashlib, base64
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-
 @csrf_exempt
 def phonepe_webhook(request):
-    print("🔥 WEBHOOK HIT 🔥")
-    print(request.headers)
-    print(request.body)
+    # ===============================
+    # 1️⃣ Verify PhonePe Authorization
+    # ===============================
+    auth_header = request.headers.get("Authorization")
 
+    expected = "SHA256(" + hashlib.sha256(
+        f"{settings.PHONEPE_WEBHOOK_USERNAME}:{settings.PHONEPE_WEBHOOK_PASSWORD}".encode()
+    ).hexdigest() + ")"
+
+    if auth_header != expected:
+        # Unauthorized webhook
+        return HttpResponse(status=401)
+
+    # ===============================
+    # 2️⃣ Parse payload
+    # ===============================
     data = json.loads(request.body)
     event = data.get("event")
     payload = data.get("payload", {})
 
     merchant_order_id = payload.get("merchantOrderId")
+    if not merchant_order_id:
+        return HttpResponse(status=400)
 
     txn = PaymentTransaction.objects.filter(
         merchant_order_id=merchant_order_id
@@ -181,6 +194,15 @@ def phonepe_webhook(request):
     if not txn:
         return HttpResponse(status=404)
 
+    # ===============================
+    # 3️⃣ Idempotency guard
+    # ===============================
+    if txn.status == "SUCCESS":
+        return HttpResponse(status=200)
+
+    # ===============================
+    # 4️⃣ Handle events
+    # ===============================
     if event == "checkout.order.completed":
         txn.status = "SUCCESS"
         txn.phonepe_order_id = payload.get("orderId")
@@ -193,7 +215,6 @@ def phonepe_webhook(request):
         txn.save()
 
     return HttpResponse(status=200)
-
 
 
 import time

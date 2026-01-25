@@ -12,7 +12,7 @@ ALLOWED_HOSTS = ["*","localhost",
     "127.0.0.1",
     ".ngrok-free.app",
     ".ngrok-free.dev",]
-X_FRAME_OPTIONS = "ALLOWALL"
+X_FRAME_OPTIONS = "SAMEORIGIN"
 CSRF_TRUSTED_ORIGINS = [
     "https://foxxy-drip.vercel.app/",
     "https://foxxydrip.com",
@@ -182,10 +182,8 @@ LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "login"
 
 
-PHONEPE_AUTH_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/v1/oauth/token"
-
-PHONEPE_PAY_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/checkout/v2/pay"
-
+PHONEPE_AUTH_URL = "https://api.phonepe.com/apis/identity-manager/v1/oauth/token"
+PHONEPE_PAY_URL = "https://api.phonepe.com/apis/pg/checkout/v2/pay"
 PHONEPE_REDIRECT_URL = "https://moitier-leila-issuably.ngrok-free.dev/payments/phonepe/return/"
 
 PHONEPE_CLIENT_ID = config('PHONEPE_CLIENT_ID')
