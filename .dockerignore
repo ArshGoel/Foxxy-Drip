@@ -1,9 +1,0 @@
-__pycache__/
-*.pyc
-*.pyo
-*.log
-.env
-.env.*
-node_modules/
-.git
-.gitignore

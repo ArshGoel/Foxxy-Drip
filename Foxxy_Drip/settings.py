@@ -9,15 +9,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = ["*","localhost",
-    "127.0.0.1",
-    ".ngrok-free.app",
-    ".ngrok-free.dev",]
+    "127.0.0.1",]
+
 X_FRAME_OPTIONS = "SAMEORIGIN"
+
 CSRF_TRUSTED_ORIGINS = [
     "https://foxxy-drip.vercel.app/",
     "https://foxxydrip.com",
-    "https://*.ngrok-free.app",
-    "https://*.ngrok-free.dev",
 ]
 
 # Increase upload limits for Vercel
@@ -180,14 +178,3 @@ LOGIN_URL = "login"
 LOGOUT_URL = "logout"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "login"
-
-
-PHONEPE_AUTH_URL = "https://api.phonepe.com/apis/identity-manager/v1/oauth/token"
-PHONEPE_PAY_URL = "https://api.phonepe.com/apis/pg/checkout/v2/pay"
-PHONEPE_REDIRECT_URL = "https://moitier-leila-issuably.ngrok-free.dev/payments/phonepe/return/"
-
-PHONEPE_CLIENT_ID = config('PHONEPE_CLIENT_ID')
-PHONEPE_CLIENT_SECRET = config('PHONEPE_CLIENT_SECRET')
-PHONEPE_CLIENT_VERSION = 1
-PHONEPE_WEBHOOK_USERNAME= config('PHONEPE_WEBHOOK_USERNAME')
-PHONEPE_WEBHOOK_PASSWORD= config('PHONEPE_WEBHOOK_PASSWORD')

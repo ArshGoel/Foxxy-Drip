@@ -13,7 +13,7 @@ urlpatterns = [
     
     path('products/', include('Products.urls')), 
 
-    path('payments/', include('Payments.urls')), 
+    # path('payments/', include('Payments.urls')), 
 
     path('',views.home,name='home'),
 

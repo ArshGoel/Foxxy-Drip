@@ -380,13 +380,9 @@ def payment_page(request):
     address = Address.objects.filter(id=address_id, profile=profile).first()
 
     if request.method == "POST":
-        payment_mode = request.POST.get("payment_mode")
+        payment_mode = request.POST.get("payment_mode", "COD")
 
-        if not payment_mode:
-            messages.error(request, "Please select a payment method.")
-            return redirect("payment_page")
-
-        # ✅ COD FLOW (UNCHANGED)
+        # ✅ COD FLOW (Cash on Delivery)
         if payment_mode == "COD":
             try:
                 with transaction.atomic():
@@ -449,10 +445,6 @@ def payment_page(request):
             except Exception as e:
                 messages.error(request, f"Error placing order: {e}")
                 return redirect("payment_page")
-
-        # ✅ ONLINE FLOW (NEW, CLEAN)
-        if payment_mode == "PHONEPE":
-            return redirect("start_phonepe_payment")
 
     return render(request, "payment_page.html", {
         "cart_items": cart_items,
