@@ -32,8 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    # 'django.contrib.staticfiles',
-
+    'django.contrib.staticfiles',
 
     'Accounts',
     'Services',
@@ -47,7 +46,6 @@ INSTALLED_APPS = [
     'user_sessions',
     'cloudinary',
     'cloudinary_storage',
-    'django.contrib.staticfiles',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -62,6 +60,7 @@ SOCIALACCOUNT_PROVIDERS = {
  
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'user_sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -146,23 +145,16 @@ os.environ["CLOUDINARY_URL"] = f"cloudinary://{config('CLOUDINARY_API_KEY')}:{co
 
 # STATIC files — CSS / JS / images
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', "static")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
-# MEDIA files — user uploads
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+WHITENOISE_USE_FINDERS = True
+
+# MEDIA files — user uploads (stored on Cloudinary)
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR,"static")]
-# STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles_build',"static")
-
-# MEDIA_URL = '/media/'
-# MEDIAFILES_DIRS = [
-#     os.path.join(BASE_DIR,"media")
-# ] 
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #EMAIL CONFIGURATION
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
