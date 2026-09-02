@@ -2,7 +2,7 @@
     "builds": [{
         "src": "Foxxy_Drip/wsgi.py",
         "use": "@vercel/python",
-        "config": { "maxLambdaSize": "50mb", "maxDuration": 60 }
+        "config": { "runtime": "python3.13.0"  }
     },
         {
             "src": "build_files.sh",
